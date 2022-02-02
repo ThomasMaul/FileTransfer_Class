@@ -1,0 +1,30 @@
+{
+	"SystemWorkerProperties": {
+		"functions": {
+			"onResponse": 2147483642,
+			"onData": 2147483641,
+			"onTerminate": 2147483640,
+			"onDataError": 2147483639,
+			"onError": 2147483644
+		},
+		"constructorID": 2147483643
+	},
+	"FileTransfer": {
+		"functions": {
+			"validate": 2147483636,
+			"version": 2147483635,
+			"setConnectTimeout": 2147483634,
+			"setmaxTime": 2147483633,
+			"setAutoCreateRemoteDirectory": 2147483618,
+			"setAutoCreateLocalDirectory": 2147483601,
+			"setCurlPrefix": 2147483631,
+			"upload": 2147483630,
+			"download": 2147483628,
+			"getDirectoryListing": 2147483629,
+			"createDirectory": 2147483600,
+			"_buildURL": 2147483627,
+			"_runWorker": 2147483626
+		},
+		"constructorID": 2147483637
+	}
+}

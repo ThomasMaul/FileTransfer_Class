@@ -1,0 +1,58 @@
+{
+	"Sources/Classes/FileTransfer.4dm": {
+		"startSelection": 0,
+		"endSelection": 0,
+		"firstSelectedLine": 18,
+		"lastSelectedLine": 18,
+		"folding": [
+			0,
+			10,
+			18,
+			21,
+			25,
+			29,
+			32,
+			35,
+			46,
+			52,
+			72,
+			93,
+			104,
+			110,
+			121,
+			132,
+			147,
+			180,
+			190
+		],
+		"bookmarks": [],
+		"stamp": "2022-02-02T12:47:10.956Z"
+	},
+	"Sources/Methods/test.4dm": {
+		"startSelection": 21,
+		"endSelection": 21,
+		"firstSelectedLine": 23,
+		"lastSelectedLine": 23,
+		"folding": [],
+		"bookmarks": [],
+		"stamp": "2022-02-02T15:59:26.349Z"
+	},
+	"Sources/Classes/SystemWorkerProperties.4dm": {
+		"startSelection": 41,
+		"endSelection": 7,
+		"firstSelectedLine": 16,
+		"lastSelectedLine": 17,
+		"folding": [],
+		"bookmarks": [],
+		"stamp": "2022-01-31T11:27:37.343Z"
+	},
+	"Sources/Methods/ErrorHandler.4dm": {
+		"startSelection": 0,
+		"endSelection": 0,
+		"firstSelectedLine": 1,
+		"lastSelectedLine": 1,
+		"folding": [],
+		"bookmarks": [],
+		"stamp": "2022-01-31T12:46:05.903Z"
+	}
+}

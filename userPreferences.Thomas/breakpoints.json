@@ -1,0 +1,67 @@
+[
+	{
+		"line": 1,
+		"method": {
+			"type": 10,
+			"className": "SystemWorkerProperties",
+			"functionName": "onError",
+			"methodPath": "/SOURCES/Classes/SystemWorkerProperties.4dm"
+		}
+	},
+	{
+		"line": 22,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 24,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 42,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 76,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 92,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 99,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 7,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 5,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	}
+]

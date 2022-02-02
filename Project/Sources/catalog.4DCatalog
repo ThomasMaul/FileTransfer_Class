@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE base SYSTEM "http://www.4d.com/dtd/2007/base.dtd" >
+<base name="FileTransfer_Curl" uuid="1275CFA301E24C3FAF5C0CCA0B40F474" collation_locale="de">
+	<schema name="DEFAULT_SCHEMA"/>
+	<base_extra __stringCompHash="icu:68.1.0" __keywordBuildingHash="icu:68.1.0">
+		<journal_file journal_file_enabled="true"/>
+	</base_extra>
+</base>

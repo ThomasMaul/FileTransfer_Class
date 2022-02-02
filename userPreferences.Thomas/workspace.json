@@ -1,0 +1,33 @@
+{
+	"editors": [
+		{
+			"type": "method",
+			"id": 2147483647,
+			"codeDescriptor": {
+				"type": 1,
+				"methodName": "test"
+			}
+		},
+		{
+			"type": "method",
+			"id": 2147483638,
+			"codeDescriptor": {
+				"type": 11,
+				"className": "FileTransfer",
+				"methodPath": "/SOURCES/Classes/FileTransfer.4dm"
+			}
+		},
+		{
+			"type": "explorer"
+		},
+		{
+			"type": "method",
+			"id": 2147483645,
+			"codeDescriptor": {
+				"type": 11,
+				"className": "SystemWorkerProperties",
+				"methodPath": "/SOURCES/Classes/SystemWorkerProperties.4dm"
+			}
+		}
+	]
+}
