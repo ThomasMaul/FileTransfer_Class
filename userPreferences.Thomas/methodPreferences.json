@@ -1,58 +1,77 @@
 {
 	"Sources/Classes/FileTransfer.4dm": {
-		"startSelection": 0,
-		"endSelection": 0,
-		"firstSelectedLine": 18,
-		"lastSelectedLine": 18,
+		"startSelection": 54,
+		"endSelection": 54,
+		"firstSelectedLine": 20,
+		"lastSelectedLine": 20,
 		"folding": [
-			0,
-			10,
-			18,
-			21,
-			25,
-			29,
-			32,
-			35,
-			46,
+			12,
+			20,
+			23,
+			27,
+			31,
+			34,
+			37,
+			48,
 			52,
-			72,
-			93,
-			104,
-			110,
-			121,
-			132,
-			147,
-			180,
-			190
+			56,
+			59,
+			62,
+			71,
+			91,
+			112,
+			129,
+			140,
+			151,
+			166,
+			199
 		],
 		"bookmarks": [],
-		"stamp": "2022-02-02T12:47:10.956Z"
+		"stamp": "2022-02-07T11:19:32.904Z"
 	},
 	"Sources/Methods/test.4dm": {
-		"startSelection": 21,
-		"endSelection": 21,
-		"firstSelectedLine": 23,
-		"lastSelectedLine": 23,
+		"startSelection": 5,
+		"endSelection": 5,
+		"firstSelectedLine": 26,
+		"lastSelectedLine": 26,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-02T15:59:26.349Z"
+		"stamp": "2022-02-07T11:21:35.129Z"
 	},
 	"Sources/Classes/SystemWorkerProperties.4dm": {
-		"startSelection": 41,
-		"endSelection": 7,
-		"firstSelectedLine": 16,
+		"startSelection": 39,
+		"endSelection": 39,
+		"firstSelectedLine": 17,
 		"lastSelectedLine": 17,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-01-31T11:27:37.343Z"
+		"stamp": "2022-02-07T11:19:08.820Z"
 	},
 	"Sources/Methods/ErrorHandler.4dm": {
-		"startSelection": 0,
-		"endSelection": 0,
+		"startSelection": 39,
+		"endSelection": 39,
 		"firstSelectedLine": 1,
 		"lastSelectedLine": 1,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-01-31T12:46:05.903Z"
+		"stamp": "2022-02-03T10:50:18.425Z"
+	},
+	"Sources/Methods/Worker_ProgressBar.4dm": {
+		"startSelection": 13,
+		"endSelection": 13,
+		"firstSelectedLine": 6,
+		"lastSelectedLine": 6,
+		"folding": [],
+		"bookmarks": [],
+		"stamp": "2022-02-03T11:10:33.458Z"
+	},
+	"Sources/Methods/ProgressCallback.4dm": {
+		"startSelection": 0,
+		"endSelection": 0,
+		"firstSelectedLine": 4,
+		"lastSelectedLine": 4,
+		"folding": [],
+		"bookmarks": [],
+		"stamp": "2022-02-07T10:10:51.936Z"
 	}
 }

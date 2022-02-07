@@ -1,13 +1,15 @@
 Class constructor($hostname : Text; $username : Text; $password : Text; $protocoll : Text)
 	ASSERT:C1129($hostname#""; "Hostname must not be empty")
-	$col:=New collection:C1472("ftp"; "ftps")
+	$col:=New collection:C1472("ftp"; "ftps"; "sftp")
 	ASSERT:C1129($col.indexOf($protocoll)>=0; "Unsupported protocoll")
 	This:C1470._host:=$hostname
 	This:C1470._user:=$username
 	This:C1470._password:=$password
 	This:C1470._protocoll:=$protocoll
 	This:C1470.onData:=New object:C1471("text"; "")
+	This:C1470._noProgress:=True:C214
 	
+	//MARK: Settings
 Function validate()->$success : Object
 	$url:=This:C1470._buildURL()
 	$url+="/"
@@ -44,12 +46,29 @@ Function setActiveMode($active : Boolean; $IP : Text)
 		This:C1470._ActiveModeIP:=$IP
 	End if 
 	
+Function setRange($range : Text)
+	// 0-99 or -500 (last 500) , 500-  (starting with 500 till end)
+	This:C1470._range:=$range
+	
 Function setCurlPrefix($prefix : Text)
 	// allows to set any parameters directly after curl
 	This:C1470._prefix:=$prefix
 	
+Function setCurlPath($path : Text)
+	This:C1470._curlPath:=$path
 	
+Function enableProgressData($enable : Boolean)
+	This:C1470._noProgress:=Not:C34($enable)
 	
+Function useCallback($callback : 4D:C1709.Function; $ID : Text)
+	ASSERT:C1129(Value type:C1509($callback)=Is object:K8:27; "Callback must be of type function")
+	ASSERT:C1129(OB Instance of:C1731($callback; 4D:C1709.Function); "Callback must be of type function")
+	ASSERT:C1129($ID#""; "Callback ID Method must not be empty")
+	This:C1470._Callback:=$callback
+	This:C1470._CallbackID:=$ID
+	This:C1470._noProgress:=False:C215
+	
+	//MARK: FileTransfer
 Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$success : Object
 	//$sourcepath just file name for local directory, else full path in POSIX syntax
 	// targetpath is remote path. / for same name as local file in default dir, else /dir/ or /dir/newname.txt
@@ -82,12 +101,12 @@ target needs to be folder, ending with /
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	$url:=This:C1470._buildURL()
 	If ((This:C1470._AutoCreateLocalDir#Null:C1517) && (This:C1470._AutoCreateLocalDir))
-		$url:="--create-dirs "+$url
+		$url:=" --create-dirs "+$url
 	End if 
 	If ($targetpath="@/")
 		$url:=" --output-dir "+$targetpath+" --remote-name-all "+$url+$sourcepath
 	Else 
-		$url:=" -o "+$targetpath+$url+$sourcepath
+		$url:=" -o "+$targetpath+" "+$url+$sourcepath
 	End if 
 	$success:=This:C1470._runWorker($url)
 	
@@ -144,7 +163,7 @@ Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	End if 
 	
 	
-	
+	// MARK: Internal helper calls
 Function _parseDirListing($success : Object)
 	$col:=Split string:C1554($success.data; Char:C90(10); sk ignore empty strings:K86:1)
 	$success.list:=New collection:C1472
@@ -179,21 +198,42 @@ Function _parseDirListing($success : Object)
 	End for each 
 	
 Function _buildURL()->$url : Text
-	$url:="ftp://"
-	If (This:C1470._user#"")
-		$url+=This:C1470._user+":"+This:C1470._password+"@"
-	End if 
-	$url+=This:C1470._host
-	If (This:C1470._protocoll="ftps")
-		$url:="-ssl "+$url
+	Case of 
+		: ((This:C1470._protocoll="ftps") | (This:C1470._protocoll="ftp"))
+			$url:="ftp://"
+			If (This:C1470._user#"")
+				$url+=This:C1470._user+":"+This:C1470._password+"@"
+			End if 
+			$url+=This:C1470._host
+			If (This:C1470._protocoll="ftps")
+				$url:="-ssl "+$url
+			End if 
+		: (This:C1470._protocoll="sftp")
+			$url:="sftp://"
+			If (This:C1470._user#"")
+				$url+=This:C1470._user+":"+This:C1470._password+"@"
+			End if 
+			$url+=This:C1470._host
+		Else 
+			ASSERT:C1129(True:C214; "unsupported protocoll")
+	End case 
+	
+	
+Function _runWorker($para : Text)->$result : Object
+	If (This:C1470._Callback#Null:C1517)
+		$workerpara:=cs:C1710.SystemWorkerProperties.new(This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID)
+	Else 
+		$workerpara:=cs:C1710.SystemWorkerProperties.new(This:C1470.onData)
 	End if 
 	
-Function _runWorker($para : Text; $async : Boolean)->$result : Object
-	$workerpara:=cs:C1710.SystemWorkerProperties.new(This:C1470.onData)
+	If ((This:C1470._curlPath) && (This:C1470._curlPath#""))
+		$path:=This:C1470._curlPath
+	Else 
+		$path:="curl"
+	End if 
 	
-	$path:="curl"
-	If (This:C1470._prefix#Null:C1517)
-		$path+=(" "+This:C1470._prefix)
+	If ((This:C1470._noProgress#Null:C1517) && (This:C1470._noProgress))
+		$path+=" --no-progress-meter"
 	End if 
 	If (This:C1470._connectTimeout#Null:C1517)
 		$path+=" --connect-timeout "+String:C10(This:C1470._connectTimeout)
@@ -201,8 +241,14 @@ Function _runWorker($para : Text; $async : Boolean)->$result : Object
 	If (This:C1470._maxTime#Null:C1517)
 		$path+=" --max-time "+String:C10(This:C1470._maxTime)
 	End if 
+	If (This:C1470._range#Null:C1517)
+		$path+=" --range "+This:C1470._range
+	End if 
 	If ((This:C1470._ActiveMode#Null:C1517) && (This:C1470._ActiveMode))  // default passive
 		$path+=" --ftp-port "+This:C1470.ActiveModeIP
+	End if 
+	If (This:C1470._prefix#Null:C1517)
+		$path+=(" "+This:C1470._prefix)
 	End if 
 	
 	$command:=$path+" "+$para
@@ -231,6 +277,7 @@ Function _runWorker($para : Text; $async : Boolean)->$result : Object
 		$result:=New object:C1471("success"; False:C215; "responseError"; "Curl execution error")
 	End if 
 	ON ERR CALL:C155($old)
+	
 	
 	
 	

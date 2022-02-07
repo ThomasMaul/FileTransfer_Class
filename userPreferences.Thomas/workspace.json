@@ -2,15 +2,7 @@
 	"editors": [
 		{
 			"type": "method",
-			"id": 2147483647,
-			"codeDescriptor": {
-				"type": 1,
-				"methodName": "test"
-			}
-		},
-		{
-			"type": "method",
-			"id": 2147483638,
+			"id": 2147483636,
 			"codeDescriptor": {
 				"type": 11,
 				"className": "FileTransfer",
@@ -22,7 +14,7 @@
 		},
 		{
 			"type": "method",
-			"id": 2147483645,
+			"id": 2147483643,
 			"codeDescriptor": {
 				"type": 11,
 				"className": "SystemWorkerProperties",

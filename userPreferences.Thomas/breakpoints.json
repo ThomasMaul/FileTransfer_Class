@@ -9,56 +9,70 @@
 		}
 	},
 	{
-		"line": 22,
+		"line": 26,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 24,
+		"line": 28,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 42,
+		"line": 48,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 76,
+		"line": 89,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 92,
+		"line": 105,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 99,
+		"line": 117,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 7,
+		"line": 82,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 5,
+		"line": 66,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 19,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 57,
 		"method": {
 			"type": 1,
 			"methodName": "test"
