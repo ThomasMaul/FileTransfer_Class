@@ -1,0 +1,8 @@
+Response: ResponseError:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+ 29 1033M   29  302M    0     0   347M      0  0:00:02 --:--:--  0:00:02  347M
+ 55 1033M   55  574M    0     0   306M      0  0:00:03  0:00:01  0:00:02  306M
+ 83 1033M   83  866M    0     0   301M      0  0:00:03  0:00:02  0:00:01  301M
+100 1033M  100 1033M    0     0   299M      0  0:00:03  0:00:03 --:--:--  299M

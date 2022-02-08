@@ -1,14 +1,5 @@
 [
 	{
-		"line": 1,
-		"method": {
-			"type": 10,
-			"className": "SystemWorkerProperties",
-			"functionName": "onError",
-			"methodPath": "/SOURCES/Classes/SystemWorkerProperties.4dm"
-		}
-	},
-	{
 		"line": 26,
 		"method": {
 			"type": 1,
@@ -23,42 +14,35 @@
 		}
 	},
 	{
-		"line": 48,
+		"line": 49,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 89,
+		"line": 90,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 105,
+		"line": 106,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 117,
+		"line": 83,
 		"method": {
 			"type": 1,
 			"methodName": "test"
 		}
 	},
 	{
-		"line": 82,
-		"method": {
-			"type": 1,
-			"methodName": "test"
-		}
-	},
-	{
-		"line": 66,
+		"line": 67,
 		"method": {
 			"type": 1,
 			"methodName": "test"
@@ -72,7 +56,14 @@
 		}
 	},
 	{
-		"line": 57,
+		"line": 58,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 15,
 		"method": {
 			"type": 1,
 			"methodName": "test"

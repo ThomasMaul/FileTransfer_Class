@@ -1,6 +1,6 @@
 Class constructor($hostname : Text; $username : Text; $password : Text; $protocoll : Text)
 	ASSERT:C1129($hostname#""; "Hostname must not be empty")
-	$col:=New collection:C1472("ftp"; "ftps"; "sftp")
+	$col:=New collection:C1472("ftp"; "ftps"; "sftp"; "ftp-ftps")
 	ASSERT:C1129($col.indexOf($protocoll)>=0; "Unsupported protocoll")
 	This:C1470._host:=$hostname
 	This:C1470._user:=$username
@@ -8,6 +8,11 @@ Class constructor($hostname : Text; $username : Text; $password : Text; $protoco
 	This:C1470._protocoll:=$protocoll
 	This:C1470.onData:=New object:C1471("text"; "")
 	This:C1470._noProgress:=True:C214
+	If (Is macOS:C1572)
+		This:C1470._return:=Char:C90(10)
+	Else 
+		This:C1470._return:=Char:C90(13)+Char:C90(10)
+	End if 
 	
 	//MARK: Settings
 Function validate()->$success : Object
@@ -88,6 +93,7 @@ Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$suc
 	End if 
 	$url:="-T "+$sourcepath+" "+$url+$targetpath
 	$success:=This:C1470._runWorker($url)
+	This:C1470._parseFileListing($success)
 	
 Function download($sourcepath : Text; $targetpath : Text)->$success : Object
 /* supports
@@ -109,6 +115,7 @@ target needs to be folder, ending with /
 		$url:=" -o "+$targetpath+" "+$url+$sourcepath
 	End if 
 	$success:=This:C1470._runWorker($url)
+	This:C1470._parseFileListing($success)
 	
 Function getDirectoryListing($targetpath : Text)->$success : Object
 	If ($targetpath="")
@@ -165,7 +172,7 @@ Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	
 	// MARK: Internal helper calls
 Function _parseDirListing($success : Object)
-	$col:=Split string:C1554($success.data; Char:C90(10); sk ignore empty strings:K86:1)
+	$col:=Split string:C1554($success.data; This:C1470._return; sk ignore empty strings:K86:1)
 	$success.list:=New collection:C1472
 	For each ($line; $col)
 		$lineitems:=Split string:C1554($line; " "; sk trim spaces:K86:2+sk ignore empty strings:K86:1)
@@ -194,20 +201,34 @@ Function _parseDirListing($success : Object)
 		Else   // error?
 			$success.success:=False:C215
 			$success.error:="Directory listing unexpected format"
+			break
+		End if 
+	End for each 
+	
+Function _parseFileListing($success : Object)
+	$col:=Split string:C1554($success.data; This:C1470._return; sk ignore empty strings:K86:1)
+	$success.list:=New collection:C1472
+	For each ($line; $col)
+		If ($line="--_curl_--@")
+			$success.list.push(New object:C1471("file"; Substring:C12($line; 11)))
 		End if 
 	End for each 
 	
 Function _buildURL()->$url : Text
 	Case of 
-		: ((This:C1470._protocoll="ftps") | (This:C1470._protocoll="ftp"))
+		: ((This:C1470._protocoll="ftps") | (This:C1470._protocoll="ftp") | (This:C1470._protocoll="ftp-ftps"))
 			$url:="ftp://"
 			If (This:C1470._user#"")
 				$url+=This:C1470._user+":"+This:C1470._password+"@"
 			End if 
 			$url+=This:C1470._host
-			If (This:C1470._protocoll="ftps")
-				$url:="-ssl "+$url
-			End if 
+			Case of 
+				: (This:C1470._protocoll="ftps")
+					$url:="--ftp-ssl-reqd "+$url
+				: (This:C1470._protocoll="ftp-ftps")
+					$url:="--ftp-ssl "+$url
+			End case 
+			
 		: (This:C1470._protocoll="sftp")
 			$url:="sftp://"
 			If (This:C1470._user#"")
@@ -217,7 +238,6 @@ Function _buildURL()->$url : Text
 		Else 
 			ASSERT:C1129(True:C214; "unsupported protocoll")
 	End case 
-	
 	
 Function _runWorker($para : Text)->$result : Object
 	If (This:C1470._Callback#Null:C1517)
@@ -256,22 +276,27 @@ Function _runWorker($para : Text)->$result : Object
 	$old:=Method called on error:C704
 	ON ERR CALL:C155(Formula:C1597(ErrorHandler).source)
 	$worker:=4D:C1709.SystemWorker.new($command; $workerpara)
+	
 	If ($worker#Null:C1517)
-		$worker.wait()
-		If (($worker.responseError#Null:C1517) && ($worker.responseError#""))
-			$result:=New object:C1471("responseError"; $worker.responseError; "success"; False:C215)
-			$pos:=Position:C15("curl: "; $worker.responseError; *)
-			If ($pos>0)
-				$result.error:=Replace string:C233(Substring:C12($worker.responseError; $pos+6); Char:C90(10); "")
-			Else 
-				If (($worker.response#Null:C1517) && ($worker.response#""))  // seems not to be an error, sometime curl set's process bar in error and result in response.
-					$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
-				Else 
-					$result:=New object:C1471("data"; $worker.responseError; "success"; True:C214)
-				End if 
-			End if 
+		If (This:C1470._Callback#Null:C1517)
+			$result:=New object:C1471("data"; "async"; "success"; True:C214)
 		Else 
-			$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
+			$worker.wait()
+			If (($worker.responseError#Null:C1517) && ($worker.responseError#""))
+				$result:=New object:C1471("responseError"; $worker.responseError; "success"; False:C215)
+				$pos:=Position:C15("curl: "; $worker.responseError; *)
+				If ($pos>0)
+					$result.error:=Replace string:C233(Substring:C12($worker.responseError; $pos+6); Char:C90(10); "")
+				Else 
+					If (($worker.response#Null:C1517) && ($worker.response#""))  // seems not to be an error, sometime curl set's process bar in error and result in response.
+						$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
+					Else 
+						$result:=New object:C1471("data"; $worker.responseError; "success"; True:C214)
+					End if 
+				End if 
+			Else 
+				$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
+			End if 
 		End if 
 	Else 
 		$result:=New object:C1471("success"; False:C215; "responseError"; "Curl execution error")

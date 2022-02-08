@@ -5,13 +5,13 @@ $credentialspath:=Get 4D folder:C485(Database folder:K5:14)
 $folder:=Folder:C1567($credentialspath; fk platform path:K87:2)
 $credentialsfile:=$folder.parent.file("credentials.txt").getText()
 $credentials:=JSON Parse:C1218($credentialsfile)
-If (False:C215)
+If (True:C214)
 	$credentials.url:="192.168.10.54:3421"
 End if 
 
 var $ftp : cs:C1710.FileTransfer
-$ftp:=cs:C1710.FileTransfer.new($credentials.url; $credentials.user; $credentials.pass; "sftp")
-$ftp.setCurlPath("/opt/homebrew/opt/curl/bin/curl")
+$ftp:=cs:C1710.FileTransfer.new($credentials.url; $credentials.user; $credentials.pass; "ftp")
+//$ftp.setCurlPath("/opt/homebrew/opt/curl/bin/curl")
 $ftp.setConnectTimeout(5)
 
 If (False:C215)
@@ -21,7 +21,7 @@ If (False:C215)
 	End if 
 End if 
 
-If (True:C214)
+If (False:C215)
 	$result:=$ftp.validate()
 	If ($result.success)
 		
@@ -35,23 +35,24 @@ End if
 If (False:C215)
 	$source:=System folder:C487(Desktop:K41:16)+"test2.txt"
 	$source:=Convert path system to POSIX:C1106($source)
-	$result:=$ftp.upload($source; "/test3.txt"; True:C214)
-	If ($result.success)
-		$answer:=$result.data
-	End if 
-End if 
-If (False:C215)
-	$source:=System folder:C487(Desktop:K41:16)+"test2.txt"
-	$source:=Convert path system to POSIX:C1106($source)
-	$ftp.setAutoCreateRemoteDirectory(True:C214)
-	$ftp.setAutoCreateLocalDirectory(True:C214)
-	$result:=$ftp.upload($source; "/meinfolder/test3.txt"; True:C214)
+	$result:=$ftp.upload($source; "/test3.txt")
 	If ($result.success)
 		$answer:=$result.data
 	End if 
 End if 
 
-If (True:C214)
+If (False:C215)
+	$source:=System folder:C487(Desktop:K41:16)+"test2.txt"
+	$source:=Convert path system to POSIX:C1106($source)
+	$ftp.setAutoCreateRemoteDirectory(True:C214)
+	$ftp.setAutoCreateLocalDirectory(True:C214)
+	$result:=$ftp.upload($source; "/meinfolder/test3.txt")
+	If ($result.success)
+		$answer:=$result.data
+	End if 
+End if 
+
+If (False:C215)
 	$result:=$ftp.getDirectoryListing("/")
 	If ($result.success)
 		$list:=$result.list
@@ -71,11 +72,11 @@ If (False:C215)
 End if 
 
 If (True:C214)
-	//$ftp.useCallback(Formula(ProgressCallback); "ProgressCallback")
-	$source:="/test[1-3].txt"
+	$ftp.useCallback(Formula:C1597(ProgressCallback); "ProgressCallback")
+	//$source:="/test[1-3].txt"
 	$source:="/large/4D.dmg"
-	$source:="/large/FileZilla.bz2"
-	$ftp.setRange("-100")
+	//$source:="/large/FileZilla.bz2"
+	//$ftp.setRange("-100")
 	
 	$target:=System folder:C487(Desktop:K41:16)+"neu"+Folder separator:K24:12
 	$target:=Convert path system to POSIX:C1106($target)
@@ -116,7 +117,7 @@ If (False:C215)
 End if 
 
 
-If (True:C214)
+If (False:C215)
 	$source:=System folder:C487(Desktop:K41:16)+"neu"+Folder separator:K24:12+"test[1-3].txt"
 	$source:=Convert path system to POSIX:C1106($source)
 	$ftp.setAutoCreateRemoteDirectory(True:C214)
