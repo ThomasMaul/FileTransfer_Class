@@ -1,7 +1,48 @@
-## FTP/STP Class
-(using cURL - providing an easy to use wrapper)
+# FTP/SFTP/FTPS Class
+Using cURL - providing an easy to use wrapper
 
-Work in progress
+## Introduktion
+cURL is a standard tool to access files via many different protocols and is preinstalled on macOS and Windows (in Windows 10, Windows 11, Windows Server 2019 and 2022).
+
+The preinstalled cURL version supports FTP and FTPS. By installing "your" own version SFTP will be supported additionally. 
+Precompiled versions for Windows can be downloaded from:
+[curl.se](https://curl.se/download.html)
+which allows to use Windows Server 2012 or 2016.
+
+To use SFTP on Mac you need to install [Homebrew](https://brew.sh) and run:
+```
+homebrew install curl
+```
+
+This class allows easy usage of cURL to transfer files to and from FTP and FTPS servers.
+
+# Usage example
+
+```4D
+var $ftp : cs.FileTransfer
+$ftp:=cs.FileTransfer.new("ftp.4d.com"; "username"; "password"; "ftps")
+$source:="/product/4D.dmg"
+$target:=Convert path system to POSIX(System folder(Desktop))
+$result:=$ftp.download($source; $target)
+If ($result.success)
+	...
+End if
+```
+
+# Feature set
+- Upload
+- Download
+- Directory Listing
+- Rename and Delete (file and directory)
+- Many settings (Timeout, bandwidth, range)
+
+# Installation
+
+Copy class
+
+# Full documentation
+
+
 
 To do:
 	
@@ -11,10 +52,6 @@ To do:
 	(delayed - on Mac there is a buffer, not useable to display progress)
 	Example callback uses  4D progress
 	
-
-	
-	
-	overwrite curl
 	
 	test windows
 	
@@ -36,6 +73,17 @@ This option was introduced in curl 7.10.
 If this option is used several times, the last one will be used.
 
 -y/--speed-time <time>
+
+
+
+
+brew install curl
+/opt/homebrew/opt/curl/bin/curl --version
+curl 7.81.0 (arm-apple-darwin21.1.0) libcurl/7.81.0 (SecureTransport) OpenSSL/1.1.1m zlib/1.2.11 brotli/1.0.9 zstd/1.5.2 libidn2/2.3.2 libssh2/1.10.0 nghttp2/1.46.0 librtmp/2.3 OpenLDAP/2.6.1
+Release-Date: 2022-01-05
+Protocols: dict file ftp ftps gopher gophers http https imap imaps ldap ldaps mqtt pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp 
+Features: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz MultiSSL NTLM NTLM_WB SPNEGO SSL TLS-SRP UnixSockets zstd
+
 
 If a download is slower than speed-limit bytes per second during a speed-time period, the download gets aborted. If speed-time is used, the default speed-limit will be 1 unless set with -y.
 

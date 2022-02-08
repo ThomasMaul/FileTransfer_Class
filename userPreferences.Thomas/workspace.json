@@ -14,6 +14,14 @@
 		},
 		{
 			"type": "method",
+			"id": 2147483647,
+			"codeDescriptor": {
+				"type": 1,
+				"methodName": "test"
+			}
+		},
+		{
+			"type": "method",
 			"id": 2147483643,
 			"codeDescriptor": {
 				"type": 11,

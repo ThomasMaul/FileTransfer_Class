@@ -1,9 +1,9 @@
 {
 	"Sources/Classes/FileTransfer.4dm": {
-		"startSelection": 54,
-		"endSelection": 54,
-		"firstSelectedLine": 20,
-		"lastSelectedLine": 20,
+		"startSelection": 22,
+		"endSelection": 0,
+		"firstSelectedLine": 9,
+		"lastSelectedLine": 0,
 		"folding": [
 			12,
 			20,
@@ -30,10 +30,10 @@
 		"stamp": "2022-02-07T11:19:32.904Z"
 	},
 	"Sources/Methods/test.4dm": {
-		"startSelection": 5,
-		"endSelection": 5,
-		"firstSelectedLine": 26,
-		"lastSelectedLine": 26,
+		"startSelection": 0,
+		"endSelection": 20,
+		"firstSelectedLine": 80,
+		"lastSelectedLine": 81,
 		"folding": [],
 		"bookmarks": [],
 		"stamp": "2022-02-07T11:21:35.129Z"
