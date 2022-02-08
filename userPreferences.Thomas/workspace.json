@@ -2,7 +2,15 @@
 	"editors": [
 		{
 			"type": "method",
-			"id": 2147483643,
+			"id": 2147483647,
+			"codeDescriptor": {
+				"type": 1,
+				"methodName": "test3"
+			}
+		},
+		{
+			"type": "method",
+			"id": 2147483641,
 			"codeDescriptor": {
 				"type": 11,
 				"className": "SystemWorkerProperties",
@@ -14,20 +22,12 @@
 			"id": 2147483646,
 			"codeDescriptor": {
 				"type": 1,
-				"methodName": "ProgressCallback"
+				"methodName": "test2"
 			}
 		},
 		{
 			"type": "method",
-			"id": 2147483596,
-			"codeDescriptor": {
-				"type": 1,
-				"methodName": "test3"
-			}
-		},
-		{
-			"type": "method",
-			"id": 2147483641,
+			"id": 2147483637,
 			"codeDescriptor": {
 				"type": 11,
 				"className": "FileTransfer",
@@ -36,15 +36,7 @@
 		},
 		{
 			"type": "method",
-			"id": 2147483597,
-			"codeDescriptor": {
-				"type": 1,
-				"methodName": "test2"
-			}
-		},
-		{
-			"type": "method",
-			"id": 2147483599,
+			"id": 2147483612,
 			"codeDescriptor": {
 				"type": 2,
 				"formName": "test",
@@ -65,7 +57,7 @@
 		},
 		{
 			"type": "form",
-			"id": 360,
+			"id": 219,
 			"formName": "test"
 		}
 	]

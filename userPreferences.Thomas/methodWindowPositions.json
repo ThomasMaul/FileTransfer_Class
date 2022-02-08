@@ -12,8 +12,8 @@
 		"height": 811
 	},
 	"Sources/Classes/SystemWorkerProperties.4dm": {
-		"left": 959,
-		"top": 205,
+		"left": 487,
+		"top": 560,
 		"width": 1146,
 		"height": 926
 	},
@@ -30,10 +30,10 @@
 		"height": 509
 	},
 	"Sources/Methods/ProgressCallback.4dm": {
-		"left": 1191,
-		"top": 240,
-		"width": 1072,
-		"height": 509
+		"left": 661,
+		"top": 139,
+		"width": 1078,
+		"height": 350
 	},
 	"Sources/Forms/test/ObjectMethods/Schaltfläche.4dm": {
 		"left": 1106,
@@ -43,7 +43,7 @@
 	},
 	"Sources/Methods/test2.4dm": {
 		"left": 613,
-		"top": 109,
+		"top": 111,
 		"width": 1526,
 		"height": 1102
 	},

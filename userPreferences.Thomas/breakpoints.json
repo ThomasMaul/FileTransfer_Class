@@ -68,5 +68,12 @@
 			"type": 1,
 			"methodName": "test"
 		}
+	},
+	{
+		"line": 10,
+		"method": {
+			"type": 1,
+			"methodName": "test3"
+		}
 	}
 ]

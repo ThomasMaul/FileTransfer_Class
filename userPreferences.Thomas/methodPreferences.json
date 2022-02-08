@@ -1,40 +1,30 @@
 {
 	"Sources/Classes/FileTransfer.4dm": {
-		"startSelection": 29,
-		"endSelection": 29,
-		"firstSelectedLine": 150,
-		"lastSelectedLine": 150,
-		"folding": [
-			97,
-			119,
-			130,
-			136,
-			147,
-			158,
-			173,
-			207,
-			216
-		],
+		"startSelection": 0,
+		"endSelection": 0,
+		"firstSelectedLine": 0,
+		"lastSelectedLine": 0,
+		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T08:22:41.390Z"
+		"stamp": "2022-02-08T10:57:37.057Z"
 	},
 	"Sources/Methods/test.4dm": {
-		"startSelection": 7,
-		"endSelection": 7,
-		"firstSelectedLine": 84,
-		"lastSelectedLine": 84,
+		"startSelection": 0,
+		"endSelection": 0,
+		"firstSelectedLine": 0,
+		"lastSelectedLine": 0,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T08:21:02.873Z"
+		"stamp": "2022-02-08T10:57:37.058Z"
 	},
 	"Sources/Classes/SystemWorkerProperties.4dm": {
-		"startSelection": 39,
-		"endSelection": 39,
-		"firstSelectedLine": 32,
-		"lastSelectedLine": 32,
+		"startSelection": 0,
+		"endSelection": 0,
+		"firstSelectedLine": 13,
+		"lastSelectedLine": 13,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T10:54:38.206Z"
+		"stamp": "2022-02-08T10:57:37.057Z"
 	},
 	"Sources/Methods/ErrorHandler.4dm": {
 		"startSelection": 39,
@@ -61,33 +51,33 @@
 		"lastSelectedLine": 4,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T10:49:59.906Z"
+		"stamp": "2022-02-08T10:57:37.058Z"
 	},
 	"Sources/Forms/test/ObjectMethods/Schaltfläche.4dm": {
 		"startSelection": 0,
 		"endSelection": 0,
-		"firstSelectedLine": 1,
-		"lastSelectedLine": 1,
+		"firstSelectedLine": 0,
+		"lastSelectedLine": 0,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T09:26:19.172Z"
+		"stamp": "2022-02-08T10:57:37.057Z"
 	},
 	"Sources/Methods/test2.4dm": {
-		"startSelection": 14,
-		"endSelection": 14,
-		"firstSelectedLine": 1,
-		"lastSelectedLine": 1,
+		"startSelection": 0,
+		"endSelection": 0,
+		"firstSelectedLine": 0,
+		"lastSelectedLine": 0,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T08:21:03.185Z"
+		"stamp": "2022-02-08T10:57:37.060Z"
 	},
 	"Sources/Methods/test3.4dm": {
-		"startSelection": 21,
-		"endSelection": 21,
-		"firstSelectedLine": 20,
-		"lastSelectedLine": 20,
+		"startSelection": 7,
+		"endSelection": 7,
+		"firstSelectedLine": 21,
+		"lastSelectedLine": 21,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T09:26:21.203Z"
+		"stamp": "2022-02-08T11:01:26.406Z"
 	}
 }

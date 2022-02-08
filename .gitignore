@@ -1,4 +1,6 @@
 *.4dd
+*.4DD
+*.journal
 *.4DIndx
 *.Match
 Logs
@@ -6,3 +8,4 @@ Project/DerivedData
 *symbols.txt
 userPreferences.*
 Libraries/
+Data/
