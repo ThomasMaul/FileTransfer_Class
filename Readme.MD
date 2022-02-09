@@ -1,7 +1,7 @@
 # FTP/SFTP/FTPS Class
 Using cURL - providing an easy to use wrapper
 
-## Introduktion
+## Introduction
 cURL is a standard tool to access files via many different protocols and is preinstalled on macOS and Windows (in Windows 10, Windows 11, Windows Server 2019 and 2022).
 
 The preinstalled cURL version supports FTP and FTPS. By installing "your" own version SFTP will be supported additionally. 
@@ -29,7 +29,7 @@ If ($result.success)
 End if
 ```
 
-# Feature set
+# Feature overview
 - Upload
 - Download
 - Directory Listing
@@ -38,11 +38,27 @@ End if
 
 # Installation
 
-Copy class
+Copy class methods:
+ - FileTansfer.4DM
+ - SytemWorkerProperties.4dm
+and Project Method ErrorHandler.4dm
+If you already have a silent ErrorHandler method (no output, just to prevent an error message displayed on screen, error handled by code), just use your existing one.
+
+Method ProgressCallback.4dm can be used as example how to create a progress bar - if needed.
+
+Copy this 2-4 files into your project, done.
 
 # Full documentation
 
 
+install curl for sftp
+to accept certificate, it needs to be in known_hosts
+to do so, on this computer, use terminal/console and enter once
+ssh name@host
+enter password
+-> added to local_host
+
+from this moment, curl will accept this certificate
 
 To do:
 	
@@ -59,6 +75,8 @@ To do:
 	
 	
 	Examples for setCurlPrefix
+	
+	ssl cipers, certificate files
 
 --limit-rate <speed>
 
@@ -109,4 +127,3 @@ If this option is used several times, the last one will be used.
 --retry-max-time  (total time before it's considered failed)
 
 
-	4D IC wrapper?
