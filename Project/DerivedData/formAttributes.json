@@ -1,8 +1,3 @@
 {
-	"forms": {
-		"test": {
-			"timeStamp": "2022-02-08T10:57:37.058Z",
-			"destination": "detailScreen"
-		}
-	}
+	"forms": {}
 }

@@ -1,22 +1,13 @@
 {
 	"methods": {
-		"test3": {
-			"timeStamp": "2022-02-08T11:01:26.406Z"
-		},
-		"test2": {
-			"timeStamp": "2022-02-08T10:57:37.060Z"
-		},
-		"test": {
-			"timeStamp": "2022-02-08T10:57:37.058Z"
-		},
-		"Worker_ProgressBar": {
-			"timeStamp": "2022-02-03T11:10:33.458Z"
-		},
 		"ErrorHandler": {
-			"timeStamp": "2022-02-03T10:50:18.425Z"
+			"timeStamp": "2022-02-08T07:07:20.191Z"
 		},
 		"ProgressCallback": {
-			"timeStamp": "2022-02-08T10:57:37.058Z"
+			"timeStamp": "2022-02-09T10:41:13.033Z"
+		},
+		"test": {
+			"timeStamp": "2022-02-09T13:24:08.043Z"
 		}
 	}
 }

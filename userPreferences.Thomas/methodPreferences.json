@@ -2,29 +2,47 @@
 	"Sources/Classes/FileTransfer.4dm": {
 		"startSelection": 0,
 		"endSelection": 0,
-		"firstSelectedLine": 0,
-		"lastSelectedLine": 0,
-		"folding": [],
+		"firstSelectedLine": 15,
+		"lastSelectedLine": 15,
+		"folding": [
+			17,
+			25,
+			28,
+			32,
+			42,
+			79,
+			100,
+			122,
+			133,
+			139,
+			150,
+			161,
+			174,
+			179,
+			187,
+			236,
+			261
+		],
 		"bookmarks": [],
-		"stamp": "2022-02-08T10:57:37.057Z"
+		"stamp": "2022-02-09T13:11:19.182Z"
 	},
 	"Sources/Methods/test.4dm": {
-		"startSelection": 0,
-		"endSelection": 0,
-		"firstSelectedLine": 0,
-		"lastSelectedLine": 0,
-		"folding": [],
-		"bookmarks": [],
-		"stamp": "2022-02-08T10:57:37.058Z"
-	},
-	"Sources/Classes/SystemWorkerProperties.4dm": {
-		"startSelection": 0,
-		"endSelection": 0,
+		"startSelection": 51,
+		"endSelection": 51,
 		"firstSelectedLine": 13,
 		"lastSelectedLine": 13,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T10:57:37.057Z"
+		"stamp": "2022-02-09T13:26:36.758Z"
+	},
+	"Sources/Classes/SystemWorkerProperties.4dm": {
+		"startSelection": 7,
+		"endSelection": 7,
+		"firstSelectedLine": 16,
+		"lastSelectedLine": 16,
+		"folding": [],
+		"bookmarks": [],
+		"stamp": "2022-02-09T12:39:59.982Z"
 	},
 	"Sources/Methods/ErrorHandler.4dm": {
 		"startSelection": 39,
@@ -35,49 +53,22 @@
 		"bookmarks": [],
 		"stamp": "2022-02-03T10:50:18.425Z"
 	},
-	"Sources/Methods/Worker_ProgressBar.4dm": {
-		"startSelection": 13,
-		"endSelection": 13,
-		"firstSelectedLine": 6,
-		"lastSelectedLine": 6,
-		"folding": [],
-		"bookmarks": [],
-		"stamp": "2022-02-03T11:10:33.458Z"
-	},
 	"Sources/Methods/ProgressCallback.4dm": {
-		"startSelection": 0,
-		"endSelection": 0,
-		"firstSelectedLine": 4,
-		"lastSelectedLine": 4,
+		"startSelection": 15,
+		"endSelection": 15,
+		"firstSelectedLine": 12,
+		"lastSelectedLine": 12,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T10:57:37.058Z"
+		"stamp": "2022-02-09T10:41:13.033Z"
 	},
 	"Sources/Forms/test/ObjectMethods/Schaltfläche.4dm": {
 		"startSelection": 0,
 		"endSelection": 0,
-		"firstSelectedLine": 0,
-		"lastSelectedLine": 0,
+		"firstSelectedLine": 1,
+		"lastSelectedLine": 1,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-08T10:57:37.057Z"
-	},
-	"Sources/Methods/test2.4dm": {
-		"startSelection": 0,
-		"endSelection": 0,
-		"firstSelectedLine": 0,
-		"lastSelectedLine": 0,
-		"folding": [],
-		"bookmarks": [],
-		"stamp": "2022-02-08T10:57:37.060Z"
-	},
-	"Sources/Methods/test3.4dm": {
-		"startSelection": 7,
-		"endSelection": 7,
-		"firstSelectedLine": 21,
-		"lastSelectedLine": 21,
-		"folding": [],
-		"bookmarks": [],
-		"stamp": "2022-02-08T11:01:26.406Z"
+		"stamp": ""
 	}
 }

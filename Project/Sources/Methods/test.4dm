@@ -12,6 +12,7 @@ End if
 var $ftp : cs:C1710.FileTransfer
 $ftp:=cs:C1710.FileTransfer.new($credentials.url; $credentials.user; $credentials.pass; "ftp")
 //$ftp.setCurlPath("/opt/homebrew/opt/curl/bin/curl")
+//$ftp.setCurlPath("C:\\Users\\thomas.DE\\Documents\\4D\\Komponenten\\curl.exe")
 $ftp.setConnectTimeout(5)
 
 If (False:C215)
@@ -52,7 +53,7 @@ If (False:C215)
 	End if 
 End if 
 
-If (False:C215)
+If (True:C214)
 	$result:=$ftp.getDirectoryListing("/")
 	If ($result.success)
 		$list:=$result.list
@@ -72,11 +73,10 @@ If (False:C215)
 End if 
 
 If (True:C214)
-	$ftp.useCallback(Formula:C1597(ProgressCallback); "ProgressCallback")
-	//$source:="/test[1-3].txt"
-	$source:="/large/4D.dmg"
-	//$source:="/large/FileZilla.bz2"
+	$source:="/test[1-3].txt"
+	//$source:="/large/4D.dmg"
 	//$ftp.setRange("-100")
+	//$source:="/share/MD0_DATA/Archiv/Diverses_ohne_Backup/test/test[1-3].txt"
 	
 	$target:=System folder:C487(Desktop:K41:16)+"neu"+Folder separator:K24:12
 	$target:=Convert path system to POSIX:C1106($target)
@@ -84,6 +84,26 @@ If (True:C214)
 	If ($result.success)
 		$answer:=$result.data
 	End if 
+End if 
+
+If (True:C214)
+	$source:="/large/4D.dmg"
+	$ftp.setCurlPrefix("--limit-rate 25M")
+	$ftp.useCallback(Formula:C1597(ProgressCallback); "Download 4D.dmg")
+	$ftp.setAsyncMode(True:C214)
+	
+	$target:=System folder:C487(Desktop:K41:16)+"neu"+Folder separator:K24:12
+	$target:=Convert path system to POSIX:C1106($target)
+	$result:=$ftp.download($source; $target)
+	// async, so we need to loop...
+	// normally we are supposed to do something else and either
+	// check from time to time or to use the callback method to inform us (percent=100)
+	Repeat 
+		$ftp.wait(1)  // needed while our process is running
+		// wait is not needed if a form would be open or if a worker would handle the job
+		$status:=$ftp.status()
+		
+	Until (Bool:C1537($status.terminated))
 End if 
 
 If (False:C215)
@@ -130,22 +150,8 @@ End if
 
 /* test
 
-test upload with 1-100].txt"
 
 
- --no-progress-meter
-
-progress meter -> 4D progress
-
-range?
-
-max bandwidth, max time?
-
-retry
-
-overwrite curl
-
-test windows
 
 documentation
 

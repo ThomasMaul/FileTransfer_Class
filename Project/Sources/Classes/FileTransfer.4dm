@@ -11,7 +11,7 @@ Class constructor($hostname : Text; $username : Text; $password : Text; $protoco
 	If (Is macOS:C1572)
 		This:C1470._return:=Char:C90(10)
 	Else 
-		This:C1470._return:=Char:C90(13)+Char:C90(10)
+		This:C1470._return:=Char:C90(10)  //Char(13)+Char(10)
 	End if 
 	
 	//MARK: Settings
@@ -50,6 +50,9 @@ Function setActiveMode($active : Boolean; $IP : Text)
 		End if 
 		This:C1470._ActiveModeIP:=$IP
 	End if 
+	
+Function setAsyncMode($async : Boolean)
+	This:C1470._async:=$async
 	
 Function setRange($range : Text)
 	// 0-99 or -500 (last 500) , 500-  (starting with 500 till end)
@@ -169,12 +172,28 @@ Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
 		This:C1470._parseDirListing($success)
 	End if 
 	
+Function stop()
+	If (This:C1470._worker#Null:C1517)
+		This:C1470._worker.terminate()
+	End if 
+	
+Function status()->$status : Object
+	$status:=New object:C1471
+	$status.terminated:=This:C1470._worker.terminated
+	$status.response:=This:C1470._worker.response
+	$status.responseError:=This:C1470._worker.responseError
+	$status.exitCode:=This:C1470._worker.exitCode
+	$status.errors:=This:C1470._worker.errors
+	
+Function wait($max : Integer)
+	This:C1470._worker.wait($max)
 	
 	// MARK: Internal helper calls
 Function _parseDirListing($success : Object)
-	$col:=Split string:C1554($success.data; This:C1470._return; sk ignore empty strings:K86:1)
+	$col:=Split string:C1554(String:C10($success.data); This:C1470._return; sk ignore empty strings:K86:1)
 	$success.list:=New collection:C1472
 	For each ($line; $col)
+		$line:=Replace string:C233($line; Char:C90(13); "")
 		$lineitems:=Split string:C1554($line; " "; sk trim spaces:K86:2+sk ignore empty strings:K86:1)
 		$diritem:=New object:C1471
 		If ($lineitems.length>=9)
@@ -206,9 +225,10 @@ Function _parseDirListing($success : Object)
 	End for each 
 	
 Function _parseFileListing($success : Object)
-	$col:=Split string:C1554($success.data; This:C1470._return; sk ignore empty strings:K86:1)
+	$col:=Split string:C1554(String:C10($success.data); This:C1470._return; sk ignore empty strings:K86:1)
 	$success.list:=New collection:C1472
 	For each ($line; $col)
+		$line:=Replace string:C233($line; Char:C90(13); "")
 		If ($line="--_curl_--@")
 			$success.list.push(New object:C1471("file"; Substring:C12($line; 11)))
 		End if 
@@ -272,13 +292,13 @@ Function _runWorker($para : Text)->$result : Object
 	End if 
 	
 	$command:=$path+" "+$para
-	var $worker : 4D:C1709.SystemWorker
 	$old:=Method called on error:C704
 	ON ERR CALL:C155(Formula:C1597(ErrorHandler).source)
-	$worker:=4D:C1709.SystemWorker.new($command; $workerpara)
+	This:C1470._worker:=4D:C1709.SystemWorker.new($command; $workerpara)
+	$worker:=This:C1470._worker
 	
 	If ($worker#Null:C1517)
-		If (This:C1470._Callback#Null:C1517)
+		If ((This:C1470._async#Null:C1517) && (This:C1470._async))
 			$result:=New object:C1471("data"; "async"; "success"; True:C214)
 		Else 
 			$worker.wait()

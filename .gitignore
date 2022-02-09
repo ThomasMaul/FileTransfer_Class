@@ -4,7 +4,7 @@
 *.4DIndx
 *.Match
 Logs
-Project/DerivedData
+Project/DerivedData/
 *symbols.txt
 userPreferences.*
 Libraries/

@@ -1,30 +1,39 @@
 {
-	"SystemWorkerProperties": {
-		"functions": {
-			"onResponse": 2147483642,
-			"onData": 2147483641,
-			"onTerminate": 2147483640,
-			"onDataError": 2147483639,
-			"onError": 2147483644
-		},
-		"constructorID": 2147483643
-	},
 	"FileTransfer": {
 		"functions": {
-			"validate": 2147483636,
-			"version": 2147483635,
-			"setConnectTimeout": 2147483634,
-			"setmaxTime": 2147483633,
-			"setAutoCreateRemoteDirectory": 2147483618,
-			"setAutoCreateLocalDirectory": 2147483601,
+			"validate": 2147483639,
+			"version": 2147483638,
+			"setConnectTimeout": 2147483637,
+			"setMaxTime": 2147483636,
+			"setAutoCreateRemoteDirectory": 2147483635,
+			"setAutoCreateLocalDirectory": 2147483634,
+			"setActiveMode": 2147483633,
+			"setRange": 2147483632,
 			"setCurlPrefix": 2147483631,
-			"upload": 2147483630,
-			"download": 2147483628,
-			"getDirectoryListing": 2147483629,
-			"createDirectory": 2147483600,
-			"_buildURL": 2147483627,
-			"_runWorker": 2147483626
+			"setCurlPath": 2147483630,
+			"enableProgressData": 2147483629,
+			"useCallback": 2147483628,
+			"upload": 2147483627,
+			"download": 2147483626,
+			"getDirectoryListing": 2147483625,
+			"createDirectory": 2147483624,
+			"deleteDirectory": 2147483623,
+			"deleteFile": 2147483622,
+			"renameFile": 2147483621,
+			"stop": 2147483598,
+			"status": 2147483584,
+			"_parseDirListing": 2147483620,
+			"_parseFileListing": 2147483619,
+			"_buildURL": 2147483618,
+			"_runWorker": 2147483617
 		},
-		"constructorID": 2147483637
+		"constructorID": 2147483640
+	},
+	"SystemWorkerProperties": {
+		"functions": {
+			"onDataError": 2147483614,
+			"_createFile": 2147483613
+		},
+		"constructorID": 2147483615
 	}
 }
