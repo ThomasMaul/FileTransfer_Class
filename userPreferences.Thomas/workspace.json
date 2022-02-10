@@ -1,6 +1,9 @@
 {
 	"editors": [
 		{
+			"type": "explorer"
+		},
+		{
 			"type": "method",
 			"id": 2147483645,
 			"codeDescriptor": {
@@ -15,9 +18,6 @@
 				"type": 1,
 				"methodName": "test"
 			}
-		},
-		{
-			"type": "explorer"
 		},
 		{
 			"type": "method",
