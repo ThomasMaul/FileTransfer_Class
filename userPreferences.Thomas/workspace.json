@@ -5,37 +5,28 @@
 			"id": 2147483645,
 			"codeDescriptor": {
 				"type": 1,
+				"methodName": "ProgressCallback"
+			}
+		},
+		{
+			"type": "method",
+			"id": 2147483647,
+			"codeDescriptor": {
+				"type": 1,
 				"methodName": "test"
 			}
 		},
 		{
-			"type": "method",
-			"id": 2147483644,
-			"codeDescriptor": {
-				"type": 11,
-				"className": "SystemWorkerProperties",
-				"methodPath": "/SOURCES/Classes/SystemWorkerProperties.4dm"
-			}
+			"type": "explorer"
 		},
 		{
 			"type": "method",
-			"id": 2147483641,
+			"id": 2147483639,
 			"codeDescriptor": {
 				"type": 11,
 				"className": "FileTransfer",
 				"methodPath": "/SOURCES/Classes/FileTransfer.4dm"
 			}
-		},
-		{
-			"type": "method",
-			"id": 2147483646,
-			"codeDescriptor": {
-				"type": 1,
-				"methodName": "ProgressCallback"
-			}
-		},
-		{
-			"type": "explorer"
 		}
 	]
 }

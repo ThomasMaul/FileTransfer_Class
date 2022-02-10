@@ -2,47 +2,54 @@
 	"Sources/Classes/FileTransfer.4dm": {
 		"startSelection": 0,
 		"endSelection": 0,
-		"firstSelectedLine": 15,
-		"lastSelectedLine": 15,
+		"firstSelectedLine": 28,
+		"lastSelectedLine": 28,
 		"folding": [
-			17,
-			25,
+			0,
+			20,
 			28,
-			32,
+			31,
+			35,
+			39,
 			42,
-			79,
-			100,
-			122,
-			133,
-			139,
-			150,
-			161,
-			174,
-			179,
-			187,
-			236,
-			261
+			45,
+			56,
+			59,
+			63,
+			67,
+			82,
+			103,
+			125,
+			136,
+			142,
+			152,
+			157,
+			172,
+			188,
+			193,
+			205,
+			253
 		],
 		"bookmarks": [],
-		"stamp": "2022-02-09T13:11:19.182Z"
+		"stamp": "2022-02-10T10:34:52.405Z"
 	},
 	"Sources/Methods/test.4dm": {
-		"startSelection": 51,
-		"endSelection": 51,
-		"firstSelectedLine": 13,
-		"lastSelectedLine": 13,
+		"startSelection": 32,
+		"endSelection": 0,
+		"firstSelectedLine": 104,
+		"lastSelectedLine": 99,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-09T13:26:36.758Z"
+		"stamp": "2022-02-10T09:32:47.123Z"
 	},
 	"Sources/Classes/SystemWorkerProperties.4dm": {
-		"startSelection": 7,
-		"endSelection": 7,
-		"firstSelectedLine": 16,
-		"lastSelectedLine": 16,
+		"startSelection": 0,
+		"endSelection": 0,
+		"firstSelectedLine": 0,
+		"lastSelectedLine": 0,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-09T12:39:59.982Z"
+		"stamp": "2022-02-09T14:08:45.693Z"
 	},
 	"Sources/Methods/ErrorHandler.4dm": {
 		"startSelection": 39,
@@ -54,13 +61,13 @@
 		"stamp": "2022-02-03T10:50:18.425Z"
 	},
 	"Sources/Methods/ProgressCallback.4dm": {
-		"startSelection": 15,
-		"endSelection": 15,
-		"firstSelectedLine": 12,
-		"lastSelectedLine": 12,
+		"startSelection": 7,
+		"endSelection": 0,
+		"firstSelectedLine": 17,
+		"lastSelectedLine": 0,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-09T10:41:13.033Z"
+		"stamp": "2022-02-09T14:08:45.693Z"
 	},
 	"Sources/Forms/test/ObjectMethods/Schaltfläche.4dm": {
 		"startSelection": 0,

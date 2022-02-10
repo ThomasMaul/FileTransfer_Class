@@ -54,5 +54,19 @@
 			"type": 1,
 			"methodName": "test"
 		}
+	},
+	{
+		"line": 16,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
+	},
+	{
+		"line": 7,
+		"method": {
+			"type": 1,
+			"methodName": "test"
+		}
 	}
 ]

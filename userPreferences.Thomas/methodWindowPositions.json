@@ -1,19 +1,19 @@
 {
 	"Sources/Classes/FileTransfer.4dm": {
-		"left": 62,
-		"top": 182,
+		"left": 84,
+		"top": 277,
 		"width": 1108,
-		"height": 956
+		"height": 1049
 	},
 	"Sources/Methods/test.4dm": {
-		"left": 881,
-		"top": 287,
+		"left": 67,
+		"top": 714,
 		"width": 1263,
 		"height": 811
 	},
 	"Sources/Classes/SystemWorkerProperties.4dm": {
-		"left": 459,
-		"top": 124,
+		"left": 205,
+		"top": 133,
 		"width": 1146,
 		"height": 926
 	},
@@ -24,10 +24,10 @@
 		"height": 509
 	},
 	"Sources/Methods/ProgressCallback.4dm": {
-		"left": 1196,
-		"top": 181,
-		"width": 1078,
-		"height": 400
+		"left": 181,
+		"top": 154,
+		"width": 1095,
+		"height": 475
 	},
 	"Sources/Forms/test/ObjectMethods/Schaltfläche.4dm": {
 		"left": 1106,

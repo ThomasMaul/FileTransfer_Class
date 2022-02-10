@@ -1,11 +1,14 @@
-Class constructor($hostname : Text; $username : Text; $password : Text; $protocoll : Text)
+Class constructor($hostname : Text; $username : Text; $password : Text; $protocol : Text)
 	ASSERT:C1129($hostname#""; "Hostname must not be empty")
+	If ($protocol="")
+		$protocol:="ftp-ftps"
+	End if 
 	$col:=New collection:C1472("ftp"; "ftps"; "sftp"; "ftp-ftps")
-	ASSERT:C1129($col.indexOf($protocoll)>=0; "Unsupported protocoll")
+	ASSERT:C1129($col.indexOf($protocol)>=0; "Unsupported protocol")
 	This:C1470._host:=$hostname
 	This:C1470._user:=$username
 	This:C1470._password:=$password
-	This:C1470._protocoll:=$protocoll
+	This:C1470._protocol:=$protocol
 	This:C1470.onData:=New object:C1471("text"; "")
 	This:C1470._noProgress:=True:C214
 	If (Is macOS:C1572)
@@ -26,11 +29,11 @@ Function validate()->$success : Object
 Function version()->$data : Object
 	$data:=This:C1470._runWorker("-V")
 	
-Function setConnectTimeout($seconds : Integer)
+Function setConnectTimeout($seconds : Real)
 	// sets --connect-timeout <seconds>
 	This:C1470._connectTimeout:=$seconds
 	
-Function setMaxTime($seconds : Integer)
+Function setMaxTime($seconds : Real)
 	// sets -m, --max-time <seconds>
 	This:C1470._maxTime:=$seconds
 	
@@ -124,7 +127,7 @@ Function getDirectoryListing($targetpath : Text)->$success : Object
 	If ($targetpath="")
 		$targetpath:="/"
 	End if 
-	$url:=This:C1470._buildURL()
+	$url:=This:C1470._buildURL()+$targetpath
 	$success:=This:C1470._runWorker($url)
 	If ($success.success)
 		// data contains a text based dir listing
@@ -141,7 +144,11 @@ Function deleteDirectory($targetpath : Text)->$success : Object
 	// only empty directories can be deleted!
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	$url:=This:C1470._buildURL()
-	$url:=$url+" -Q "+Char:C90(34)+"RMD "+$targetpath+Char:C90(34)
+	If (This:C1470._protocol#"SFTP")
+		$url:=$url+" -Q "+Char:C90(34)+"RMD "+$targetpath+Char:C90(34)
+	Else 
+		$url:=$url+" -Q "+Char:C90(34)+"-RMDIR "+$targetpath+Char:C90(34)
+	End if 
 	$success:=This:C1470._runWorker($url)
 	If ($success.success)
 		// data contains a text based dir listing
@@ -152,7 +159,11 @@ Function deleteFile($targetpath : Text)->$success : Object
 	// only empty directories can be deleted!
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	$url:=This:C1470._buildURL()
-	$url:=$url+" -Q "+Char:C90(34)+"DELE "+$targetpath+Char:C90(34)
+	If (This:C1470._protocol#"SFTP")
+		$url:=$url+" -Q "+Char:C90(34)+"DELE "+$targetpath+Char:C90(34)
+	Else 
+		$url:=$url+" -Q "+Char:C90(34)+"-RM "+$targetpath+Char:C90(34)
+	End if 
 	$success:=This:C1470._runWorker($url)
 	If ($success.success)
 		// data contains a text based dir listing
@@ -160,11 +171,14 @@ Function deleteFile($targetpath : Text)->$success : Object
 	End if 
 	
 Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
-	// only empty directories can be deleted!
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	$url:=This:C1470._buildURL()
-	$url:=$url+" -Q "+Char:C90(34)+"-RNFR "+$sourcepath+Char:C90(34)+" -Q "+Char:C90(34)+"-RNTO "+$targetpath+Char:C90(34)
+	If (This:C1470._protocol#"SFTP")
+		$url:=$url+" -Q "+Char:C90(34)+"-cu "+$sourcepath+Char:C90(34)+" -Q "+Char:C90(34)+"-RNTO "+$targetpath+Char:C90(34)
+	Else 
+		$url:=$url+" -Q "+Char:C90(34)+"-RENAME "+$sourcepath+Char:C90(34)+" "+$targetpath+Char:C90(34)
+	End if 
 	$success:=This:C1470._runWorker($url)
 	If ($success.success)
 		// data contains a text based dir listing
@@ -218,9 +232,12 @@ Function _parseDirListing($success : Object)
 			$diritem.name:=$lineitems[8]
 			$success.list.push($diritem)
 		Else   // error?
-			$success.success:=False:C215
-			$success.error:="Directory listing unexpected format"
-			break
+			If ($col.length=1)
+				$success.success:=False:C215
+				$success.responseError:="Directory listing unexpected format"
+			Else 
+				$success.list.push(New object:C1471("line"; $line))
+			End if 
 		End if 
 	End for each 
 	
@@ -236,27 +253,27 @@ Function _parseFileListing($success : Object)
 	
 Function _buildURL()->$url : Text
 	Case of 
-		: ((This:C1470._protocoll="ftps") | (This:C1470._protocoll="ftp") | (This:C1470._protocoll="ftp-ftps"))
+		: ((This:C1470._protocol="ftps") | (This:C1470._protocol="ftp") | (This:C1470._protocol="ftp-ftps"))
 			$url:="ftp://"
 			If (This:C1470._user#"")
 				$url+=This:C1470._user+":"+This:C1470._password+"@"
 			End if 
 			$url+=This:C1470._host
 			Case of 
-				: (This:C1470._protocoll="ftps")
+				: (This:C1470._protocol="ftps")
 					$url:="--ftp-ssl-reqd "+$url
-				: (This:C1470._protocoll="ftp-ftps")
+				: (This:C1470._protocol="ftp-ftps")
 					$url:="--ftp-ssl "+$url
 			End case 
 			
-		: (This:C1470._protocoll="sftp")
+		: (This:C1470._protocol="sftp")
 			$url:="sftp://"
 			If (This:C1470._user#"")
 				$url+=This:C1470._user+":"+This:C1470._password+"@"
 			End if 
 			$url+=This:C1470._host
 		Else 
-			ASSERT:C1129(True:C214; "unsupported protocoll")
+			ASSERT:C1129(True:C214; "unsupported protocol")
 	End case 
 	
 Function _runWorker($para : Text)->$result : Object
