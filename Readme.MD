@@ -40,8 +40,8 @@ End if
 
 Copy class methods:
  - FileTansfer.4DM
- - SytemWorkerProperties.4dm
-and Project Method ErrorHandler.4dm
+ - SytemWorkerProperties.4dm  
+and Project Method ErrorHandler.4dm  
 If you already have a silent ErrorHandler method (no output, just to prevent an error message displayed on screen, error handled by code), just use your existing one.
 
 Method ProgressCallback.4dm can be used as example how to create a progress bar - if needed.
