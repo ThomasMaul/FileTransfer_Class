@@ -19,8 +19,8 @@ This class allows easy usage of cURL to transfer files to and from FTP and FTPS 
 # Usage example
 
 ```4D
-var $ftp : cs.FileTransfer
-$ftp:=cs.FileTransfer.new("ftp.4d.com"; "username"; "password"; "ftps")
+var $ftp : cs.FileTransfer_curl
+$ftp:=cs.FileTransfer_curl.new("ftp.4d.com"; "username"; "password"; "ftps")
 $source:="/product/4D.dmg"
 $target:=Convert path system to POSIX(System folder(Desktop))
 $result:=$ftp.download($source; $target)
@@ -53,4 +53,20 @@ Copy this 2-4 files into your project, done.
 See Class documentation (in 4D use Explorer/Documentation)
 [Documentation](https://github.com/ThomasMaul/FileTransfer_Class/blob/main/Documentation/Classes/FileTransfer.md)
 	
+# HTTP/HTTPS
+cURL is also a great tool for HTTP(s) communication, to upload or download files.
+While the class is mainly written for (s)FTP(s), it can also be use for HTTP(s).
+Read cURL documentation to find about feature set, such as to reuse cookies or follow redirects.
 
+## Usage example for http
+```4D
+var $ftp : cs.FileTransfer_curl
+$ftp:=cs.FileTransfer_curl.new("www.4d.com"; ""; ""; "https")
+$ftp.setConnectTimeout(5)
+
+$source:="/de"
+$target:=System folder(Desktop)+"newtest2.html"
+$target:=Convert path system to POSIX($target)
+$ftp.setCurlPrefix("--location")  // follow 301 or 302
+$result:=$ftp.download($source; $target)
+```

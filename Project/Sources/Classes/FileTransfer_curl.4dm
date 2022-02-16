@@ -3,7 +3,7 @@ Class constructor($hostname : Text; $username : Text; $password : Text; $protoco
 	If ($protocol="")
 		$protocol:="ftp-ftps"
 	End if 
-	$col:=New collection:C1472("ftp"; "ftps"; "sftp"; "ftp-ftps")
+	$col:=New collection:C1472("ftp"; "ftps"; "sftp"; "ftp-ftps"; "https"; "http")
 	ASSERT:C1129($col.indexOf($protocol)>=0; "Unsupported protocol")
 	This:C1470._host:=$hostname
 	This:C1470._user:=$username
@@ -268,6 +268,13 @@ Function _buildURL()->$url : Text
 			
 		: (This:C1470._protocol="sftp")
 			$url:="sftp://"
+			If (This:C1470._user#"")
+				$url+=This:C1470._user+":"+This:C1470._password+"@"
+			End if 
+			$url+=This:C1470._host
+			
+		: ((This:C1470._protocol="https") | (This:C1470._protocol="http"))
+			$url:=This:C1470._protocol+"://"
 			If (This:C1470._user#"")
 				$url+=This:C1470._user+":"+This:C1470._password+"@"
 			End if 
