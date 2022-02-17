@@ -11,8 +11,8 @@ End if
 
 var $ftp : cs:C1710.FileTransfer_curl
 $ftp:=cs:C1710.FileTransfer_curl.new($credentials.url; $credentials.user; $credentials.pass; "ftp")
-//$ftp.setCurlPath("/opt/homebrew/opt/curl/bin/curl")
-//$ftp.setCurlPath("C:\\Users\\thomas.DE\\Documents\\4D\\Komponenten\\curl.exe")
+//$ftp.setPath("/opt/homebrew/opt/curl/bin/curl")
+//$ftp.setPath("C:\\Users\\thomas.DE\\Documents\\4D\\Komponenten\\curl.exe")
 $ftp.setConnectTimeout(5)
 
 If (False:C215)

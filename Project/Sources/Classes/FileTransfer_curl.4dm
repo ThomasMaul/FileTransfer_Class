@@ -65,7 +65,7 @@ Function setCurlPrefix($prefix : Text)
 	// allows to set any parameters directly after curl
 	This:C1470._prefix:=$prefix
 	
-Function setCurlPath($path : Text)
+Function setPath($path : Text)
 	This:C1470._curlPath:=$path
 	
 Function enableProgressData($enable : Boolean)

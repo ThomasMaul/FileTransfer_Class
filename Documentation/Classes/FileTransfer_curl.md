@@ -36,7 +36,7 @@ End if
 |[.setActiveMode](#setActiveMode)<p>&nbsp;&nbsp;&nbsp;&nbsp;Switch from default passive mode to active mode.|
 |[.setRange](#setRange)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to upload/download only a part of a file.|
 |[.setCurlPrefix](#setCurlPrefix)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use any additional cURL options.|
-|[.setCurlPath](#setCurlPath)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use another cURL installation.|
+|[.setPath](#setPath)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use another cURL installation.|
 |[.enableProgressData](#enableProgressData)<p>&nbsp;&nbsp;&nbsp;&nbsp;If enabled, result.data will include progress information text.|
 |[.setAsyncMode](#setAsyncMode)<p>&nbsp;&nbsp;&nbsp;&nbsp;By default all commands are executed synchronously, meaning the command do not return till execution is completed or a timeout occurred. This allows all command to return the result or execution information..|
 |[.stop](#stop)<p>&nbsp;&nbsp;&nbsp;&nbsp;Terminates the execution of a running operation, such as upload or download.|
@@ -352,9 +352,9 @@ See https://curl.se/docs/manpage.html for full list.
 #### Example
 $ftp.setCurlPrefix("--limit-rate 25M")  // limit used bandwidth to 25 Mbit.
 
-## setCurlPath
+## setPath
 
-### .setCurlPath(Path: Text)
+### .setPath(Path: Text)
 |Parameter|Type||Description|
 |---------|--- |:---:|------|
 |Path|Text|->|Path to local cURL installation|
