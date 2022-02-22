@@ -6,15 +6,19 @@
 
 var ProgressBarID : Integer
 
-If (ProgressBarID=0)
+If ((ProgressBarID=0) && ($value#100))
 	ProgressBarID:=Progress New
-	Progress SET MESSAGE(ProgressBarID; $ID)
+	Progress SET TITLE(ProgressBarID; $ID)
 End if 
 
-If ($value=100)
-	Progress QUIT(ProgressBarID)
-	ProgressBarID:=0
-Else 
-	Progress SET PROGRESS(ProgressBarID; $value/100)
+If (ProgressBarID#0)
+	Case of 
+		: ($value=100)
+			Progress QUIT(ProgressBarID)
+			ProgressBarID:=0
+		: ($value<0)
+			Progress SET MESSAGE(ProgressBarID; $message)
+		Else 
+			Progress SET PROGRESS(ProgressBarID; $value/100)
+	End case 
 End if 
-

@@ -1,4 +1,5 @@
 Class constructor()
+	This:C1470.onData:=New object:C1471("text"; "")
 	If (Is macOS:C1572)
 		This:C1470._return:=Char:C90(10)
 		$path:=Get 4D folder:C485(Current resources folder:K5:16)+"Dropbox"+Folder separator:K24:12+"dbxcli"
@@ -90,6 +91,25 @@ Function useCallback($callback : 4D:C1709.Function; $ID : Text)
 	This:C1470._CallbackID:=$ID
 	This:C1470._noProgress:=False:C215
 	
+Function setAsyncMode($async : Boolean)
+	This:C1470._async:=$async
+	
+Function stop()
+	If (This:C1470._worker#Null:C1517)
+		This:C1470._worker.terminate()
+	End if 
+	
+Function status()->$status : Object
+	$status:=New object:C1471
+	$status.terminated:=This:C1470._worker.terminated
+	$status.response:=This:C1470._worker.response
+	$status.responseError:=This:C1470._worker.responseError
+	$status.exitCode:=This:C1470._worker.exitCode
+	$status.errors:=This:C1470._worker.errors
+	
+Function wait($max : Integer)
+	This:C1470._worker.wait($max)
+	
 	// MARK: Internal helper calls
 Function _parseDirListing($success : Object)
 	$col:=Split string:C1554(String:C10($success.data); This:C1470._return; sk ignore empty strings:K86:1)
@@ -157,8 +177,12 @@ Function _runWorker($para : Text)->$result : Object
 				$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
 			End if 
 		End if 
+		// dbxcli seems not to terminate directly,progress bar could be open too long
+		If (This:C1470._Callback#Null:C1517)
+			This:C1470._worker.onTerminate(New object:C1471; New object:C1471)
+		End if 
 	Else 
-		$result:=New object:C1471("success"; False:C215; "responseError"; "Curl execution error")
+		$result:=New object:C1471("success"; False:C215; "responseError"; "dbxcli execution error")
 	End if 
 	ON ERR CALL:C155($old)
 	

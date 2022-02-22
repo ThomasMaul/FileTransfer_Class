@@ -16,21 +16,28 @@ Class constructor($data : Object; $callback : 4D:C1709.Function; $callbackID : T
 		This:C1470._return:=Char:C90(13)
 	End if 
 	
-	
+	//Function onData($systemworker : Object; $data : Object)
+	// not needed for Curl or Dropbox
 	
 Function onDataError($systemworker : Object; $data : Object)
-	// called when data is received to handle progress bar
+	// called when data is received from curl or dropbox to handle progress bar
+	
 	If (String:C10($data.data)#"")
 		This:C1470.data.text+=$data.data
 		//This._createFile("onDataError"; This.data.text)  // debug
 		If (This:C1470.callback#Null:C1517)
 			$pos:=Position:C15(This:C1470._return; This:C1470.data.text)
 			If ($pos>0)
-				$message:=Substring:C12(This:C1470.data.text; 1; $pos-1)
-				This:C1470.data.text:=Substring:C12(This:C1470.data.text; $pos+1)
-				$progress:=Num:C11(Substring:C12($message; 1; 3))
-				If ($progress#0)
-					CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; $message; $progress)
+				If ($pos=Length:C16(This:C1470.data.text))  // Dropbox
+					CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; This:C1470.data.text; -1)
+					This:C1470.data.text:=""
+				Else   // Curl
+					$message:=Substring:C12(This:C1470.data.text; 1; $pos-1)
+					This:C1470.data.text:=Substring:C12(This:C1470.data.text; $pos+1)
+					$progress:=Num:C11(Substring:C12($message; 1; 3))
+					If ($progress#0)
+						CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; $message; $progress)
+					End if 
 				End if 
 			End if 
 		End if 

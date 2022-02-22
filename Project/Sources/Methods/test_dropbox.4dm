@@ -46,6 +46,28 @@ If (False:C215)
 End if 
 
 
+If (True:C214)
+	// only Windows, Callback not available on Mac
+	$ftp.useCallback(Formula:C1597(ProgressCallback); "Download 4D.dmg")
+	$ftp.setAsyncMode(True:C214)
+	
+	$source:=System folder:C487(Desktop:K41:16)+"Heap.pdf"
+	$source:=Convert path system to POSIX:C1106($source)
+	$target:="/Firma/test2.pdf"
+	$result:=$ftp.upload($source; $target)
+	
+	// async, so we need to loop...
+	// normally we are supposed to do something else and either
+	// check from time to time or to use the callback method to inform us (percent=100)
+	Repeat 
+		$ftp.wait(1)  // needed while our process is running
+		// wait is not needed if a form would be open or if a worker would handle the job
+		$status:=$ftp.status()
+		
+	Until (Bool:C1537($status.terminated))
+	
+End if 
+
 If (False:C215)
 	$target:="/Firma/newdir"
 	$result:=$ftp.createDirectory($target)
@@ -54,7 +76,7 @@ If (False:C215)
 	End if 
 End if 
 
-If (True:C214)
+If (False:C215)
 	$target:="/Firma/newdir"
 	$result:=$ftp.deleteDirectory($target; True:C214)  // delete even with content
 	If ($result.success)
@@ -62,7 +84,7 @@ If (True:C214)
 	End if 
 End if 
 
-If (True:C214)
+If (False:C215)
 	$target:="/Firma/test2.pdf"
 	$result:=$ftp.deleteFile($target)
 	If ($result.success)
