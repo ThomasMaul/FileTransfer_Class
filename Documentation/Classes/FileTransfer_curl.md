@@ -19,7 +19,7 @@ End if
 ## Summary
 | |
 |-|
-|[cs.FileTransfer.new](#new)<p>&nbsp;&nbsp;&nbsp;&nbsp;creates and returns a FileTransfer object allow to access (s)FTP(s) Servers.|
+|[cs.FileTransfer_curl_.new](#new)<p>&nbsp;&nbsp;&nbsp;&nbsp;creates and returns a FileTransfer object allow to access (s)FTP(s) Servers.|
 |[result parameter](#result-parameter)(#new)<p>&nbsp;&nbsp;&nbsp;&nbsp;All transfer function returns a result object|
 |[.upload](#upload)<p>&nbsp;&nbsp;&nbsp;&nbsp;Upload one or several files to server.|
 |[.getDirectoryListing](#getDirectoryListing)<p>&nbsp;&nbsp;&nbsp;&nbsp;Returns directory listing from remote server.|
@@ -40,7 +40,7 @@ End if
 |[.enableProgressData](#enableProgressData)<p>&nbsp;&nbsp;&nbsp;&nbsp;If enabled, result.data will include progress information text.|
 |[.setAsyncMode](#setAsyncMode)<p>&nbsp;&nbsp;&nbsp;&nbsp;By default all commands are executed synchronously, meaning the command do not return till execution is completed or a timeout occurred. This allows all command to return the result or execution information..|
 |[.stop](#stop)<p>&nbsp;&nbsp;&nbsp;&nbsp;Terminates the execution of a running operation, such as upload or download.|
-|[.status](#status)<p>&nbsp;&nbsp;&nbsp;&nbsp;RReturns informations about the execution of a running operation.|
+|[.status](#status)<p>&nbsp;&nbsp;&nbsp;&nbsp;Returns informations about the execution of a running operation.|
 |[.wait](#wait)<p>&nbsp;&nbsp;&nbsp;&nbsp;Only useful in combination with setAsyncMode.|
 |[.useCallback](#useCallback)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to show a progress bar during long running operations.|
 
@@ -48,7 +48,7 @@ End if
 
 ## new
 
-### cs.FileTransfer.new(url: Text; user: Text; password: Text; protocol:Text)
+### cs.FileTransfer_curl_.new(url: Text; user: Text; password: Text; protocol:Text)
 
 creates and returns a FileTransfer object allow to access (s)FTP(s) Servers.
 

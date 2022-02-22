@@ -6,6 +6,15 @@ $ftp:=cs:C1710.FileTransfer_Dropbox.new()
 
 If (False:C215)
 	$source:="/"
+	$result:=$ftp.version($source)
+	If ($result.success)
+		$answer:=$result.data
+	End if 
+End if 
+
+
+If (False:C215)
+	$source:="/"
 	$result:=$ftp.getDirectoryListing($source)
 	If ($result.success)
 		$answer:=$result.data

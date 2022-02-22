@@ -50,9 +50,9 @@ $result:=$ftp.download($source; $target)
 # Documentation
 
 ## cURL  (FTP - FTPS - SFTP - HTTP - HTTPS)
-link curl und dropbx
-[Documentation](/FileTransfer.md)
+[Documentation](ReadMe_curl.md)
 
- Class documentation (in 4D use Explorer/Documentation)
-[Documentation](https://github.com/ThomasMaul/FileTransfer_Class/blob/main/Documentation/Classes/FileTransfer.md)
+## Dropbox
+[Documentation](ReadMe_dropbox.md)
+
 	

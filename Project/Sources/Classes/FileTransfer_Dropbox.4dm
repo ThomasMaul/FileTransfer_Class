@@ -5,6 +5,8 @@ Class constructor()
 		This:C1470._Path:=Convert path system to POSIX:C1106($path)
 	Else 
 		This:C1470._return:=Char:C90(10)  //Char(13)+Char(10)
+		$path:=Get 4D folder:C485(Current resources folder:K5:16)+"Dropbox"+Folder separator:K24:12+"dbxcli.exe"
+		This:C1470._Path:=Convert path system to POSIX:C1106($path)
 	End if 
 	
 	
