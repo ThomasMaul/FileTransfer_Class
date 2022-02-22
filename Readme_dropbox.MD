@@ -80,6 +80,6 @@ The authentication will stay valid till you either use "dbxcli logout" or using 
 
 # Class Documentation
 
-See Class documentation (in 4D use Explorer/Documentation)
-[Documentation online](https://github.com/ThomasMaul/FileTransfer_Class/blob/main/Documentation/Classes/FileTransfer_Dropbox_.md)
+See Class documentation (in 4D use Explorer/Documentation)  
+[Documentation online](https://github.com/ThomasMaul/FileTransfer_Class/blob/main/Documentation/Classes/FileTransfer_Dropbox.md)
 	
