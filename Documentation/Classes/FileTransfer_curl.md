@@ -20,29 +20,31 @@ End if
 | |
 |-|
 |[cs.FileTransfer_curl_.new](#new)<p>&nbsp;&nbsp;&nbsp;&nbsp;creates and returns a FileTransfer object allow to access (s)FTP(s) Servers.|
-|[result parameter](#result-parameter)(#new)<p>&nbsp;&nbsp;&nbsp;&nbsp;All transfer function returns a result object|
+|[result parameter](#result-parameter)<p>&nbsp;&nbsp;&nbsp;&nbsp;All transfer function returns a result object|
 |[.upload](#upload)<p>&nbsp;&nbsp;&nbsp;&nbsp;Upload one or several files to server.|
-|[.getDirectoryListing](#getDirectoryListing)<p>&nbsp;&nbsp;&nbsp;&nbsp;Returns directory listing from remote server.|
-|[.createDirectory](#createDirectory)<p>&nbsp;&nbsp;&nbsp;&nbsp;Creates a new directory on remote server.|
-|[.deleteDirectory](#deleteDirectory)<p>&nbsp;&nbsp;&nbsp;&nbsp;Deletes a directory on remote server.|
-|[.deleteFile](#deleteFile)<p>&nbsp;&nbsp;&nbsp;&nbsp;Deletes a file on remote server.|
-|[.renameFile](#renameFile)<p>&nbsp;&nbsp;&nbsp;&nbsp;Renames a file on remote server.|
+|[.download](#upload)<p>&nbsp;&nbsp;&nbsp;&nbsp;Download one or several files from server.|
+|[.getDirectoryListing](#getdirectorylisting)<p>&nbsp;&nbsp;&nbsp;&nbsp;Returns directory listing from remote server.|
+|[.createDirectory](#createdirectory)<p>&nbsp;&nbsp;&nbsp;&nbsp;Creates a new directory on remote server.|
+|[.deleteDirectory](#deletedirectory)<p>&nbsp;&nbsp;&nbsp;&nbsp;Deletes a directory on remote server.|
+|[.deleteFile](#deletefile)<p>&nbsp;&nbsp;&nbsp;&nbsp;Deletes a file on remote server.|
+|[.renameFile](#renamefile)<p>&nbsp;&nbsp;&nbsp;&nbsp;Renames a file on remote server.|
+|[.executeCommand](#executecommand)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to pass any valid cURL command and directly execute it.|
 |[.validate](#validate)<p>&nbsp;&nbsp;&nbsp;&nbsp;tries to connect to the given server using the given credentials.|
 |[.version](#version)<p>&nbsp;&nbsp;&nbsp;&nbsp;returns in result.data version information from cURL|
-|[.setConnectTimeout](#setConnectTimeout)<p>&nbsp;&nbsp;&nbsp;&nbsp;Sets a connection timeout - valid only for the initial connection, not for data transfer.|
-|[.setMaxTime](#setMaxTime)<p>&nbsp;&nbsp;&nbsp;&nbsp;Sets a maximal running timeout - from connection to transfer.|
-|[.setAutoCreateRemoteDirectory](#setAutoCreateRemoteDirectory)<p>&nbsp;&nbsp;&nbsp;&nbsp;Automatically create directories on remote server.|
-|[.setAutoCreateLocalDirectory](#setAutoCreateLocalDirectory)<p>&nbsp;&nbsp;&nbsp;&nbsp;Automatically create local directories.|
-|[.setActiveMode](#setActiveMode)<p>&nbsp;&nbsp;&nbsp;&nbsp;Switch from default passive mode to active mode.|
-|[.setRange](#setRange)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to upload/download only a part of a file.|
-|[.setCurlPrefix](#setCurlPrefix)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use any additional cURL options.|
-|[.setPath](#setPath)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use another cURL installation.|
-|[.enableProgressData](#enableProgressData)<p>&nbsp;&nbsp;&nbsp;&nbsp;If enabled, result.data will include progress information text.|
-|[.setAsyncMode](#setAsyncMode)<p>&nbsp;&nbsp;&nbsp;&nbsp;By default all commands are executed synchronously, meaning the command do not return till execution is completed or a timeout occurred. This allows all command to return the result or execution information..|
+|[.setConnectTimeout](#setconnecttimeout)<p>&nbsp;&nbsp;&nbsp;&nbsp;Sets a connection timeout - valid only for the initial connection, not for data transfer.|
+|[.setMaxTime](#setmaxtime)<p>&nbsp;&nbsp;&nbsp;&nbsp;Sets a maximal running timeout - from connection to transfer.|
+|[.setAutoCreateRemoteDirectory](#setautocreateremotedirectory)<p>&nbsp;&nbsp;&nbsp;&nbsp;Automatically create directories on remote server.|
+|[.setAutoCreateLocalDirectory](#setautocreatelocaldirectory)<p>&nbsp;&nbsp;&nbsp;&nbsp;Automatically create local directories.|
+|[.setActiveMode](#setactivemode)<p>&nbsp;&nbsp;&nbsp;&nbsp;Switch from default passive mode to active mode.|
+|[.setRange](#setrange)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to upload/download only a part of a file.|
+|[.setCurlPrefix](#setcurlprefix)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use any additional cURL options.|
+|[.setPath](#setpath)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use another cURL installation.|
+|[.enableProgressData](#enableprogressdata)<p>&nbsp;&nbsp;&nbsp;&nbsp;If enabled, result.data will include progress information text.|
+|[.setAsyncMode](#setasyncmode)<p>&nbsp;&nbsp;&nbsp;&nbsp;By default all commands are executed synchronously, meaning the command do not return till execution is completed or a timeout occurred. This allows all command to return the result or execution information..|
 |[.stop](#stop)<p>&nbsp;&nbsp;&nbsp;&nbsp;Terminates the execution of a running operation, such as upload or download.|
 |[.status](#status)<p>&nbsp;&nbsp;&nbsp;&nbsp;Returns informations about the execution of a running operation.|
 |[.wait](#wait)<p>&nbsp;&nbsp;&nbsp;&nbsp;Only useful in combination with setAsyncMode.|
-|[.useCallback](#useCallback)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to show a progress bar during long running operations.|
+|[.useCallback](#usecallback)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to show a progress bar during long running operations.|
 
 
 
@@ -245,12 +247,22 @@ result.data contains unfiltered answer from server BEFORE renaming was executed.
 result.list contains collection, each representing one file/directory.
 See [.getDirectoryListing](#getDirectoryListing) for details.
 
+## .executeCommand()
+
+### .executeCommand(command: Text) -> result : Object
+|Parameter|Type||Description|
+|---------|--- |:---:|------|
+|command|Text|->|command|
+|result|Object|<-|result object| 
+
+#### Description
+Allows to pass any valid cURL command and execute it. Result is returned directly.
 
 ## Settings commands
 
 ## .validate()
 
-###.validate() -> result : object
+### .validate() -> result : object
 |Parameter|Type||Description|
 |---------|--- |:---:|------|
 |result|Object|<-|result object| 
@@ -261,7 +273,7 @@ tries to connect to the given server using the given credentials.
 
 ## .version()
 
-###.version() -> result : object
+### .version() -> result : object
 |Parameter|Type||Description|
 |---------|--- |:---:|------|
 |result|Object|<-|result object| 
@@ -423,6 +435,7 @@ Return object contains:
 |response|Text|message if command succeeded|
 |exitCode|Text|exit code returned by cURL|
 |errors|collection|optional: execution errors received by 4D|
+
 
 ## wait
 

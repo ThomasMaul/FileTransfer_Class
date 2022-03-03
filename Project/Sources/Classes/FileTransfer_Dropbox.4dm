@@ -76,6 +76,10 @@ Function copyFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	$url:="cp "+$sourcepath+" "+$targetpath
 	$success:=This:C1470._runWorker($url)
 	
+Function executeCommand($command : Text)->$success : Object
+	ASSERT:C1129($command#""; "command must not be empty")
+	$success:=This:C1470._runWorker($command)
+	
 	//MARK: Settings
 Function version()->$data : Object
 	$data:=This:C1470._runWorker("version")
@@ -146,7 +150,6 @@ Function _runWorker($para : Text)->$result : Object
 	If ((This:C1470._Path) && (This:C1470._Path#""))
 		$path:=This:C1470._Path
 	Else 
-		//TODO: needs to be set to use Resource/Mac or /win
 		$path:="dbxcli"
 	End if 
 	
