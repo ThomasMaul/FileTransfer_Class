@@ -186,6 +186,10 @@ Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
 		This:C1470._parseDirListing($success)
 	End if 
 	
+Function executeCommand($command : Text)->$success : Object
+	ASSERT:C1129($command#""; "command must not be empty")
+	$success:=This:C1470._runWorker($command)
+	
 Function stop()
 	If (This:C1470._worker#Null:C1517)
 		This:C1470._worker.terminate()
@@ -229,7 +233,7 @@ Function _parseDirListing($success : Object)
 			$date:=Add to date:C393(!00-00-00!; $year; $month; $day)
 			$diritem.date:=$date
 			$diritem.time:=$time
-			$diritem.name:=$lineitems[8]
+			$diritem.path:=$lineitems[8]
 			$success.list.push($diritem)
 		Else   // error?
 			If ($col.length=1)

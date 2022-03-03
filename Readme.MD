@@ -6,14 +6,19 @@ Using cURL - wrapper for Mac/Win build in cURL feature
 Dropbox
 Using Dropbox CLI tool (easy to deploy)
 
+Google Drive - GDrive
+Using Gdrive CLI tool
+
 ## Introduction
 
 This class collection provide a similar interface for file transfer via different channels.
-Same commands/code can be used to upload/download files, create/rename/move/delete directories or files (depending of feature set) for FTP or HTTP or Dropbox.
+Same commands/code can be used to upload/download files, create/rename/move/delete directories or files (depending of feature set) for FTP or HTTP or Dropbox or GDrive.
 
 For FTP/FTPS/HTTPS the system build in cURL version can be used, but also overwritten with another version.
+
 For Dropbox a CLI tool (written in Go) is included.
 
+For GDrive a CLI tool (written in Go) needs to be installed (requires usage of installer)
 
 # Usage example
 
@@ -46,6 +51,15 @@ $source:="/product/4D.dmg"
 $target:=Convert path system to POSIX(System folder(Desktop))
 $result:=$ftp.download($source; $target)
 
+
+// download from GDrive
+var $ftp : cs.FileTransfer_GDrive
+$ftp:=cs.FileTransfer_GDrive.new()
+
+$source:="/product/4D.dmg"
+$target:=Convert path system to POSIX(System folder(Desktop))
+$result:=$ftp.download($source; $target)
+
 ```
 # Documentation
 
@@ -55,4 +69,7 @@ $result:=$ftp.download($source; $target)
 ## Dropbox
 [Documentation](ReadMe_dropbox.MD)
 
-	
+## GDrive
+[Documentation](ReadMe_GDrive.MD)
+
+		
