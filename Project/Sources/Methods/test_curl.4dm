@@ -87,7 +87,6 @@ If (True:C214)
 End if 
 
 If (True:C214)
-	// only Windows, Callback not available on Mac
 	$source:="/large/4D.dmg"
 	$ftp.setCurlPrefix("--limit-rate 25M")
 	$ftp.useCallback(Formula:C1597(ProgressCallback); "Download 4D.dmg")
