@@ -11,7 +11,7 @@ Class constructor($data : Object; $callback : 4D:C1709.Function; $callbackID : T
 		ASSERT:C1129($callbackID#""; "Callback ID Method must not be empty")
 	End if 
 	If (Is macOS:C1572)
-		This:C1470._return:=Char:C90(10)
+		This:C1470._return:=Char:C90(13)
 	Else 
 		This:C1470._return:=Char:C90(13)
 	End if 

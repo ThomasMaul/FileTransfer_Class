@@ -21,8 +21,6 @@ If (False:C215)
 	End if 
 End if 
 
-
-// upload große datei, progress bar - Windows
 If (False:C215)
 	$ftp.useCallback(Formula:C1597(ProgressCallback); "ProgressCallback")
 	$source:=System folder:C487(Desktop:K41:16)+"Heap.pdf"
@@ -47,7 +45,6 @@ End if
 
 
 If (True:C214)
-	// only Windows, Callback not available on Mac
 	$ftp.useCallback(Formula:C1597(ProgressCallback); "Download 4D.dmg")
 	$ftp.setAsyncMode(True:C214)
 	

@@ -10,10 +10,6 @@ If (False:C215)
 	End if 
 End if 
 
-// try service settings
-$path:=System folder:C487(Desktop:K41:16)+"dtest-342209-2b8950784dab.json"
-$service:=Convert path system to POSIX:C1106($path)
-$result:=$ftp.setServiceAccount($service)
 
 If (False:C215)
 	$source:="/"  // only root/top level
@@ -56,7 +52,6 @@ If (False:C215)
 	End if 
 End if 
 
-// upload große datei, progress bar - Windows
 If (False:C215)
 	$ftp.useCallback(Formula:C1597(ProgressCallback); "ProgressCallback")
 	$source:=System folder:C487(Desktop:K41:16)+"result.pdf"
@@ -105,7 +100,6 @@ End if
 
 
 If (False:C215)
-	// only Windows, Callback not available on Mac
 	$ftp.useCallback(Formula:C1597(ProgressCallback); "Download 4D.dmg")
 	$ftp.setAsyncMode(True:C214)
 	
