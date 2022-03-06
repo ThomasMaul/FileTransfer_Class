@@ -17,7 +17,10 @@ If (ProgressBarID#0)
 			Progress QUIT(ProgressBarID)
 			ProgressBarID:=0
 		: ($value<0)
-			Progress SET MESSAGE(ProgressBarID; $message)
+			$message2:=Replace string:C233($message; " "; "")  // ignore totally empty messages, happens with gdrive
+			If ($message2#"")
+				Progress SET MESSAGE(ProgressBarID; $message)
+			End if 
 		Else 
 			Progress SET PROGRESS(ProgressBarID; $value/100)
 	End case 

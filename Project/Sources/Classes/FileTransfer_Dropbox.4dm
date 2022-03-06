@@ -142,9 +142,9 @@ Function _parseDirListing($success : Object)
 	
 Function _runWorker($para : Text)->$result : Object
 	If (This:C1470._Callback#Null:C1517)
-		$workerpara:=cs:C1710.SystemWorkerProperties.new(This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID)
+		$workerpara:=cs:C1710.SystemWorkerProperties.new("dropbox"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID)
 	Else 
-		$workerpara:=cs:C1710.SystemWorkerProperties.new(This:C1470.onData)
+		$workerpara:=cs:C1710.SystemWorkerProperties.new("dropbox"; This:C1470.onData)
 	End if 
 	
 	If ((This:C1470._Path) && (This:C1470._Path#""))

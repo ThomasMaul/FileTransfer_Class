@@ -296,8 +296,6 @@ Allows to show a progress bar during long running operations or to get informed 
 
 The callback method is called whenever a new progress message is available from dbxcli and get's 3 parameter passed. The given ID, the progress text and the completeness ratio from 0-100%.
 
-Note: only useable on Windows.
-
 #### Example
 
 ```4D

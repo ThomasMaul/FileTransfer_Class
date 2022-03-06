@@ -52,11 +52,11 @@ If (False:C215)
 	End if 
 End if 
 
-If (False:C215)
+If (True:C214)
 	$ftp.useCallback(Formula:C1597(ProgressCallback); "ProgressCallback")
-	$source:=System folder:C487(Desktop:K41:16)+"result.pdf"
+	$source:=System folder:C487(Desktop:K41:16)+"4d.dmg"
 	$source:=Convert path system to POSIX:C1106($source)
-	$target:="/Firma/test/test2.pdf"
+	$target:="/Firma/test/test2.dmg"
 	$result:=$ftp.upload($source; $target)
 	If ($result.success)
 		$answer:=$result.data

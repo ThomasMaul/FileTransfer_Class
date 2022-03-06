@@ -3,9 +3,12 @@ Class constructor()
 	If (Is macOS:C1572)
 		This:C1470._return:=Char:C90(10)
 		This:C1470._Path:="/opt/homebrew/bin/gdrive"
+		$path:=Get 4D folder:C485(Current resources folder:K5:16)+"gdrive"+Folder separator:K24:12+"gdrive"
+		This:C1470._Path:=Convert path system to POSIX:C1106($path)
 	Else 
 		This:C1470._return:=Char:C90(10)  //Char(13)+Char(10)
-		This:C1470._Path:="gdrive.exe"
+		$path:=Get 4D folder:C485(Current resources folder:K5:16)+"gdrive"+Folder separator:K24:12+"gdrive.exe"
+		This:C1470._Path:=Convert path system to POSIX:C1106($path)
 	End if 
 	This:C1470._workerpath:=""  // needed for export
 	
@@ -73,9 +76,10 @@ Function getDirectoryListing($targetpath : Text; $ID : Text; $max : Integer)->$s
 Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	//$sourcepath just file name for local directory, else full path in POSIX syntax
 	// targetpath is full remote path (starting with /, ending with file name
+	// delete files before if you want to overwrite them, else you get a 2nd instance with same name
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
 	//ASSERT($targetpath#""; "target path must not be empty")
-	$success:=This:C1470.__uploadSub($sourcepath; $targetpath)
+	$success:=This:C1470._uploadSub($sourcepath; $targetpath)
 	
 Function _uploadSub($sourcepath : Text; $targetpath : Text; $mime : Text)->$success : Object
 	// need to find target file name (for --name parameter) and target folder (to find --parent ID)
@@ -355,9 +359,9 @@ Function _parseDirListing($success : Object)
 	
 Function _runWorker($para : Text)->$result : Object
 	If (This:C1470._Callback#Null:C1517)
-		$workerpara:=cs:C1710.SystemWorkerProperties.new(This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID)
+		$workerpara:=cs:C1710.SystemWorkerProperties.new("gdrive"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID)
 	Else 
-		$workerpara:=cs:C1710.SystemWorkerProperties.new(This:C1470.onData)
+		$workerpara:=cs:C1710.SystemWorkerProperties.new("gdrive"; This:C1470.onData)
 	End if 
 	
 	If ((This:C1470._Path) && (This:C1470._Path#""))
