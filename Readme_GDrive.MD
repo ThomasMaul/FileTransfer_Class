@@ -40,14 +40,17 @@ GDrive Class works similar to Dropbox or cURL Class (FTP/FTPS) for compatibility
 There is an open source command line tool to use Google Drives supporting all standard file transfer operations: 
 [gdrive](https://github.com/prasmussen/gdrive)
 
-The tool is written in the language 'go', which allows a compilation of an executable without any dependencies. It uses the MIT License
+The tool is written in the language 'go', which allows a compilation of an executable without any dependencies. This means you an easily deploy it as part of your application (in Resource folder or similar), it uses the MIT License
 
-You can compile it yourself (see instruction in link above) or download a precompiled version from the github account for Windows, or on Mac use [Homebrew](https://brew.sh):
+You can compile it yourself (see instruction in link above), download a precompiled version from Dropbox's github account or use the enclosed one.
+
+The enclosed one was download February 2022 (Version 3.00). To ease usage/testing on Mac the downloaded version was signed by me (using an Apple certificate from 4D Germany).
+
+To use and deploy we advise to download yourself from github/releases, sign it, and then sign/notarize the embedding 4D application.
+To sign enter by example:
 ```
-brew install gdrive
-``
-
-While gdrive is written in Go and so would theoretically allow easy deployment (no dependencies, all in one single file), the author decided to deploy via installer (Windows) or Homebrew (Mac). The installation on Mac via Homebrew creates either an ARM or Intel version.
+codesign –force –sign “Developer ID Application: 4D Deutschland GmbH” /Users/thomas/Desktop/gdrive
+```
 
 If Gdrive changes the API, just download the latest release from the github repository.
 

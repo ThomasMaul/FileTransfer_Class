@@ -89,14 +89,14 @@ All function returns a result object
 #### Description
 Upload one file to server.
 
-If file already exists it is overwritten.  
+If file already exists another instance is created. It could make sense to delete existing files (or use deleteFile even if the file is not existing)  
 If source or target contains spaces, encapsulate with quotes (char(34)).
 
 After uploading a file, the result object returns false or true. 
 
 ## download
 
-### .download(source: Text; target: Text; {fileID: text; {{fileQuery: text}}) -> result : Object
+### .download(source: Text; target: Text; {fileID: text; {fileQuery: text}}) -> result : Object
 |Parameter|Type||Description|
 |---------|--- |:---:|------|
 |source|Text|->|path to remote file|
@@ -136,7 +136,7 @@ If the query returns 2 or more documents with the same name (but different locat
 #### Description
 Upload one file to server and import it as Google document.
 
-If file already exists it is overwritten.  
+If file already exists another instance is created. It could make sense to delete existing files (or use deleteFile even if the file is not existing)  
 If source or target contains spaces, encapsulate with quotes (char(34)).
 
 After uploading a file, the result object returns false or true. 
@@ -190,6 +190,40 @@ By passing the type, this can be overwritten. The import/converting follow this 
 |application/vnd.ms-powerpoint|application/vnd.google-apps.presentation|
 |text/tab-separated-values|application/vnd.google-apps.spreadsheet|
 
+## export
+
+### .export(source: Text; target: Text; {fileID: text; {mime: text}}) -> result : Object
+|Parameter|Type||Description|
+|---------|--- |:---:|------|
+|source|Text|->|path to remote file|
+|target|Text|->|POSIX path to local file|
+|fileID|Text|->|optional: Google file ID|
+|mime|Text|->|optional: overwrite mime|
+|result|Object|<-|result object|  
+
+#### Description
+Download one document from server, automatically convert to local file type.
+
+If file already exists it is overwritten.  
+If source or target contains spaces, encapsulate with quotes (char(34)).
+
+After downloading a file, the result object returns false or true. 
+
+Specify file with name (source) for comfort or compatibility with Dropbox/cURL class.
+Better/Faster to specify file by Google ID.
+Pass either ID or source, only one.
+
+|From|To|
+|---------|---------|
+|application/vnd.google-apps.document|application/rtf, application/vnd.oasis.opendocument.text, text/html, application/pdf, application/epub+zip, application/zip, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/plain|
+|application/vnd.google-apps.spreadsheet|application/x-vnd.oasis.opendocument.spreadsheet, text/tab-separated-values, application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, text/csv, application/zip, application/vnd.oasis.opendocument.spreadsheet|
+|application/vnd.google-apps.jam|application/pdf|
+|application/vnd.google-apps.script|application/vnd.google-apps.script+json|
+|application/vnd.google-apps.presentation|application/vnd.oasis.opendocument.presentation, application/pdf, application/vnd.openxmlformats-officedocument.presentationml.presentation, text/plain|
+|application/vnd.google-apps.form|application/zip|
+|application/vnd.google-apps.drawing|image/svg+xml, image/png, application/pdf, image/jpeg|
+|application/vnd.google-apps.site|text/plain|
+
 
 ## getDirectoryListing
 
@@ -206,11 +240,11 @@ result.data contains unfiltered answer from server.
 result.list contains collection, each representing one file/directory.
 
 The answer is parsed and .list collection contains:
-- revision  // file revision, for folders "-"
-- size      // file size, such as "76 KiB" or "315 MiB", for folder "-"
-- date      // date, such as "1 year ago", "3 days ago", for folders "-"
-- path      // full path to download/access  "/filename.pdf"
-
+- Id  // file Id, identifier for all other commands
+- path      // file name
+- type      // document type, such as doc, pdf, dir
+- Size      // size, such as 1.0 KB
+- date      // date, such as 2022-03-02 14:27:36
 
 ## createDirectory
 
@@ -281,13 +315,13 @@ Moves a file on remote server to another directory (and/or rename it)
 |result|Object|<-|result object|  
 
 #### Description
-Allows to pass any valid Dropbox dbxcli command and execute it. Result is returned directly.
+Allows to pass any valid gdrive command and execute it. Result is returned directly.
 
 ## Settings commands
 
 ## .version()
 
-###.version() -> result : object
+### .version() -> result : object
 |Parameter|Type||Description|
 |---------|--- |:---:|------|
 |result|Object|<-|result object| 
@@ -296,9 +330,9 @@ Allows to pass any valid Dropbox dbxcli command and execute it. Result is return
 returns in result.data version information from cURL.
 
 Example:
-dbxcli version: v3.0.0  
-SDK version: 5.4.0  
-Spec version: 097e9ba
+gdrive: 2.1.1  
+Golang: go1.17.8  
+OS/Arch: darwin/amd64  
 
 
 ## setPath
@@ -309,10 +343,10 @@ Spec version: 097e9ba
 |Path|Text|->|Path to local dbxcli installation|
 
 #### Description
-Allows to use another dbxcli installation. 
+Allows to use another gdrive installation. 
 
 Precompiled versions for Mac and Windows can be downloaded from:
-[dbxcli](https://github.com/dropbox/dbxcli)
+[gdrive](https://github.com/prasmussen/gdrive/releases)
 
 
 ## setAsyncMode
@@ -352,7 +386,7 @@ Return object contains:
 |terminated|boolean|true if command finished execution|
 |responseError|Text|error message if command failed|
 |response|Text|message if command succeeded|
-|exitCode|Text|exit code returned by dbxcli|
+|exitCode|Text|exit code returned by gdrive|
 |errors|collection|optional: execution errors received by 4D|
 
 ## wait
@@ -380,9 +414,7 @@ The command returns after given wait time or before if execution is finished.
 #### Description
 Allows to show a progress bar during long running operations or to get informed when command execution is complete.
 
-The callback method is called whenever a new progress message is available from dbxcli and get's 3 parameter passed. The given ID, the progress text and the completeness ratio from 0-100%.
-
-Note: only useable on Windows.
+The callback method is called whenever a new progress message is available from gdrive and get's 3 parameter passed. The given ID, the progress text and the completeness ratio from 0-100%.
 
 #### Example
 

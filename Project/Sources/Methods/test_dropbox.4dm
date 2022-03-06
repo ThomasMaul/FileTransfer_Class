@@ -44,13 +44,13 @@ If (False:C215)
 End if 
 
 
-If (True:C214)
-	$ftp.useCallback(Formula:C1597(ProgressCallback); "Download 4D.dmg")
+If (False:C215)
+	$ftp.useCallback(Formula:C1597(ProgressCallback); "uploading 4D.dmg")
 	$ftp.setAsyncMode(True:C214)
 	
-	$source:=System folder:C487(Desktop:K41:16)+"Heap.pdf"
+	$source:=System folder:C487(Desktop:K41:16)+"4d.dmg"
 	$source:=Convert path system to POSIX:C1106($source)
-	$target:="/Firma/test2.pdf"
+	$target:="/Firma/4d.dmg"
 	$result:=$ftp.upload($source; $target)
 	
 	// async, so we need to loop...
@@ -62,6 +62,27 @@ If (True:C214)
 		$status:=$ftp.status()
 		
 	Until (Bool:C1537($status.terminated))
+	
+End if 
+
+If (True:C214)
+	$ftp.useCallback(Formula:C1597(ProgressCallback); "uploading 4D.dmg")
+	//$ftp.setAsyncMode(True)
+	
+	$source:=System folder:C487(Desktop:K41:16)+"4d.dmg"
+	$source:=Convert path system to POSIX:C1106($source)
+	$target:="/Firma/4d.dmg"
+	$result:=$ftp.upload($source; $target)
+	
+	// async, so we need to loop...
+	// normally we are supposed to do something else and either
+	// check from time to time or to use the callback method to inform us (percent=100)
+	//Repeat 
+	//$ftp.wait(1)  // needed while our process is running
+	//// wait is not needed if a form would be open or if a worker would handle the job
+	//$status:=$ftp.status()
+	
+	//Until (Bool($status.terminated))
 	
 End if 
 
