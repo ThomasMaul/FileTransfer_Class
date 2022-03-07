@@ -1,7 +1,7 @@
 # File Transfer Class collection
 
-FTP - FTPS - SFTP(*) - HTTPS(*)
-Using cURL - wrapper for Mac/Win build in cURL feature
+FTP - FTPS - SFTP(*) - HTTPS(*)  
+Using cURL - wrapper for Mac/Win build in cURL feature  
 
 Dropbox
 Using Dropbox CLI tool (easy to deploy)
@@ -64,10 +64,10 @@ $result:=$ftp.download($source; $target)
 # Documentation
 
 ## cURL  (FTP - FTPS - SFTP - HTTP - HTTPS)
-[Documentation](ReadMe_curl.md)
+[Documentation](ReadMe_curl.MD)
 
 ## Dropbox
-[Documentation](ReadMe_dropbox.md)
+[Documentation](ReadMe_dropbox.MD)
 
 ## GDrive
 [Documentation](ReadMe_GDrive.MD)
