@@ -11,6 +11,7 @@ Class constructor()
 		This:C1470._Path:=Convert path system to POSIX:C1106($path)
 	End if 
 	This:C1470._workerpath:=""  // needed for export
+	This:C1470._timeout:=0
 	
 	// uses https://github.com/prasmussen/gdrive
 	
@@ -134,7 +135,12 @@ Function _uploadSub($sourcepath : Text; $targetpath : Text; $mime : Text)->$succ
 		$url+=" --parent "+$targetID
 	End if 
 	$url+=" "+Char:C90(34)+$sourcepath+Char:C90(34)
+	$oldtimeout:=This:C1470._timeout
+	If ($oldtimeout=0)
+		This:C1470._timeout:=600
+	End if 
 	$success:=This:C1470._runWorker($url)
+	This:C1470._timeout:=$oldtimeout
 	
 Function download($sourcepath : Text; $targetpath : Text; $sourceID : Text; $sourceQuery : Text)->$success : Object
 	//$sourcepath just file name for local directory, else full path in POSIX syntax
@@ -216,7 +222,12 @@ Function _downloadSub($sourcepath : Text; $targetpath : Text; $sourceID : Text; 
 			return (New object:C1471("success"; False:C215; "error"; "invalid parameters"))
 	End case 
 	
+	$oldtimeout:=This:C1470._timeout
+	If ($oldtimeout=0)
+		This:C1470._timeout:=600
+	End if 
 	$success:=This:C1470._runWorker($url)
+	This:C1470._timeout:=$oldtimeout
 	If ($success.success=True:C214)
 		Case of 
 			: ($success.data="Downloading @")
@@ -307,6 +318,9 @@ Function useCallback($callback : 4D:C1709.Function; $ID : Text)
 Function setAsyncMode($async : Boolean)
 	This:C1470._async:=$async
 	
+Function setTimeout($timeout : Integer)
+	This:C1470._timeout:=$timeout
+	
 Function stop()
 	If (This:C1470._worker#Null:C1517)
 		This:C1470._worker.terminate()
@@ -380,11 +394,13 @@ Function _runWorker($para : Text)->$result : Object
 	This:C1470._worker:=4D:C1709.SystemWorker.new($command; $workerpara)
 	$worker:=This:C1470._worker
 	
+	$waittimeout:=(This:C1470._timeout=0) ? 60 : This:C1470._timeout
+	
 	If ($worker#Null:C1517)
 		If ((This:C1470._async#Null:C1517) && (This:C1470._async))
 			$result:=New object:C1471("data"; "async"; "success"; True:C214)
 		Else 
-			$worker.wait()
+			$worker.wait($waittimeout)
 			Case of 
 				: (($worker.response#Null:C1517) && ($worker.response="@error@"))
 					$result:=New object:C1471("responseError"; $worker.response; "success"; False:C215)

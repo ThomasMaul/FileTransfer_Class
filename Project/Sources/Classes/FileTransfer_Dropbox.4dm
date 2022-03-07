@@ -9,7 +9,7 @@ Class constructor()
 		$path:=Get 4D folder:C485(Current resources folder:K5:16)+"Dropbox"+Folder separator:K24:12+"dbxcli.exe"
 		This:C1470._Path:=Convert path system to POSIX:C1106($path)
 	End if 
-	
+	This:C1470._timeout:=0
 	
 	//MARK: FileTransfer
 Function getDirectoryListing($targetpath : Text)->$success : Object
@@ -30,7 +30,12 @@ Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	
 	$url:="put "+$sourcepath+" "+$targetpath
+	$oldtimeout:=This:C1470._timeout
+	If ($oldtimeout=0)
+		This:C1470._timeout:=600
+	End if 
 	$success:=This:C1470._runWorker($url)
+	This:C1470._timeout:=$oldtimeout
 	
 Function download($sourcepath : Text; $targetpath : Text)->$success : Object
 	//$sourcepath just file name for local directory, else full path in POSIX syntax
@@ -39,7 +44,12 @@ Function download($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	
 	$url:="get "+$sourcepath+" "+$targetpath
+	$oldtimeout:=This:C1470._timeout
+	If ($oldtimeout=0)
+		This:C1470._timeout:=600
+	End if 
 	$success:=This:C1470._runWorker($url)
+	This:C1470._timeout:=$oldtimeout
 	
 Function createDirectory($targetpath : Text)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
@@ -94,6 +104,9 @@ Function useCallback($callback : 4D:C1709.Function; $ID : Text)
 	This:C1470._Callback:=$callback
 	This:C1470._CallbackID:=$ID
 	This:C1470._noProgress:=False:C215
+	
+Function setTimeout($timeout : Integer)
+	This:C1470._timeout:=$timeout
 	
 Function setAsyncMode($async : Boolean)
 	This:C1470._async:=$async
@@ -163,7 +176,8 @@ Function _runWorker($para : Text)->$result : Object
 		If ((This:C1470._async#Null:C1517) && (This:C1470._async))
 			$result:=New object:C1471("data"; "async"; "success"; True:C214)
 		Else 
-			$worker.wait()
+			$waittimeout:=(This:C1470._timeout=0) ? 60 : This:C1470._timeout
+			$worker.wait($waittimeout)
 			If (($worker.responseError#Null:C1517) && ($worker.responseError#""))
 				$result:=New object:C1471("responseError"; $worker.responseError; "success"; False:C215)
 				$pos:=Position:C15("Error:"; $worker.responseError; *)

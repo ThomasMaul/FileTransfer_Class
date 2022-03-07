@@ -146,6 +146,10 @@ If (True:C214)  // download two in parallel
 	$ftp.setCurlPrefix("--limit-rate 25M")
 	$progressid2:="2-Download 4D.dmg"
 	$ftp2.setCurlPrefix("--limit-rate 25M")
+	$ftp.setAutoCreateRemoteDirectory(True:C214)
+	$ftp.setAutoCreateLocalDirectory(True:C214)
+	$ftp2.setAutoCreateRemoteDirectory(True:C214)
+	$ftp2.setAutoCreateLocalDirectory(True:C214)
 	Use (Storage:C1525.FileTransfer_Progress)
 		Storage:C1525.FileTransfer_Progress[$progressid2]:=New shared object:C1526()
 	End use 

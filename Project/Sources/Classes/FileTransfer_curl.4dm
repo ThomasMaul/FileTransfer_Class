@@ -16,6 +16,7 @@ Class constructor($hostname : Text; $username : Text; $password : Text; $protoco
 	Else 
 		This:C1470._return:=Char:C90(10)  //Char(13)+Char(10)
 	End if 
+	This:C1470._timeout:=0
 	
 	//MARK: Settings
 Function validate()->$success : Object
@@ -53,6 +54,9 @@ Function setActiveMode($active : Boolean; $IP : Text)
 		End if 
 		This:C1470._ActiveModeIP:=$IP
 	End if 
+	
+Function setTimeout($timeout : Integer)
+	This:C1470._timeout:=$timeout
 	
 Function setAsyncMode($async : Boolean)
 	This:C1470._async:=$async
@@ -98,7 +102,12 @@ Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$suc
 		$url:="--ftp-create-dirs "+$url
 	End if 
 	$url:="-T "+$sourcepath+" "+$url+$targetpath
+	$oldtimeout:=This:C1470._timeout
+	If ($oldtimeout=0)
+		This:C1470._timeout:=600
+	End if 
 	$success:=This:C1470._runWorker($url)
+	This:C1470._timeout:=$oldtimeout
 	This:C1470._parseFileListing($success)
 	
 Function download($sourcepath : Text; $targetpath : Text)->$success : Object
@@ -120,7 +129,12 @@ target needs to be folder, ending with /
 	Else 
 		$url:=" -o "+$targetpath+" "+$url+$sourcepath
 	End if 
+	$oldtimeout:=This:C1470._timeout
+	If ($oldtimeout=0)
+		This:C1470._timeout:=600
+	End if 
 	$success:=This:C1470._runWorker($url)
+	This:C1470._timeout:=$oldtimeout
 	This:C1470._parseFileListing($success)
 	
 Function getDirectoryListing($targetpath : Text)->$success : Object
@@ -332,7 +346,8 @@ Function _runWorker($para : Text)->$result : Object
 		If ((This:C1470._async#Null:C1517) && (This:C1470._async))
 			$result:=New object:C1471("data"; "async"; "success"; True:C214)
 		Else 
-			$worker.wait()
+			$waittimeout:=(This:C1470._timeout=0) ? 60 : This:C1470._timeout
+			$worker.wait($waittimeout)
 			If (Bool:C1537($worker.userCancel))
 				$result:=New object:C1471("responseError"; "Cancel by user"; "success"; False:C215)
 			Else 
