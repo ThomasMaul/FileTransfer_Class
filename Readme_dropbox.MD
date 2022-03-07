@@ -43,7 +43,7 @@ The enclosed one was download February 2022 (Version 3.00). To ease usage/testin
 To use and deploy we advise to download yourself from github/releases, sign it, and then sign/notarize the embedding 4D application.
 To sign enter by example:
 ```
-codesign –force –sign “Developer ID Application: 4D Deutschland GmbH” /Users/thomas/Desktop/dbxcli
+codesign –force –sign "Developer ID Application: 4D Deutschland GmbH" /Users/thomas/Desktop/dbxcli
 ```
 
 If Dropbox changes the API, just download their latest release and replace the binary.

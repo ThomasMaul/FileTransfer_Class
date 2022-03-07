@@ -49,7 +49,7 @@ The enclosed one was download February 2022 (Version 3.00). To ease usage/testin
 To use and deploy we advise to download yourself from github/releases, sign it, and then sign/notarize the embedding 4D application.
 To sign enter by example:
 ```
-codesign –force –sign “Developer ID Application: 4D Deutschland GmbH” /Users/thomas/Desktop/gdrive
+codesign –force –sign Developer ID Application: 4D Deutschland GmbH (4789QA2D2W)" /Users/thomas/Desktop/gdrive
 ```
 
 If Gdrive changes the API, just download the latest release from the github repository.
