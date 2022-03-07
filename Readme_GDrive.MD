@@ -25,6 +25,9 @@ If ($result.success)
 End if
 ```
 
+For more examples see the method "test_gdrive".
+Check the download part of the method to see how to use progress bar with Cancel Button.
+
 # Feature overview
 - Upload
 - Download

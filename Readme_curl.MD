@@ -77,6 +77,9 @@ $ftp.setCurlPrefix("--location")  // follow 301 or 302
 $result:=$ftp.download($source; $target)
 ```
 
+For more examples see the method "test_curl".
+Check the download part of the method to see how to use progress bar with Cancel Button and how to run two downloads/operations in parallel, each with a progress bar.
+
 ## SFTP (=SSH File Transfer Protocol)
 While FTPS is using standard TLS certificates (similar to HTTPS), SFTP is using the SSH protocol. In difference to FTPS this does not require to purchase a TLS certificate (or use Lets Encrypt to get free ones), but it requires to use an already authenticated client.
 
