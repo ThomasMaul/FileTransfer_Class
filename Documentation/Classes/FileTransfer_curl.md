@@ -16,6 +16,9 @@ If ($result.success)
 	...
 End if
 ```
+
+For more examples see the method "test_curl".
+
 ## Summary
 | |
 |-|
@@ -457,7 +460,7 @@ The command returns after given wait time or before if execution is finished.
 |Parameter|Type||Description|
 |---------|--- |:---:|------|
 |callback|4D.Function|->|4d function to call during progress|
-|ID|Text|->|text to pass to callback method to identify job|
+|ID|Text|->|unique text to pass to callback method to identify job|
 
 #### Description
 Allows to show a progress bar during long running operations or to get informed when command execution is complete.
@@ -500,5 +503,20 @@ Else
 End if 
 ```
 
+To support the stop button in the progress bar, Storage needs to be used to share progress bar and worker IDs. See example in test_curl - download.
+```4D
+	// enable stop button in progress bar
+	Use (Storage.FileTransfer_Progress)
+		Storage.FileTransfer_Progress[$progressid]:=New shared object()
+	End use 
+	$ftp.useCallback(Formula(ProgressCallback); $progressid)
+```
 
+After execution of download/upload/etc, check:
+```4D
+	If (Bool(Storage.FileTransfer_Progress[$progressid].Stop))  // check stop button if it was set, remove from storage
+		// user canceled!!
+```
 
+Don't forget to remove the object from storage when done.
+See test_curl - download for a full example

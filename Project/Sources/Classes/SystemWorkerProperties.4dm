@@ -7,6 +7,7 @@ Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $
 	If (Count parameters:C259>2)
 		This:C1470.callback:=$callback
 		This:C1470.callbackID:=$callbackID
+		This:C1470.stopbutton:=$stopButton
 		ASSERT:C1129(Value type:C1509($callback)=Is object:K8:27; "Callback must be of type function")
 		ASSERT:C1129(OB Instance of:C1731($callback; 4D:C1709.Function); "Callback must be of type function")
 		ASSERT:C1129($callbackID#""; "Callback ID Method must not be empty")
@@ -22,6 +23,14 @@ Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $
 	
 Function onDataError($systemworker : Object; $data : Object)
 	// called when data is received from curl or dropbox to handle progress bar
+	
+	// check for stop button in progress bar
+	If ((This:C1470.callbackID#"") && (This:C1470.callback#Null:C1517))
+		If (Bool:C1537(Storage:C1525.FileTransfer_Progress[This:C1470.callbackID].Stop))
+			$systemworker.terminate()
+			return 
+		End if 
+	End if 
 	
 	If (String:C10($data.data)#"")
 		This:C1470.data.text+=$data.data
@@ -61,5 +70,5 @@ Function onTerminate($systemworker : Object; $data : Object)
 	
 	
 Function _createFile($title : Text; $textBody : Text)
-	// debug
+	// debug only
 	TEXT TO DOCUMENT:C1237(Get 4D folder:C485(Current resources folder:K5:16)+$title+".txt"; $textBody)

@@ -300,6 +300,8 @@ Function _runWorker($para : Text)->$result : Object
 		$path:="curl"
 	End if 
 	
+	$path+=" -f"  // failure report
+	
 	If ((This:C1470._noProgress#Null:C1517) && (This:C1470._noProgress))
 		$path+=" --no-progress-meter"
 	End if 
@@ -322,6 +324,7 @@ Function _runWorker($para : Text)->$result : Object
 	$command:=$path+" "+$para
 	$old:=Method called on error:C704
 	ON ERR CALL:C155(Formula:C1597(ErrorHandler).source)
+	$workerpara.variables:=New object:C1471("userCancel"; "false")
 	This:C1470._worker:=4D:C1709.SystemWorker.new($command; $workerpara)
 	$worker:=This:C1470._worker
 	
@@ -330,20 +333,25 @@ Function _runWorker($para : Text)->$result : Object
 			$result:=New object:C1471("data"; "async"; "success"; True:C214)
 		Else 
 			$worker.wait()
-			If (($worker.responseError#Null:C1517) && ($worker.responseError#""))
-				$result:=New object:C1471("responseError"; $worker.responseError; "success"; False:C215)
-				$pos:=Position:C15("curl: "; $worker.responseError; *)
-				If ($pos>0)
-					$result.error:=Replace string:C233(Substring:C12($worker.responseError; $pos+6); Char:C90(10); "")
-				Else 
-					If (($worker.response#Null:C1517) && ($worker.response#""))  // seems not to be an error, sometime curl set's process bar in error and result in response.
-						$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
-					Else 
-						$result:=New object:C1471("data"; $worker.responseError; "success"; True:C214)
-					End if 
-				End if 
+			If (Bool:C1537($worker.userCancel))
+				$result:=New object:C1471("responseError"; "Cancel by user"; "success"; False:C215)
 			Else 
-				$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
+				If (($worker.responseError#Null:C1517) && ($worker.responseError#""))
+					$result:=New object:C1471("responseError"; $worker.responseError; "success"; False:C215)
+					$pos:=Position:C15("curl: "; $worker.responseError; *)
+					If ($pos>0)
+						$result.error:=Replace string:C233(Substring:C12($worker.responseError; $pos+6); Char:C90(10); "")
+					Else 
+						// seems not to be an error, curl set's process bar in error and no result in response.
+						If ($worker.response#"")
+							$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
+						Else 
+							$result:=New object:C1471("data"; $worker.responseError; "success"; True:C214)
+						End if 
+					End if 
+				Else 
+					$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
+				End if 
 			End if 
 		End if 
 	Else 
