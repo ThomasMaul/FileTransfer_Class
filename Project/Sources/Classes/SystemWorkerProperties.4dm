@@ -18,8 +18,13 @@ Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $
 		This:C1470._return:=Char:C90(13)
 	End if 
 	
-	//Function onData($systemworker : Object; $data : Object)
-	// not needed for Curl or Dropbox
+Function onData($systemworker : Object; $data : Object)
+	// not needed for Curl 
+	// in Gdrive or Dropbox used when asking for Authentication
+	This:C1470.data.text+=$data.data
+	If ((This:C1470.type="gdrive") | (This:C1470.type="dropbox"))
+		$systemworker.terminate()
+	End if 
 	
 Function onDataError($systemworker : Object; $data : Object)
 	// called when data is received from curl or dropbox to handle progress bar

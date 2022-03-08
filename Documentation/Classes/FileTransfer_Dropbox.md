@@ -32,6 +32,7 @@ End if
 |[.version](#version)<p>&nbsp;&nbsp;&nbsp;&nbsp;returns in result.data version information from Dropbox Command Line Interface Tool|
 |[.setPath](#setpath)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use another dbxcli installation.|
 |[.setAsyncMode](#setasyncmode)<p>&nbsp;&nbsp;&nbsp;&nbsp;By default all commands are executed synchronously, meaning the command do not return till execution is completed or a timeout occurred. This allows all command to return the result or execution information..|
+|[.setTimeout](#settimeout)<p>&nbsp;&nbsp;&nbsp;&nbsp;sets a maximum worker execution time, stopping everything.|
 |[.stop](#stop)<p>&nbsp;&nbsp;&nbsp;&nbsp;Terminates the execution of a running operation, such as upload or download.|
 |[.status](#status)<p>&nbsp;&nbsp;&nbsp;&nbsp;Returns informations about the execution of a running operation.|
 |[.wait](#wait)<p>&nbsp;&nbsp;&nbsp;&nbsp;Only useful in combination with setAsyncMode.|
@@ -227,6 +228,15 @@ Allows to use another dbxcli installation.
 
 Precompiled versions for Mac and Windows can be downloaded from:
 [dbxcli](https://github.com/dropbox/dbxcli)
+
+
+## settimeout
+
+### .setTimeout()
+
+#### Description
+sets a maximum execution time for the worker. By default all operations are stopped after 60 seconds, upload or download after 600 seconds. If your operation might take longer, set a longer timeout.
+The timeout is not considered when asynchronous mode is enabled.
 
 
 ## setAsyncMode
