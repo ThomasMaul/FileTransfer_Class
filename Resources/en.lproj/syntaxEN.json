@@ -1,0 +1,1230 @@
+{
+	"_method_": {},
+	"SystemWorkerProperties": {
+		"new()": {
+			"Syntax": "**.new**(*type* : Text; *data* : Object; *callback* : 4D.Function; *callbackID* : Text)",
+			"Params": [
+				[
+					"type",
+					"Text",
+					"->"
+				],
+				[
+					"data",
+					"Object",
+					"->"
+				],
+				[
+					"callback",
+					"4D.Function",
+					"->"
+				],
+				[
+					"callbackID",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"onTerminate()": {
+			"Syntax": "**.onTerminate**(*systemworker* : Object; *data* : Object)",
+			"Params": [
+				[
+					"systemworker",
+					"Object",
+					"->"
+				],
+				[
+					"data",
+					"Object",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"onDataError()": {
+			"Syntax": "**.onDataError**(*systemworker* : Object; *data* : Object)",
+			"Params": [
+				[
+					"systemworker",
+					"Object",
+					"->"
+				],
+				[
+					"data",
+					"Object",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"onData()": {
+			"Syntax": "**.onData**(*systemworker* : Object; *data* : Object)",
+			"Params": [
+				[
+					"systemworker",
+					"Object",
+					"->"
+				],
+				[
+					"data",
+					"Object",
+					"->"
+				]
+			],
+			"Summary": ""
+		}
+	},
+	"FileTransfer_curl": {
+		"new()": {
+			"Syntax": "**.new**(*hostname* : Text; *username* : Text; *password* : Text; *protocol* : Text)",
+			"Params": [
+				[
+					"hostname",
+					"Text",
+					"->"
+				],
+				[
+					"username",
+					"Text",
+					"->"
+				],
+				[
+					"password",
+					"Text",
+					"->"
+				],
+				[
+					"protocol",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"wait()": {
+			"Syntax": "**.wait**(*max* : Integer)",
+			"Params": [
+				[
+					"max",
+					"Integer",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"status()": {
+			"Syntax": "**.status**()->status : Object",
+			"Params": [
+				[
+					"status",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"executeCommand()": {
+			"Syntax": "**.executeCommand**(*command* : Text)->success : Object",
+			"Params": [
+				[
+					"command",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"deleteFile()": {
+			"Syntax": "**.deleteFile**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"download()": {
+			"Syntax": "**.download**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"upload()": {
+			"Syntax": "**.upload**(*sourcepath* : Text; *targetpath* : Text; *append* : Boolean)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"append",
+					"Boolean",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"useCallback()": {
+			"Syntax": "**.useCallback**(*callback* : 4D.Function; *ID* : Text)",
+			"Params": [
+				[
+					"callback",
+					"4D.Function",
+					"->"
+				],
+				[
+					"ID",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"renameFile()": {
+			"Syntax": "**.renameFile**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"enableProgressData()": {
+			"Syntax": "**.enableProgressData**(*enable* : Boolean)",
+			"Params": [
+				[
+					"enable",
+					"Boolean",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setPath()": {
+			"Syntax": "**.setPath**(*path* : Text)",
+			"Params": [
+				[
+					"path",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setAutoCreateRemoteDirectory()": {
+			"Syntax": "**.setAutoCreateRemoteDirectory**(*auto* : Boolean)",
+			"Params": [
+				[
+					"auto",
+					"Boolean",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"createDirectory()": {
+			"Syntax": "**.createDirectory**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"stop()": {
+			"Syntax": "**.stop**()",
+			"Params": [],
+			"Summary": ""
+		},
+		"setActiveMode()": {
+			"Syntax": "**.setActiveMode**(*active* : Boolean; *IP* : Text)",
+			"Params": [
+				[
+					"active",
+					"Boolean",
+					"->"
+				],
+				[
+					"IP",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"version()": {
+			"Syntax": "**.version**()->data : Object",
+			"Params": [
+				[
+					"data",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"setRange()": {
+			"Syntax": "**.setRange**(*range* : Text)",
+			"Params": [
+				[
+					"range",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"getDirectoryListing()": {
+			"Syntax": "**.getDirectoryListing**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"setAutoCreateLocalDirectory()": {
+			"Syntax": "**.setAutoCreateLocalDirectory**(*auto* : Boolean)",
+			"Params": [
+				[
+					"auto",
+					"Boolean",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setTimeout()": {
+			"Syntax": "**.setTimeout**(*timeout* : Integer)",
+			"Params": [
+				[
+					"timeout",
+					"Integer",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setAsyncMode()": {
+			"Syntax": "**.setAsyncMode**(*async* : Boolean)",
+			"Params": [
+				[
+					"async",
+					"Boolean",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"deleteDirectory()": {
+			"Syntax": "**.deleteDirectory**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"setCurlPrefix()": {
+			"Syntax": "**.setCurlPrefix**(*prefix* : Text)",
+			"Params": [
+				[
+					"prefix",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setMaxTime()": {
+			"Syntax": "**.setMaxTime**(*seconds* : Real)",
+			"Params": [
+				[
+					"seconds",
+					"Real",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"validate()": {
+			"Syntax": "**.validate**()->success : Object",
+			"Params": [
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"setConnectTimeout()": {
+			"Syntax": "**.setConnectTimeout**(*seconds* : Real)",
+			"Params": [
+				[
+					"seconds",
+					"Real",
+					"->"
+				]
+			],
+			"Summary": ""
+		}
+	},
+	"FileTransfer_Dropbox": {
+		"new()": {
+			"Syntax": "**.new**()",
+			"Params": [],
+			"Summary": ""
+		},
+		"status()": {
+			"Syntax": "**.status**()->status : Object",
+			"Params": [
+				[
+					"status",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"stop()": {
+			"Syntax": "**.stop**()",
+			"Params": [],
+			"Summary": ""
+		},
+		"setAsyncMode()": {
+			"Syntax": "**.setAsyncMode**(*async* : Boolean)",
+			"Params": [
+				[
+					"async",
+					"Boolean",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"useCallback()": {
+			"Syntax": "**.useCallback**(*callback* : 4D.Function; *ID* : Text)",
+			"Params": [
+				[
+					"callback",
+					"4D.Function",
+					"->"
+				],
+				[
+					"ID",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setPath()": {
+			"Syntax": "**.setPath**(*path* : Text)",
+			"Params": [
+				[
+					"path",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"deleteDirectory()": {
+			"Syntax": "**.deleteDirectory**(*targetpath* : Text; *force* : Boolean)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"force",
+					"Boolean",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"version()": {
+			"Syntax": "**.version**()->data : Object",
+			"Params": [
+				[
+					"data",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"moveFile()": {
+			"Syntax": "**.moveFile**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"renameFile()": {
+			"Syntax": "**.renameFile**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"createDirectory()": {
+			"Syntax": "**.createDirectory**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"copyFile()": {
+			"Syntax": "**.copyFile**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"download()": {
+			"Syntax": "**.download**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"executeCommand()": {
+			"Syntax": "**.executeCommand**(*command* : Text)->success : Object",
+			"Params": [
+				[
+					"command",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"deleteFile()": {
+			"Syntax": "**.deleteFile**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"upload()": {
+			"Syntax": "**.upload**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"wait()": {
+			"Syntax": "**.wait**(*max* : Integer)",
+			"Params": [
+				[
+					"max",
+					"Integer",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setTimeout()": {
+			"Syntax": "**.setTimeout**(*timeout* : Integer)",
+			"Params": [
+				[
+					"timeout",
+					"Integer",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"getDirectoryListing()": {
+			"Syntax": "**.getDirectoryListing**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		}
+	},
+	"FileTransfer_GDrive": {
+		"new()": {
+			"Syntax": "**.new**()",
+			"Params": [],
+			"Summary": ""
+		},
+		"status()": {
+			"Syntax": "**.status**()->status : Object",
+			"Params": [
+				[
+					"status",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"createDirectory()": {
+			"Syntax": "**.createDirectory**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"stop()": {
+			"Syntax": "**.stop**()",
+			"Params": [],
+			"Summary": ""
+		},
+		"useCallback()": {
+			"Syntax": "**.useCallback**(*callback* : 4D.Function; *ID* : Text)",
+			"Params": [
+				[
+					"callback",
+					"4D.Function",
+					"->"
+				],
+				[
+					"ID",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setPath()": {
+			"Syntax": "**.setPath**(*path* : Text)",
+			"Params": [
+				[
+					"path",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"executeCommand()": {
+			"Syntax": "**.executeCommand**(*command* : Text)->success : Object",
+			"Params": [
+				[
+					"command",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"version()": {
+			"Syntax": "**.version**()->data : Object",
+			"Params": [
+				[
+					"data",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"moveFile()": {
+			"Syntax": "**.moveFile**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"deleteDirectory()": {
+			"Syntax": "**.deleteDirectory**(*targetpath* : Text; *force* : Boolean)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"force",
+					"Boolean",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"copyFile()": {
+			"Syntax": "**.copyFile**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"setAsyncMode()": {
+			"Syntax": "**.setAsyncMode**(*async* : Boolean)",
+			"Params": [
+				[
+					"async",
+					"Boolean",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"renameFile()": {
+			"Syntax": "**.renameFile**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"export()": {
+			"Syntax": "**.export**(*sourcepath* : Text; *targetpath* : Text; *sourceID* : Text; *mime* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"sourceID",
+					"Text",
+					"->"
+				],
+				[
+					"mime",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"download()": {
+			"Syntax": "**.download**(*sourcepath* : Text; *targetpath* : Text; *sourceID* : Text; *sourceQuery* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"sourceID",
+					"Text",
+					"->"
+				],
+				[
+					"sourceQuery",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"deleteFile()": {
+			"Syntax": "**.deleteFile**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"getDirectoryListing()": {
+			"Syntax": "**.getDirectoryListing**(*targetpath* : Text; *ID* : Text; *max* : Integer)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"ID",
+					"Text",
+					"->"
+				],
+				[
+					"max",
+					"Integer",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"import()": {
+			"Syntax": "**.import**(*sourcepath* : Text; *targetpath* : Text; *mime* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"mime",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"upload()": {
+			"Syntax": "**.upload**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"wait()": {
+			"Syntax": "**.wait**(*max* : Integer)",
+			"Params": [
+				[
+					"max",
+					"Integer",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"setTimeout()": {
+			"Syntax": "**.setTimeout**(*timeout* : Integer)",
+			"Params": [
+				[
+					"timeout",
+					"Integer",
+					"->"
+				]
+			],
+			"Summary": ""
+		}
+	},
+	"_Build": {
+		"new()": {
+			"Syntax": "**.new**()",
+			"Params": [],
+			"Summary": ""
+		},
+		"CommitAndPush()": {
+			"Syntax": "**.CommitAndPush**(*message* : Text)->error : Object",
+			"Params": [
+				[
+					"message",
+					"Text",
+					"->"
+				],
+				[
+					"error",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"Staple()": {
+			"Syntax": "**.Staple**(*zipfilepath* : Text)->error : Object",
+			"Params": [
+				[
+					"zipfilepath",
+					"Text",
+					"->"
+				],
+				[
+					"error",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"Compile()": {
+			"Syntax": "**.Compile**(*options* : Object)->error : Object",
+			"Params": [
+				[
+					"options",
+					"Object",
+					"->"
+				],
+				[
+					"error",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"CheckNotarizeResult()": {
+			"Syntax": "**.CheckNotarizeResult**(*uuid* : Text; *appleUserID* : Text)->error : Object",
+			"Params": [
+				[
+					"uuid",
+					"Text",
+					"->"
+				],
+				[
+					"appleUserID",
+					"Text",
+					"->"
+				],
+				[
+					"error",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"Notarize()": {
+			"Syntax": "**.Notarize**(*zipfilepath* : Text; *appleUserID* : Text; *bundleID* : Variant)->error : Object",
+			"Params": [
+				[
+					"zipfilepath",
+					"Text",
+					"->"
+				],
+				[
+					"appleUserID",
+					"Text",
+					"->"
+				],
+				[
+					"bundleID",
+					"Variant",
+					"->"
+				],
+				[
+					"error",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"Build()": {
+			"Syntax": "**.Build**(*PathToSettings* : Text)->error : Object",
+			"Params": [
+				[
+					"PathToSettings",
+					"Text",
+					"->"
+				],
+				[
+					"error",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"Zip()": {
+			"Syntax": "**.Zip**(*sourcepath* : Text; *targetpath* : Text)->error : Object",
+			"Params": [
+				[
+					"sourcepath",
+					"Text",
+					"->"
+				],
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"error",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		}
+	}
+}
