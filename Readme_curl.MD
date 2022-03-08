@@ -33,9 +33,7 @@ By default the class uses the cURL version delivered with the operating system. 
 
 By installing "your" own version SFTP will be supported additionally, and this allows to support Windows Server 2016 or 2012 R2. 
 
-The class includes a precompiled version for Windows (compiled by curl.se from February 2022) in the Resources folder.
-
-It can be updated or replaced by a precompiled versions for Windows, such as from:
+Precompiled versions for Windows can be loaded here:
 [curl.se](https://curl.se/download.html)
 
 To use SFTP on Mac you need to install [Homebrew](https://brew.sh) and run:

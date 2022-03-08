@@ -2,6 +2,8 @@
 var $ftp : cs:C1710.FileTransfer_GDrive
 $ftp:=cs:C1710.FileTransfer_GDrive.new()
 
+//$path:=Get 4D folder(Current resources folder)+"gdrive"+Folder separator+"gdrive.exe"
+$ftp.setPath(" /Users/thomas/Desktop/gdrive")
 
 If (False:C215)
 	$result:=$ftp.version()

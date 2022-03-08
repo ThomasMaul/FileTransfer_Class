@@ -47,17 +47,16 @@ The tool is written in the language 'go', which allows a compilation of an execu
 
 You can compile it yourself (see instruction in link above), download a precompiled version from Dropbox's github account or use the enclosed one.
 
-The enclosed one was download February 2022 (Version 3.00). To ease usage/testing on Mac the downloaded version was signed by me (using an Apple certificate from 4D Germany).
+To use and deploy we advise to download yourself from github/releases.
 
-To use and deploy we advise to download yourself from github/releases, sign it, and then sign/notarize the embedding 4D application.
+For Windows, just copy in resource folder for easy deployment.
+For Mac: sign it, and then sign/notarize the embedding 4D application.
 To sign enter by example:
 ```
-codesign –force –sign Developer ID Application: 4D Deutschland GmbH (4789QA2D2W)" /Users/thomas/Desktop/gdrive
+codesign –force --options runtime --timestamp –sign Developer ID Application: 4D Deutschland GmbH (4789QA2D2W)" /Users/thomas/Desktop/gdrive
 ```
 
 If Gdrive changes the API, just download the latest release from the github repository.
-
-If you care for easy deployment, you could compile it yourself (as described in the github repository, see "Compile from Source") and use this version for deployment (sign/notarize it on Mac)
 
 
 Copy class methods:  

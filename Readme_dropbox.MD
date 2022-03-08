@@ -37,19 +37,20 @@ Check the download part of the method to see how to use progress bar with Cancel
 Dropbox provides a command line tool supporting all standard file transfer operations: 
 [dbxcli](https://github.com/dropbox/dbxcli)
 
-The tool is written in the language 'go', which allows a compilation of an executable without any dependencies. This means you an easily deploy it as part of your application (in Resource folder or similar), it uses the Apache License
-
-You can compile it yourself (see instruction in link above), download a precompiled version from Dropbox's github account or use the enclosed one.
-
-The enclosed one was download February 2022 (Version 3.00). To ease usage/testing on Mac the downloaded version was signed by me (using an Apple certificate from 4D Germany).
-
-To use and deploy we advise to download yourself from github/releases, sign it, and then sign/notarize the embedding 4D application.
-To sign enter by example:
-```
-codesign –force –sign "Developer ID Application: 4D Deutschland GmbH" /Users/thomas/Desktop/dbxcli
-```
+The tool is written in the language 'go', which allows a compilation of an executable without any dependencies. This means you an easily deploy it as part of your application (in Resource folder or similar), it uses the Apache License,
 
 If Dropbox changes the API, just download their latest release and replace the binary.
+
+You can compile it yourself (see instruction in link above) or download a precompiled version from Dropbox's github account.
+
+For Windows the downloaded version could be placed in Resources folder and so easily deployed. 
+
+For Mac, it needs to be signed by you. To sign enter by example:
+```
+codesign –force --options runtime --timestamp –sign "Developer ID Application: 4D Deutschland GmbH" /Users/thomas/Desktop/dbxcli
+```
+But the latest version as available in February 2022 was linked with a too old MacOS Version (<10.9) which does not allow to notarise the final application, forbidding to set the file inside the 4D application. This forces you to download on customer side and install it locally, to avoid the need to notarise. I tried to compile following the instructions myself, while the resulted executeable could upload/download, it could get get directory information for the root folder, so I'm not sure if recompilation is a solution for Mac.
+
 
 Copy class methods:  
 FileTansfer_Dropbox.4dm  
