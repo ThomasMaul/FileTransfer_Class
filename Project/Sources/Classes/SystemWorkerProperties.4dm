@@ -22,7 +22,11 @@ Function onData($systemworker : Object; $data : Object)
 	// not needed for Curl 
 	// in Gdrive or Dropbox used when asking for Authentication
 	This:C1470.data.text+=$data.data
-	If ((This:C1470.type="gdrive") | (This:C1470.type="dropbox"))
+	If ((This:C1470.type="gdrive") && (This:C1470.data.text="@Authentication@"))
+		$systemworker.terminate()
+	End if 
+	
+	If ((This:C1470.type="dropbox") && (This:C1470.data.text="@authorization@"))
 		$systemworker.terminate()
 	End if 
 	
