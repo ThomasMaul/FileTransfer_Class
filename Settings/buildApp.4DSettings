@@ -30,7 +30,7 @@
       <HardLink></HardLink>
     </CS>
     <BuildApplicationName>FileTransfer</BuildApplicationName>
-    <BuildMacDestFolder>::FileTransfer_Curl_Build</BuildMacDestFolder>
+    <BuildMacDestFolder>::FileTransfer_Curl_Build:</BuildMacDestFolder>
     <ArrayExcludedPluginName>
       <ItemsCount>0</ItemsCount>
     </ArrayExcludedPluginName>

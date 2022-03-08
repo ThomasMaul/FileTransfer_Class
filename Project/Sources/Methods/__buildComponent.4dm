@@ -9,8 +9,11 @@ follow https://blog.4d.com/how-to-notarize-your-merged-4d-application/
 
 in case you have several xcode, select the 'good' one with
 ###########
-sudo xcode-select -s /path/to/Xcode10.app
-Tested with XCode 12
+sudo xcode-select -s /path/to/Xcode13.app
+
+Tested with XCode 13. Minimum Version XCode 13, for older you need to use altool, see:
+https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow/notarizing_apps_when_developing_with_xcode_12_and_earlier
+
 Run XCode at least once manual to make sure it is correctly installed and license is accepted.
 After an XCode/System update another manual run might be necesssary to accept modified license.
 
