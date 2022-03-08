@@ -2,7 +2,7 @@ Class constructor()
 	This:C1470.onData:=New object:C1471("text"; "")
 	If (Is macOS:C1572)
 		This:C1470._return:=Char:C90(10)
-		This:C1470._Path:="/opt/homebrew/bin/gdrive"
+		//This._Path:="/opt/homebrew/bin/gdrive"
 		$path:=Get 4D folder:C485(Current resources folder:K5:16)+"gdrive"+Folder separator:K24:12+"gdrive"
 		This:C1470._Path:=Convert path system to POSIX:C1106($path)
 	Else 
