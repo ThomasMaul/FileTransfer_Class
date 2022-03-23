@@ -19,17 +19,14 @@ After an XCode/System update another manual run might be necesssary to accept mo
 
 ###########
 expects that you have installed your password in keychain named "altool" with:
-security add-generic-password -a "<apple_id>" -w "<password>" -s "altool"
+xcrun altool --list-providers -u "AC_USERNAME" -p secret_2FA_password
 Sign in to your Apple ID account page. In the Security section, click the “Generate Password” option below the “App-Specific Passwords” option, enter a password label as requested and click the “Create” button.
-If unclear, read blog!
+If unclear, read Apple docu above!
 
 ###########  NOTES
 you might need to start Xcode once manually after every macOS update to accept Xcode changes
 you might need to start Xcode to accept Apple contract changes or update expired certificates (visit developer.apple.com)
 */
-
-$appleUserID:="Thomas.Maul"+Char:C90(64)+"4D.com"  // I don't like my email on github in clear text
-$bundleID:="FileTransfer.de.4D.com"
 
 var $builder : cs:C1710._Build
 
@@ -41,7 +38,7 @@ Progress SET MESSAGE($progress; "Compile...")
 $error:=$builder.Compile()
 If ($error.success=True:C214)
 	Progress SET MESSAGE($progress; "Build...")
-	$error:=$builder.Build()
+	$error:=$builder.Build()  // $1 could be path to settings, if you have other than default ones
 End if 
 
 If ($error.success=True:C214)
@@ -51,42 +48,13 @@ End if
 
 If ($error.success=True:C214)
 	$target:=$error.target
-	Progress SET MESSAGE($progress; "Notarize...")
-	$error:=$builder.Notarize($target; $appleUserID; $bundleID)  // returned by zip
+	Progress SET MESSAGE($progress; "Notarize and wait for Apple's approval...")
+	$error:=$builder.Notarize($target)  // returned by zip
 End if 
 
 If ($error.success=True:C214)
-	$UUID:=$error.uuid
-	If ($uuid="")
-		$error:=New object:C1471("success"; False:C215; "log"; "Notarize UUID empty")
-	Else 
-		// now we need to wait - show progress bar?
-		
-		$finished:=False:C215
-		While ((Not:C34($finished)) & (Not:C34(Process aborted:C672)))
-			Progress SET MESSAGE($progress; "Checking Notarization: "+String:C10(Current time:C178))
-			DELAY PROCESS:C323(Current process:C322; 30*60)  // check twice a minute
-			$error:=$builder.CheckNotarizeResult($uuid; $appleUserID)
-			Case of 
-				: ($error.success=False:C215)
-					$finished:=True:C214
-				: (($error.success=True:C214) & ($error.status="in progress"))
-					// nothing, continue loop
-				: (($error.success=True:C214) & ($error.status="success"))
-					// finished! Now we can staple and rezip
-					Progress SET MESSAGE($progress; "Success - now running staple")
-					$error:=$builder.Staple($target)
-					$finished:=True:C214
-			End case 
-		End while 
-	End if 
+	$error:=$builder.Staple($target)
 End if 
-
-//If ($error.success=True)
-//Progress SET MESSAGE($progress; "Push to Git...")
-//$message:=Request("Commit message"; Timestamp)
-//$error:=$builder.CommitAndPush($message)
-//End if 
 
 Progress QUIT($progress)
 
