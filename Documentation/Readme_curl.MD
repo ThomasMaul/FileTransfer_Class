@@ -96,3 +96,9 @@ In a similar way you could exchange keys upfront to avoid using passwords at all
 Google "ssh key authentication" for more help and examples.
 
 As soon the authentication was done once via ssh (or the key is stored in your authorized_keys file by another way), the class can be used without providing credentials, just the URL is enough.
+
+# Class Documentation
+
+See Class documentation (in 4D use Explorer/Documentation)  
+[Documentation online](Classes/FileTransfer_curl.md)
+	

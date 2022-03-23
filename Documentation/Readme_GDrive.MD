@@ -96,5 +96,6 @@ The authentication will stay valid till you delete the local token file, which i
 # Class Documentation
 
 See Class documentation (in 4D use Explorer/Documentation)  
-[Documentation online](https://github.com/ThomasMaul/FileTransfer_Class/blob/main/Documentation/Classes/FileTransfer_GDrive.md)
+[Documentation online](Classes/FileTransfer_GDrive.md)
+	
 	
