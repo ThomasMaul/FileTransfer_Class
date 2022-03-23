@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences stamp="2">
+	<com.4d>
+		<compiler>
+			<options syntax_file="true"/>
+		</compiler>
+		<general component_classStore_name="FileTransfer"/>
+	</com.4d>
+</preferences>

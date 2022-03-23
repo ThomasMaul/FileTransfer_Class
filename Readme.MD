@@ -64,12 +64,12 @@ $result:=$ftp.download($source; $target)
 # Documentation
 
 ## cURL  (FTP - FTPS - SFTP - HTTP - HTTPS)
-[Documentation](ReadMe_curl.MD)
+[Documentation](Documentation/ReadMe_curl.MD)
 
 ## Dropbox
-[Documentation](ReadMe_dropbox.MD)
+[Documentation](Documentation/ReadMe_dropbox.MD)
 
 ## GDrive
-[Documentation](ReadMe_GDrive.MD)
+[Documentation](Documentation/ReadMe_GDrive.MD)
 
 		
