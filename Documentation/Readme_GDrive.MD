@@ -53,7 +53,7 @@ For Windows, just copy in resource folder for easy deployment.
 For Mac: sign it, and then sign/notarize the embedding 4D application.
 To sign enter by example:
 ```
-codesign –force --options runtime --timestamp –sign Developer ID Application: 4D Deutschland GmbH (4789QA2D2W)" /Users/thomas/Desktop/gdrive
+codesign –-force --options runtime --timestamp –-sign "Developer ID Application: 4D Deutschland GmbH" /Users/thomas/Desktop/gdrive
 ```
 
 If Gdrive changes the API, just download the latest release from the github repository.

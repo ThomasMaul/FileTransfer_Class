@@ -1,0 +1,37 @@
+Download:
+https://github.com/Frugghi/iSSH2
+
+this will handle compilation of OpenSSL and libSSH fully automatically!
+
+cd to folder and then enter:
+./iSSH2.sh --archs="x86_64" --platform=macosx --min-version=11.5
+./iSSH2.sh --archs=x86_64 --platform=macosx --min-version=11.5
+
+
+Next step:
+Download:
+https://github.com/curl/curl
+
+cd to folder and enter:
+
+export ARCH=x86_64
+export SDK=macosx
+export DEPLOYMENT_TARGET=12
+
+export CFLAGS="-arch $ARCH -isysroot $(xcrun -sdk $SDK --show-sdk-path) -m$SDK-version-min=$DEPLOYMENT_TARGET"
+
+Then (replace my path with your path where you copied iSSH2):
+
+./configure --host=x86_64-apple-darwin --prefix $(pwd)/artifacts -with-libssh2=/Users/thomasmaul/Documents/Development/iSSH2/libssh2_macosx  --disable-shared --with-openssl=/Users/thomasmaul/Documents/Development/openssl-1.1.1m
+
+Followed by:
+
+make -j8
+make install
+
+Now you have in the curl folder a subfolder named artefacts/bin and there you find "curl", which is the just build version.
+Last step: 
+Copy it into your destination folder, such as resources and sign it. (Modify the path below fitting to your path), also use your certificate name:
+
+codesign --sign "Developer ID Application: 4D Deutschland GmbH" /Users/thomas/Documents/4D/Komponenten/FileTransfer_Curl/optional/curl_Mac_precompiled/curl 
+

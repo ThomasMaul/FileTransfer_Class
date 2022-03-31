@@ -35,11 +35,19 @@ By installing "your" own version SFTP will be supported additionally, and this a
 
 Precompiled versions for Windows can be loaded here:
 [curl.se](https://curl.se/download.html)
+You can deploy them with your application by adding curl.exe to your Resource folder or similar.
 
-To use SFTP on Mac you need to install [Homebrew](https://brew.sh) and run:
+To use SFTP on Mac:
+If you need it just for you, internally:
+Recommended way is to install [Homebrew](https://brew.sh) and run:
 ```
 homebrew install curl
 ```
+
+To get a deployable version of curl you can compile it yourself or use a precompiled version (compiled by the author in March 2022), see folder "Optional:curl_Mac_precompiled". This version is already signed to ease notarization.
+
+To compile yourself (or use a newer version) follow the steps in optional:curl_Mac_precompiled:owToCompileYourself.txt
+
 
 Copy class methods:
  - FileTansfer_curl.4DM

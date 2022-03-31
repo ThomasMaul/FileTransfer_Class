@@ -1,0 +1,21 @@
+install go (https://go.dev/doc/install)
+
+Download source from releases, such as
+dbxcli-3.0.0.zip
+unzip
+copy source in ~/go/src/github.com/dropbox/dbxcli
+cd ~/go/src/github.com/dropbox/dbxcli
+
+go build
+
+you should have now in this folder a file named dbxli. Test if it works:
+
+thomas ~/go/src/github.com/dropbox/dbxcli  $ ./dbxcli version  
+dbxcli version: 0.1.0
+SDK version: 5.4.0
+Spec version: 097e9ba
+
+Last step: 
+Copy it into your destination folder, such as resources and sign it. (Modify the path below fitting to your path), also use your certificate name:
+
+codesign --force --options runtime --sign "Developer ID Application: 4D Deutschland GmbH" /Users/thomas/Documents/4D/Komponenten/FileTransfer_Curl/optional/dbxcli_Mac_precompiled/dbxcli
