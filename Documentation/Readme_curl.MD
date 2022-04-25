@@ -87,14 +87,14 @@ For more examples see the method "test_curl".
 Check the download part of the method to see how to use progress bar with Cancel Button and how to run two downloads/operations in parallel, each with a progress bar.
 
 ## SFTP (=SSH File Transfer Protocol)
-While FTPS is using standard TLS certificates (similar to HTTPS), SFTP is using the SSH protocol. In difference to FTPS this does not require to purchase a TLS certificate (or use Lets Encrypt to get free ones), but it requires to use an already authenticated client.
+While FTPS is using standard TLS certificates (similar to HTTPS), SFTP is using the SSH protocol. In difference to FTPS this does not require to purchase a TLS certificate (or use Lets Encrypt to get free ones), but while it encrypt the transfer, the client cannot know (=trust) if it really talks to the right server, except they exchange upfront their keys with a different way (USB stick, email, etc).
 
 [From Wikipedia](https://en.wikipedia.org/wiki/SSH_File_Transfer_Protocol)
 This protocol assumes that it is run over a secure channel, such as SSH, that the server has already authenticated the client, and that the identity of the client user is available to the protocol.
 
-This means that you cannot simply provide credentials (user+password) to login, you need to estabilish upfront a SSH connection to store the ssh key from the SFTP Server in the local keyring.
+While you normally do not simply provide credentials (user+password) to login, you need to estabilish upfront a SSH connection to store the ssh key from the SFTP Server in the local keyring. The benefit is that you do not need username+password for login, all goes through keys. But it is possible to use user+password similar as for FTPS, while you need to be aware that in this case you cannot trust that the connection really go to the right server, this is a possible security issue.
 
-Most easiest way is to open a terminal window (using Terminal on Mac/Terminal or Console on Windows) and enter:
+Most easiest way to check, exchange and store client and server keys is to open a terminal window (using Terminal on Mac/Terminal or Console on Windows) and enter:
 ```
 ssh username@sftp.servername.com
 ```
