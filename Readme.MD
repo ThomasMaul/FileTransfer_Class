@@ -16,9 +16,9 @@ Same commands/code can be used to upload/download files, create/rename/move/dele
 
 For FTP/FTPS/HTTPS the system build in cURL version can be used, but also overwritten with another version.
 
-For Dropbox a CLI tool (written in Go) is included.
+For Dropbox a CLI tool (written in Go) is used.
 
-For GDrive a CLI tool (written in Go) needs to be installed (requires usage of installer)
+For GDrive a CLI tool (written in Go) is used
 
 # Usage example
 

@@ -65,8 +65,6 @@ If (False:C215)
 End if 
 
 If (False:C215)
-	//$ftp.useCallback(Formula(ProgressCallback); "ProgressCallback")
-	
 	$source:="/test2.txt"
 	$target:=System folder:C487(Desktop:K41:16)+"newtest2.txt"
 	$target:=Convert path system to POSIX:C1106($target)
@@ -80,7 +78,6 @@ If (False:C215)
 	$source:="/test[1-3].txt"
 	//$source:="/large/4D.dmg"
 	//$ftp.setRange("-100")
-	//$source:="/share/MD0_DATA/Archiv/Diverses_ohne_Backup/test/test[1-3].txt"
 	
 	$target:=System folder:C487(Desktop:K41:16)+"neu"+Folder separator:K24:12
 	$target:=Convert path system to POSIX:C1106($target)
@@ -92,7 +89,7 @@ End if
 
 If (True:C214)
 	$source:="/large/4D.dmg"
-	//$ftp.setCurlPrefix("--limit-rate 25M")  // make it slow for testing - limiting bandwidth
+	// $ftp.setCurlPrefix("--limit-rate 25M")  // make it slow for testing - limiting bandwidth
 	
 	$progressid:="Download 4D.dmg"
 	$ftp.useCallback(Formula:C1597(ProgressCallback); $progressid)
