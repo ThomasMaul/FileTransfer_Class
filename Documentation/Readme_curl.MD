@@ -92,18 +92,7 @@ While FTPS is using standard TLS certificates (similar to HTTPS), SFTP is using 
 [From Wikipedia](https://en.wikipedia.org/wiki/SSH_File_Transfer_Protocol)
 This protocol assumes that it is run over a secure channel, such as SSH, that the server has already authenticated the client, and that the identity of the client user is available to the protocol.
 
-While you normally do not simply provide credentials (user+password) to login, you need to estabilish upfront a SSH connection to store the ssh key from the SFTP Server in the local keyring. The benefit is that you do not need username+password for login, all goes through keys. But it is possible to use user+password similar as for FTPS, while you need to be aware that in this case you cannot trust that the connection really go to the right server, this is a possible security issue.
-
-Most easiest way to check, exchange and store client and server keys is to open a terminal window (using Terminal on Mac/Terminal or Console on Windows) and enter:
-```
-ssh username@sftp.servername.com
-```
-
-This will request the password and display the ssh hash, asking if you accept to store it in your .ssh/authorized_keys file.
-In a similar way you could exchange keys upfront to avoid using passwords at all to enhance security.
-Google "ssh key authentication" for more help and examples.
-
-As soon the authentication was done once via ssh (or the key is stored in your authorized_keys file by another way), the class can be used without providing credentials, just the URL is enough.
+Using SFTP you might either use username+password as you would do with FTPS, or exchange keys. To use SFTP via keys, establish upfront a SSH connection using Terminal, this setup will be reused from cURL.
 
 # Class Documentation
 

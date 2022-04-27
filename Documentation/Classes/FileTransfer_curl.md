@@ -43,6 +43,7 @@ For more examples see the method "test_curl".
 |[.setCurlPrefix](#setcurlprefix)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use any additional cURL options.|
 |[.setPath](#setpath)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to use another cURL installation.|
 |[.enableProgressData](#enableprogressdata)<p>&nbsp;&nbsp;&nbsp;&nbsp;If enabled, result.data will include progress information text.|
+|[.enableStopButton](#enablestopbutton)<p>&nbsp;&nbsp;&nbsp;&nbsp;Display stop button in progress dialog.|
 |[.setAsyncMode](#setasyncmode)<p>&nbsp;&nbsp;&nbsp;&nbsp;By default all commands are executed synchronously, meaning the command do not return till execution is completed or a timeout occurred. This allows all command to return the result or execution information..|
 |[.setTimeout](#settimeout)<p>&nbsp;&nbsp;&nbsp;&nbsp;sets a maximum worker execution time, stopping everything.|
 |[.stop](#stop)<p>&nbsp;&nbsp;&nbsp;&nbsp;Terminates the execution of a running operation, such as upload or download.|
@@ -400,6 +401,17 @@ If enabled, result.data will include progress information text, allowing to get 
 Depending of total transfer time, the text will include additional lines with progress info.
 Automatically enabled if useCallback is enabled.
 
+## enableStopButton
+
+### .enableStopButton(enable:Shared Object)
+|Parameter|Type||Description|
+|---------|--- |:---:|------|
+|enable|Object|->|Shared Object with Attribut Stop|
+
+#### Description
+Only useable if included or similar ProgressCallback method is used.
+If passed it enables the stop button in progress bar, allowing the end user to abort the operation. If Stop button is clicked, attribut of shared object enable.stop is set to true
+
 ## setAsyncMode
 
 ### .setAsyncMode(async:Boolean)
@@ -470,7 +482,7 @@ The command returns after given wait time or before if execution is finished.
 |Parameter|Type||Description|
 |---------|--- |:---:|------|
 |callback|4D.Function|->|4d function to call during progress|
-|ID|Text|->|unique text to pass to callback method to identify job|
+|ID|Text|->|text to display in progress title, such as download file name|
 
 #### Description
 Allows to show a progress bar during long running operations or to get informed when command execution is complete.
@@ -481,52 +493,63 @@ The callback method is called whenever a new progress message is available from 
 
 ```4D
 $ftp.useCallback(Formula(ProgressCallback); "Download 4D.dmg")
-$ftp.setAsyncMode(True)
 $result:=$ftp.download($source; $target)
-Repeat 
-	$ftp.wait(1)  // needed while our process is running
-	// wait is not needed if a form would be open or if a worker would handle the job
-	$status:=$ftp.status()
-Until (Bool($status.terminated))
+If ($checkstop.stop=True)  // user clicked stop button
+...
+End if
 ```
 
 Method ProgressCallback
 
 ```4D
-#DECLARE($ID : Text; $message : Text; $value : Integer)
+#DECLARE($ID : Text; $message : Text; $value : Integer; $sharedForProgressBar : Object)
 // called from cs.FileTransfer if callback is set via .useCallback()
 
 // $ID is set through code - $message comes from curl
+// shared object to pass progress ID back/forth and to share stop button result
 
-var ProgressBarID : Integer
+$ProgressBarID:=$sharedForProgressBar.ID
 
-If (ProgressBarID=0)
-	ProgressBarID:=Progress New
-	Progress SET MESSAGE(ProgressBarID; $ID)
-End if 
-
-If ($value=100)
-	Progress QUIT(ProgressBarID)
-	ProgressBarID:=0
-Else 
-	Progress SET PROGRESS(ProgressBarID; $value/100)
-End if 
-```
-
-To support the stop button in the progress bar, Storage needs to be used to share progress bar and worker IDs. See example in test_curl - download.
-```4D
-	// enable stop button in progress bar
-	Use (Storage.FileTransfer_Progress)
-		Storage.FileTransfer_Progress[$progressid]:=New shared object()
+If (($ProgressBarID=0) && ($value#100))
+	$ProgressBarID:=Progress New
+	Use ($sharedForProgressBar)
+		$sharedForProgressBar.ID:=$ProgressBarID
 	End use 
-	$ftp.useCallback(Formula(ProgressCallback); $progressid)
+	Progress SET TITLE($ProgressBarID; $ID)
+	
+	// check if we want stop, if yes, add stop button
+	If ($sharedForProgressBar.EnableButton#Null)
+		Progress SET BUTTON ENABLED($ProgressBarID; True)
+	End if 
+End if 
+
+If ($ProgressBarID#0)
+	If (Progress Stopped($ProgressBarID))  // only if stop button is enabled
+		Use ($sharedForProgressBar)
+			$sharedForProgressBar.Stop:=True
+			Use ($sharedForProgressBar.EnableButton)
+				$sharedForProgressBar.EnableButton.stop:=True
+			End use 
+		End use 
+	End if 
+	
+	Case of 
+		: ($value=100)
+			Progress QUIT($ProgressBarID)
+			Use ($sharedForProgressBar)
+				$sharedForProgressBar.ID:=0
+			End use 
+		: ($value<0)
+			$message2:=Replace string($message; " "; "")  // ignore totally empty messages, happens with gdrive
+			If ($message2#"")
+				Progress SET MESSAGE($ProgressBarID; $message)
+			End if 
+		Else 
+			Progress SET PROGRESS($ProgressBarID; $value/100)
+	End case 
+End if 
+
 ```
 
-After execution of download/upload/etc, check:
-```4D
-	If (Bool(Storage.FileTransfer_Progress[$progressid].Stop))  // check stop button if it was set, remove from storage
-		// user canceled!!
-```
 
-Don't forget to remove the object from storage when done.
 See test_curl - download for a full example

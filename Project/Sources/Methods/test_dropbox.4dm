@@ -58,7 +58,7 @@ If (False:C215)
 	// normally we are supposed to do something else and either
 	// check from time to time or to use the callback method to inform us (percent=100)
 	Repeat 
-		$ftp.wait(1)  // needed while our process is running
+		$ftp.wait(0.1)  // needed while our process is running
 		// wait is not needed if a form would be open or if a worker would handle the job
 		$status:=$ftp.status()
 		
@@ -68,31 +68,21 @@ End if
 
 If (True:C214)
 	$progressid:="upload 4D.dmg"
-	If (Storage:C1525.FileTransfer_Progress=Null:C1517)
-		Use (Storage:C1525)
-			Storage:C1525.FileTransfer_Progress:=New shared object:C1526
-		End use 
-	End if 
-	// enable stop button in progress bar
-	Use (Storage:C1525.FileTransfer_Progress)
-		Storage:C1525.FileTransfer_Progress[$progressid]:=New shared object:C1526()
-	End use 
+	$checkstop:=New shared object:C1526("stop"; False:C215)
+	$ftp.enableStopButton($checkstop)
 	$ftp.useCallback(Formula:C1597(ProgressCallback); $progressid)
 	$ftp.setAsyncMode(False:C215)
 	$source:=System folder:C487(Desktop:K41:16)+"4d.dmg"
 	$source:=Convert path system to POSIX:C1106($source)
 	$target:="/Firma/4d.dmg"
 	$result:=$ftp.upload($source; $target)
-	If (Bool:C1537(Storage:C1525.FileTransfer_Progress[$progressid].Stop))  // check stop button if it was set, remove from storage
+	If ($checkstop.stop=True:C214)  // user clicked stop button
 		// user canceled!!
 	Else 
 		If ($result.success)
 			$answer:=$result.data
 		End if 
 	End if 
-	Use (Storage:C1525.FileTransfer_Progress)  // clear storage
-		OB REMOVE:C1226(Storage:C1525.FileTransfer_Progress; $progressid)
-	End use 
 End if 
 
 If (False:C215)

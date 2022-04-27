@@ -90,83 +90,52 @@ If (False:C215)
 	End if 
 End if 
 
-If (False:C215)
+If (True:C214)
 	$source:="/large/4D.dmg"
-	$ftp.setCurlPrefix("--limit-rate 25M")
+	//$ftp.setCurlPrefix("--limit-rate 25M")  // make it slow for testing - limiting bandwidth
 	
 	$progressid:="Download 4D.dmg"
-	If (Storage:C1525.FileTransfer_Progress=Null:C1517)
-		Use (Storage:C1525)
-			Storage:C1525.FileTransfer_Progress:=New shared object:C1526
-		End use 
-	End if 
-	// enable stop button in progress bar
-	Use (Storage:C1525.FileTransfer_Progress)
-		Storage:C1525.FileTransfer_Progress[$progressid]:=New shared object:C1526()
-	End use 
 	$ftp.useCallback(Formula:C1597(ProgressCallback); $progressid)
-	$ftp.setAsyncMode(True:C214)
-	
+	$ftp.setAsyncMode(False:C215)  // default is false, no need to set
+	$checkstop:=New shared object:C1526("stop"; False:C215)
+	$ftp.enableStopButton($checkstop)
 	$target:=System folder:C487(Desktop:K41:16)+"neu"+Folder separator:K24:12
 	$target:=Convert path system to POSIX:C1106($target)
 	$result:=$ftp.download($source; $target)
-	// async, so we need to loop...
-	// normally we are supposed to do something else and either
-	// check from time to time or to use the callback method to inform us (percent=100)
-	Repeat 
-		$ftp.wait(1)  // needed while our process is running
-		// wait is not needed if a form would be open or if a worker would handle the job
-		$status:=$ftp.status()
-		
-	Until (Bool:C1537($status.terminated))
 	
-	// did user canceled?
-	If (Bool:C1537(Storage:C1525.FileTransfer_Progress[$progressid].Stop))  // check stop button if it was set, remove from storage
+	If ($checkstop.stop=True:C214)  // user clicked stop button
 		// user canceled!!
 	Else 
-		// now check for errors in $ftp.ResponseError
+		// now check for errors in $status.ResponseError
 	End if 
-	// clear Storage
-	Use (Storage:C1525.FileTransfer_Progress)
-		OB REMOVE:C1226(Storage:C1525.FileTransfer_Progress; $progressid)
-	End use 
+	
 End if 
 
 
 If (True:C214)  // download two in parallel
 	$source:="/large/4D.dmg"
-	If (Storage:C1525.FileTransfer_Progress=Null:C1517)
-		Use (Storage:C1525)
-			Storage:C1525.FileTransfer_Progress:=New shared object:C1526
-		End use 
-	End if 
 	
 	var $ftp2 : cs:C1710.FileTransfer_curl
 	$ftp2:=cs:C1710.FileTransfer_curl.new($credentials.url; $credentials.user; $credentials.pass; "ftp")
-	$ftp.setCurlPrefix("--limit-rate 25M")
+	//$ftp.setCurlPrefix("--limit-rate 25M")
 	$progressid2:="2-Download 4D.dmg"
-	$ftp2.setCurlPrefix("--limit-rate 25M")
+	//$ftp2.setCurlPrefix("--limit-rate 25M")
 	$ftp.setAutoCreateRemoteDirectory(True:C214)
 	$ftp.setAutoCreateLocalDirectory(True:C214)
 	$ftp2.setAutoCreateRemoteDirectory(True:C214)
 	$ftp2.setAutoCreateLocalDirectory(True:C214)
-	Use (Storage:C1525.FileTransfer_Progress)
-		Storage:C1525.FileTransfer_Progress[$progressid2]:=New shared object:C1526()
-	End use 
 	$ftp2.useCallback(Formula:C1597(ProgressCallback); $progressid2)
 	$ftp2.setAsyncMode(True:C214)
+	$checkstop:=New shared object:C1526("stop"; False:C215)
+	$ftp.enableStopButton($checkstop)
+	$checkstop2:=New shared object:C1526("stop"; False:C215)
+	$ftp2.enableStopButton($checkstop2)
 	$target:=System folder:C487(Desktop:K41:16)+"neu2"+Folder separator:K24:12
 	$target:=Convert path system to POSIX:C1106($target)
 	$result2:=$ftp2.download($source; $target)
 	
-	
 	$ftp.setCurlPrefix("--limit-rate 25M")
 	$progressid:="Download 4D.dmg"
-	
-	// enable stop button in progress bar
-	Use (Storage:C1525.FileTransfer_Progress)
-		Storage:C1525.FileTransfer_Progress[$progressid]:=New shared object:C1526()
-	End use 
 	$ftp.useCallback(Formula:C1597(ProgressCallback); $progressid)
 	$ftp.setAsyncMode(True:C214)
 	
@@ -177,8 +146,8 @@ If (True:C214)  // download two in parallel
 	// normally we are supposed to do something else and either
 	// check from time to time or to use the callback method to inform us (percent=100)
 	Repeat 
-		$ftp.wait(1)  // needed while our process is running
-		$ftp2.wait(1)  // needed while our process is running
+		$ftp.wait(0.1)  // needed while our process is running
+		$ftp2.wait(0.1)  // needed while our process is running
 		
 		// wait is not needed if a form would be open or if a worker would handle the job
 		$status:=$ftp.status()
@@ -186,17 +155,6 @@ If (True:C214)  // download two in parallel
 		
 	Until (Bool:C1537($status.terminated) & Bool:C1537($status2.terminated))
 	
-	// did user canceled?
-	If (Bool:C1537(Storage:C1525.FileTransfer_Progress[$progressid].Stop))  // check stop button if it was set, remove from storage
-		// user canceled!!
-	Else 
-		// now check for errors in $ftp.ResponseError
-	End if 
-	// clear Storage
-	Use (Storage:C1525.FileTransfer_Progress)
-		OB REMOVE:C1226(Storage:C1525.FileTransfer_Progress; $progressid)
-		OB REMOVE:C1226(Storage:C1525.FileTransfer_Progress; $progressid2)
-	End use 
 End if 
 
 

@@ -37,6 +37,7 @@ End if
 |[.executeCommand](#executecommand)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to pass any valid GDrive command and directly execute it.|
 |[.version](#version)<p>&nbsp;&nbsp;&nbsp;&nbsp;returns in result.data version information from Gdrive Command Line Interface Tool|
 |[.setPath](#setpath)<p>&nbsp;&nbsp;&nbsp;&nbsp;Allows to specify the installation path.|
+|[.enableStopButton](#enablestopbutton)<p>&nbsp;&nbsp;&nbsp;&nbsp;Display stop button in progress dialog.|
 |[.setAsyncMode](#setasyncmode)<p>&nbsp;&nbsp;&nbsp;&nbsp;By default all commands are executed synchronously, meaning the command do not return till execution is completed or a timeout occurred. This allows all command to return the result or execution information..|
 |[.setTimeout](#settimeout)<p>&nbsp;&nbsp;&nbsp;&nbsp;sets a maximum worker execution time, stopping everything.|
 |[.stop](#stop)<p>&nbsp;&nbsp;&nbsp;&nbsp;Terminates the execution of a running operation, such as upload or download.|
@@ -348,6 +349,18 @@ Allows to use another gdrive installation.
 
 Precompiled versions for Mac and Windows can be downloaded from:
 [gdrive](https://github.com/prasmussen/gdrive/releases)
+
+
+## enableStopButton
+
+### .enableStopButton(enable:Shared Object)
+|Parameter|Type||Description|
+|---------|--- |:---:|------|
+|enable|Object|->|Shared Object with Attribut Stop|
+
+#### Description
+Only useable if included or similar ProgressCallback method is used.
+If passed it enables the stop button in progress bar, allowing the end user to abort the operation. If Stop button is clicked, attribut of shared object enable.stop is set to true
 
 
 ## setAsyncMode

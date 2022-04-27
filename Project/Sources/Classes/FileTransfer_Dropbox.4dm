@@ -111,6 +111,9 @@ Function setTimeout($timeout : Integer)
 Function setAsyncMode($async : Boolean)
 	This:C1470._async:=$async
 	
+Function enableStopButton($enable : Object)
+	This:C1470._enableStopButton:=$enable
+	
 Function stop()
 	If (This:C1470._worker#Null:C1517)
 		This:C1470._worker.terminate()
@@ -155,7 +158,7 @@ Function _parseDirListing($success : Object)
 	
 Function _runWorker($para : Text)->$result : Object
 	If (This:C1470._Callback#Null:C1517)
-		$workerpara:=cs:C1710.SystemWorkerProperties.new("dropbox"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID)
+		$workerpara:=cs:C1710.SystemWorkerProperties.new("dropbox"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID; This:C1470._enableStopButton)
 	Else 
 		$workerpara:=cs:C1710.SystemWorkerProperties.new("dropbox"; This:C1470.onData)
 	End if 

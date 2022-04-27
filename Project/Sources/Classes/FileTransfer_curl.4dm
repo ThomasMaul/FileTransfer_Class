@@ -17,6 +17,7 @@ Class constructor($hostname : Text; $username : Text; $password : Text; $protoco
 		This:C1470._return:=Char:C90(10)  //Char(13)+Char(10)
 	End if 
 	This:C1470._timeout:=0
+	This:C1470._enableStopButton:=False:C215
 	
 	//MARK: Settings
 Function validate()->$success : Object
@@ -74,6 +75,9 @@ Function setPath($path : Text)
 	
 Function enableProgressData($enable : Boolean)
 	This:C1470._noProgress:=Not:C34($enable)
+	
+Function enableStopButton($enable : Object)
+	This:C1470._enableStopButton:=$enable
 	
 Function useCallback($callback : 4D:C1709.Function; $ID : Text)
 	ASSERT:C1129(Value type:C1509($callback)=Is object:K8:27; "Callback must be of type function")
@@ -303,7 +307,7 @@ Function _buildURL()->$url : Text
 	
 Function _runWorker($para : Text)->$result : Object
 	If (This:C1470._Callback#Null:C1517)
-		$workerpara:=cs:C1710.SystemWorkerProperties.new("curl"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID)
+		$workerpara:=cs:C1710.SystemWorkerProperties.new("curl"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID; This:C1470._enableStopButton)
 	Else 
 		$workerpara:=cs:C1710.SystemWorkerProperties.new("curl"; This:C1470.onData)
 	End if 
@@ -338,7 +342,6 @@ Function _runWorker($para : Text)->$result : Object
 	$command:=$path+" "+$para
 	$old:=Method called on error:C704
 	ON ERR CALL:C155(Formula:C1597(ErrorHandler).source)
-	$workerpara.variables:=New object:C1471("userCancel"; "false")
 	This:C1470._worker:=4D:C1709.SystemWorker.new($command; $workerpara)
 	$worker:=This:C1470._worker
 	
@@ -348,25 +351,22 @@ Function _runWorker($para : Text)->$result : Object
 		Else 
 			$waittimeout:=(This:C1470._timeout=0) ? 60 : This:C1470._timeout
 			$worker.wait($waittimeout)
-			If (Bool:C1537($worker.userCancel))
-				$result:=New object:C1471("responseError"; "Cancel by user"; "success"; False:C215)
-			Else 
-				If (($worker.responseError#Null:C1517) && ($worker.responseError#""))
-					$result:=New object:C1471("responseError"; $worker.responseError; "success"; False:C215)
-					$pos:=Position:C15("curl: "; $worker.responseError; *)
-					If ($pos>0)
-						$result.error:=Replace string:C233(Substring:C12($worker.responseError; $pos+6); Char:C90(10); "")
-					Else 
-						// seems not to be an error, curl set's process bar in error and no result in response.
-						If ($worker.response#"")
-							$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
-						Else 
-							$result:=New object:C1471("data"; $worker.responseError; "success"; True:C214)
-						End if 
-					End if 
+			
+			If (($worker.responseError#Null:C1517) && ($worker.responseError#""))
+				$result:=New object:C1471("responseError"; $worker.responseError; "success"; False:C215)
+				$pos:=Position:C15("curl: "; $worker.responseError; *)
+				If ($pos>0)
+					$result.error:=Replace string:C233(Substring:C12($worker.responseError; $pos+6); Char:C90(10); "")
 				Else 
-					$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
+					// seems not to be an error, curl set's process bar in error and no result in response.
+					If ($worker.response#"")
+						$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
+					Else 
+						$result:=New object:C1471("data"; $worker.responseError; "success"; True:C214)
+					End if 
 				End if 
+			Else 
+				$result:=New object:C1471("data"; $worker.response; "success"; True:C214)
 			End if 
 		End if 
 	Else 

@@ -1,4 +1,4 @@
-Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $callbackID : Text)
+Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $callbackID : Text; $stopButton : Object)
 	This:C1470.type:=$type
 	This:C1470.encoding:="UTF-8"
 	This:C1470.dataType:="text"
@@ -17,28 +17,38 @@ Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $
 	Else 
 		This:C1470._return:=Char:C90(13)
 	End if 
+	// we need to share an object for stop button with progress worker. No need for Storage, only these two processes
+	// needs access
+	This:C1470.SharedForProgressBar:=New shared object:C1526("ID"; 0; "Stop"; False:C215; "EnableButton"; This:C1470.stopbutton)
 	
 Function onData($systemworker : Object; $data : Object)
+	This:C1470.data.text+=$data.data
+	
 	// not needed for Curl 
 	// in Gdrive or Dropbox used when asking for Authentication
-	This:C1470.data.text+=$data.data
 	If ((This:C1470.type="gdrive") && (This:C1470.data.text="@Authentication@"))
 		$systemworker.terminate()
+		return 
 	End if 
 	
 	If ((This:C1470.type="dropbox") && (This:C1470.data.text="@authorization@"))
 		$systemworker.terminate()
+		return 
+	End if 
+	
+	// check for stop button in progress bar
+	If (Bool:C1537(This:C1470.SharedForProgressBar.Stop))
+		$systemworker.terminate()
+		return 
 	End if 
 	
 Function onDataError($systemworker : Object; $data : Object)
 	// called when data is received from curl or dropbox to handle progress bar
 	
 	// check for stop button in progress bar
-	If ((This:C1470.callbackID#"") && (This:C1470.callback#Null:C1517))
-		If (Bool:C1537(Storage:C1525.FileTransfer_Progress[This:C1470.callbackID].Stop))
-			$systemworker.terminate()
-			return 
-		End if 
+	If (Bool:C1537(This:C1470.SharedForProgressBar.Stop))
+		$systemworker.terminate()
+		return 
 	End if 
 	
 	If (String:C10($data.data)#"")
@@ -49,14 +59,14 @@ Function onDataError($systemworker : Object; $data : Object)
 				: (This:C1470.type="gdrive")
 					$pos:=Position:C15(Char:C90(13); This:C1470.data.text)
 					If ($pos>0)
-						CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; Substring:C12(This:C1470.data.text; 1; $pos-1); -1)
+						CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; Substring:C12(This:C1470.data.text; 1; $pos-1); -1; This:C1470.SharedForProgressBar)
 						This:C1470.data.text:=Substring:C12(This:C1470.data.text; $pos+1)
 					End if 
 				: (This:C1470.type="dropbox")
 					$pos:=Position:C15(This:C1470._return; This:C1470.data.text)
 					If ($pos>0)
 						If ($pos=Length:C16(This:C1470.data.text))  // Dropbox
-							CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; This:C1470.data.text; -1)
+							CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; This:C1470.data.text; -1; This:C1470.SharedForProgressBar)
 							This:C1470.data.text:=""
 						End if 
 					End if 
@@ -66,14 +76,14 @@ Function onDataError($systemworker : Object; $data : Object)
 					This:C1470.data.text:=Substring:C12(This:C1470.data.text; $pos+1)
 					$progress:=Num:C11(Substring:C12($message; 1; 3))
 					If ($progress#0)
-						CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; $message; $progress)
+						CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; $message; $progress; This:C1470.SharedForProgressBar)
 					End if 
 			End case 
 		End if 
 	End if 
 	
 Function onTerminate($systemworker : Object; $data : Object)
-	CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; ""; 100)
+	CALL WORKER:C1389("FileTransferProgress"; This:C1470.callback.source; This:C1470.callbackID; ""; 100; This:C1470.SharedForProgressBar)
 	//This._createFile("onTerminate"; $data.data)
 	
 	
@@ -81,3 +91,4 @@ Function onTerminate($systemworker : Object; $data : Object)
 Function _createFile($title : Text; $textBody : Text)
 	// debug only
 	TEXT TO DOCUMENT:C1237(Get 4D folder:C485(Current resources folder:K5:16)+$title+".txt"; $textBody)
+	

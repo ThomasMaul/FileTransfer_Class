@@ -318,6 +318,9 @@ Function useCallback($callback : 4D:C1709.Function; $ID : Text)
 Function setAsyncMode($async : Boolean)
 	This:C1470._async:=$async
 	
+Function enableStopButton($enable : Object)
+	This:C1470._enableStopButton:=$enable
+	
 Function setTimeout($timeout : Integer)
 	This:C1470._timeout:=$timeout
 	
@@ -373,7 +376,7 @@ Function _parseDirListing($success : Object)
 	
 Function _runWorker($para : Text)->$result : Object
 	If (This:C1470._Callback#Null:C1517)
-		$workerpara:=cs:C1710.SystemWorkerProperties.new("gdrive"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID)
+		$workerpara:=cs:C1710.SystemWorkerProperties.new("gdrive"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID; This:C1470._enableStopButton)
 	Else 
 		$workerpara:=cs:C1710.SystemWorkerProperties.new("gdrive"; This:C1470.onData)
 	End if 

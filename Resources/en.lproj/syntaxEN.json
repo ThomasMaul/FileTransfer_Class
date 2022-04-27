@@ -2,7 +2,7 @@
 	"_method_": {},
 	"SystemWorkerProperties": {
 		"new()": {
-			"Syntax": "**.new**(*type* : Text; *data* : Object; *callback* : 4D.Function; *callbackID* : Text)",
+			"Syntax": "**.new**(*type* : Text; *data* : Object; *callback* : 4D.Function; *callbackID* : Text; *stopButton* : Object)",
 			"Params": [
 				[
 					"type",
@@ -22,6 +22,11 @@
 				[
 					"callbackID",
 					"Text",
+					"->"
+				],
+				[
+					"stopButton",
+					"Object",
 					"->"
 				]
 			],
@@ -220,6 +225,39 @@
 			],
 			"Summary": ""
 		},
+		"version()": {
+			"Syntax": "**.version**()->data : Object",
+			"Params": [
+				[
+					"data",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"setRange()": {
+			"Syntax": "**.setRange**(*range* : Text)",
+			"Params": [
+				[
+					"range",
+					"Text",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
+		"enableStopButton()": {
+			"Syntax": "**.enableStopButton**(*enable* : Object)",
+			"Params": [
+				[
+					"enable",
+					"Object",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
 		"renameFile()": {
 			"Syntax": "**.renameFile**(*sourcepath* : Text; *targetpath* : Text)->success : Object",
 			"Params": [
@@ -263,38 +301,6 @@
 			],
 			"Summary": ""
 		},
-		"setAutoCreateRemoteDirectory()": {
-			"Syntax": "**.setAutoCreateRemoteDirectory**(*auto* : Boolean)",
-			"Params": [
-				[
-					"auto",
-					"Boolean",
-					"->"
-				]
-			],
-			"Summary": ""
-		},
-		"createDirectory()": {
-			"Syntax": "**.createDirectory**(*targetpath* : Text)->success : Object",
-			"Params": [
-				[
-					"targetpath",
-					"Text",
-					"->"
-				],
-				[
-					"success",
-					"Object",
-					"<-"
-				]
-			],
-			"Summary": ""
-		},
-		"stop()": {
-			"Syntax": "**.stop**()",
-			"Params": [],
-			"Summary": ""
-		},
 		"setActiveMode()": {
 			"Syntax": "**.setActiveMode**(*active* : Boolean; *IP* : Text)",
 			"Params": [
@@ -305,28 +311,6 @@
 				],
 				[
 					"IP",
-					"Text",
-					"->"
-				]
-			],
-			"Summary": ""
-		},
-		"version()": {
-			"Syntax": "**.version**()->data : Object",
-			"Params": [
-				[
-					"data",
-					"Object",
-					"<-"
-				]
-			],
-			"Summary": ""
-		},
-		"setRange()": {
-			"Syntax": "**.setRange**(*range* : Text)",
-			"Params": [
-				[
-					"range",
 					"Text",
 					"->"
 				]
@@ -441,6 +425,38 @@
 				]
 			],
 			"Summary": ""
+		},
+		"stop()": {
+			"Syntax": "**.stop**()",
+			"Params": [],
+			"Summary": ""
+		},
+		"createDirectory()": {
+			"Syntax": "**.createDirectory**(*targetpath* : Text)->success : Object",
+			"Params": [
+				[
+					"targetpath",
+					"Text",
+					"->"
+				],
+				[
+					"success",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"setAutoCreateRemoteDirectory()": {
+			"Syntax": "**.setAutoCreateRemoteDirectory**(*auto* : Boolean)",
+			"Params": [
+				[
+					"auto",
+					"Boolean",
+					"->"
+				]
+			],
+			"Summary": ""
 		}
 	},
 	"FileTransfer_Dropbox": {
@@ -463,6 +479,17 @@
 		"stop()": {
 			"Syntax": "**.stop**()",
 			"Params": [],
+			"Summary": ""
+		},
+		"enableStopButton()": {
+			"Syntax": "**.enableStopButton**(*enable* : Object)",
+			"Params": [
+				[
+					"enable",
+					"Object",
+					"->"
+				]
+			],
 			"Summary": ""
 		},
 		"setAsyncMode()": {
@@ -808,6 +835,17 @@
 			],
 			"Summary": ""
 		},
+		"enableStopButton()": {
+			"Syntax": "**.enableStopButton**(*enable* : Object)",
+			"Params": [
+				[
+					"enable",
+					"Object",
+					"->"
+				]
+			],
+			"Summary": ""
+		},
 		"version()": {
 			"Syntax": "**.version**()->data : Object",
 			"Params": [
@@ -1094,11 +1132,11 @@
 			"Params": [],
 			"Summary": ""
 		},
-		"CommitAndPush()": {
-			"Syntax": "**.CommitAndPush**(*message* : Text)->error : Object",
+		"Notarize()": {
+			"Syntax": "**.Notarize**(*zipfilepath* : Text)->error : Object",
 			"Params": [
 				[
-					"message",
+					"zipfilepath",
 					"Text",
 					"->"
 				],
@@ -1111,76 +1149,8 @@
 			"Summary": ""
 		},
 		"Staple()": {
-			"Syntax": "**.Staple**(*zipfilepath* : Text)->error : Object",
+			"Syntax": "**.Staple**()->error : Object",
 			"Params": [
-				[
-					"zipfilepath",
-					"Text",
-					"->"
-				],
-				[
-					"error",
-					"Object",
-					"<-"
-				]
-			],
-			"Summary": ""
-		},
-		"Compile()": {
-			"Syntax": "**.Compile**(*options* : Object)->error : Object",
-			"Params": [
-				[
-					"options",
-					"Object",
-					"->"
-				],
-				[
-					"error",
-					"Object",
-					"<-"
-				]
-			],
-			"Summary": ""
-		},
-		"CheckNotarizeResult()": {
-			"Syntax": "**.CheckNotarizeResult**(*uuid* : Text; *appleUserID* : Text)->error : Object",
-			"Params": [
-				[
-					"uuid",
-					"Text",
-					"->"
-				],
-				[
-					"appleUserID",
-					"Text",
-					"->"
-				],
-				[
-					"error",
-					"Object",
-					"<-"
-				]
-			],
-			"Summary": ""
-		},
-		"Notarize()": {
-			"Syntax": "**.Notarize**(*zipfilepath* : Text; *appleUserID* : Text; *bundleID* : Variant)->error : Object",
-			"Params": [
-				[
-					"zipfilepath",
-					"Text",
-					"->"
-				],
-				[
-					"appleUserID",
-					"Text",
-					"->"
-				],
-				[
-					"bundleID",
-					"Variant",
-					"->"
-				],
 				[
 					"error",
 					"Object",
@@ -1216,6 +1186,22 @@
 				[
 					"targetpath",
 					"Text",
+					"->"
+				],
+				[
+					"error",
+					"Object",
+					"<-"
+				]
+			],
+			"Summary": ""
+		},
+		"Compile()": {
+			"Syntax": "**.Compile**(*options* : Object)->error : Object",
+			"Params": [
+				[
+					"options",
+					"Object",
 					"->"
 				],
 				[
