@@ -15,6 +15,14 @@ dbxcli version: 0.1.0
 SDK version: 5.4.0
 Spec version: 097e9ba
 
+Note: this runs a build fitting your current CPU architecture. If you run on Intel, you get Intel. If you are using AMD/Silicon, you get a build for Silicon.
+While Intel can be used on Silicon thanks to Rosetta, it does not work the other way around.
+
+To build on ARM an Intel version, useable on both architecture, instead of go build ente:
+GOOS=darwin GOARCH=amd64 go build -o dbxcli main.go          
+
+Test as above.
+
 Last step: 
 Copy it into your destination folder, such as resources and sign it. (Modify the path below fitting to your path), also use your certificate name:
 
