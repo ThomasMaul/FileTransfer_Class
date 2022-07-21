@@ -34,7 +34,7 @@ Function onDataError($systemworker : Object; $data : Object)
 	// called when data is received from curl or dropbox to handle progress bar
 	
 	// check for stop button in progress bar
-	If ((This:C1470.callbackID#"") && (This:C1470.callback#Null:C1517))
+	If ((This:C1470.callback#Null:C1517) && (This:C1470.callbackID#""))
 		If (Bool:C1537(Storage:C1525.FileTransfer_Progress[This:C1470.callbackID].Stop))
 			$systemworker.terminate()
 			return 
