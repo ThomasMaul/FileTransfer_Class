@@ -1,5 +1,11 @@
 # File Transfer Class collection
 
+
+# ATTENTION: this is DEV branch, an older playground.
+Please switch to "main" to use the latest (and production ready) version.
+
+
+
 FTP - FTPS - SFTP(*) - HTTPS(*)  
 Using cURL - wrapper for Mac/Win build in cURL feature  
 
