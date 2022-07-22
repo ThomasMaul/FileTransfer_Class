@@ -76,7 +76,7 @@ Function setPath($path : Text)
 Function enableProgressData($enable : Boolean)
 	This:C1470._noProgress:=Not:C34($enable)
 	
-Function enableStopButton($enable : Object)
+Function enableStopButton($enable : Boolean)
 	This:C1470._enableStopButton:=$enable
 	
 Function useCallback($callback : 4D:C1709.Function; $ID : Text)
