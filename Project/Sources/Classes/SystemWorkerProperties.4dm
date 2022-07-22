@@ -1,4 +1,4 @@
-Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $callbackID : Text; $stopButton : Object)
+Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $callbackID : Text; $stopButton : Boolean)
 	This:C1470.type:=$type
 	This:C1470.encoding:="UTF-8"
 	This:C1470.dataType:="text"
