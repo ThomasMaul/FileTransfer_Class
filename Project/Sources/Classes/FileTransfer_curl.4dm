@@ -106,7 +106,7 @@ Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$suc
 	If ((This:C1470._AutoCreateRemoteDir#Null:C1517) && (This:C1470._AutoCreateRemoteDir))
 		$url:="--ftp-create-dirs "+$url
 	End if 
-	$url:="-T "+$doublequotes+$sourcepath+$doublequotes+" "+$url+$doublequotes+$targetpath+$doublequotes
+	$url:="-T "+$doublequotes+$sourcepath+$doublequotes+" "+$url+$targetpath
 	$oldtimeout:=This:C1470._timeout
 	If ($oldtimeout=0)
 		This:C1470._timeout:=600
