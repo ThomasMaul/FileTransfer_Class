@@ -95,6 +95,7 @@ Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$suc
 	// If the remote file does not exist, it will be created. 
 	// Note that this flag is ignored by some SFTP servers (including OpenSSH).
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
+	$doublequotes:=Char:C90(Double quote:K15:41)
 	If ($targetpath="")
 		$targetpath:="/"
 	End if 
@@ -105,7 +106,7 @@ Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$suc
 	If ((This:C1470._AutoCreateRemoteDir#Null:C1517) && (This:C1470._AutoCreateRemoteDir))
 		$url:="--ftp-create-dirs "+$url
 	End if 
-	$url:="-T "+$sourcepath+" "+$url+$targetpath
+	$url:="-T "+$doublequotes+$sourcepath+$doublequotes+" "+$url+$doublequotes+$targetpath+$doublequotes
 	$oldtimeout:=This:C1470._timeout
 	If ($oldtimeout=0)
 		This:C1470._timeout:=600
