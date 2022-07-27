@@ -76,7 +76,7 @@ Function setPath($path : Text)
 Function enableProgressData($enable : Boolean)
 	This:C1470._noProgress:=Not:C34($enable)
 	
-Function enableStopButton($enable : Object)
+Function enableStopButton($enable : Boolean)
 	This:C1470._enableStopButton:=$enable
 	
 Function useCallback($callback : 4D:C1709.Function; $ID : Text)
@@ -95,6 +95,7 @@ Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$suc
 	// If the remote file does not exist, it will be created. 
 	// Note that this flag is ignored by some SFTP servers (including OpenSSH).
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
+	$doublequotes:=Char:C90(Double quote:K15:41)
 	If ($targetpath="")
 		$targetpath:="/"
 	End if 
@@ -105,7 +106,7 @@ Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$suc
 	If ((This:C1470._AutoCreateRemoteDir#Null:C1517) && (This:C1470._AutoCreateRemoteDir))
 		$url:="--ftp-create-dirs "+$url
 	End if 
-	$url:="-T "+$sourcepath+" "+$url+$targetpath
+	$url:="-T "+$doublequotes+$sourcepath+$doublequotes+" "+$url+$targetpath
 	$oldtimeout:=This:C1470._timeout
 	If ($oldtimeout=0)
 		This:C1470._timeout:=600
@@ -193,7 +194,7 @@ Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	$url:=This:C1470._buildURL()
 	If (This:C1470._protocol#"SFTP")
-		$url:=$url+" -Q "+Char:C90(34)+"-cu "+$sourcepath+Char:C90(34)+" -Q "+Char:C90(34)+"-RNTO "+$targetpath+Char:C90(34)
+		$url:=$url+" -Q "+Char:C90(34)+"-RNFR "+$sourcepath+Char:C90(34)+" -Q "+Char:C90(34)+"-RNTO "+$targetpath+Char:C90(34)
 	Else 
 		$url:=$url+" -Q "+Char:C90(34)+"-RENAME "+$sourcepath+Char:C90(34)+" "+$targetpath+Char:C90(34)
 	End if 
