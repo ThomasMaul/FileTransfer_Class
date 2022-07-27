@@ -2,7 +2,7 @@
 	"_method_": {},
 	"SystemWorkerProperties": {
 		"new()": {
-			"Syntax": "**.new**(*type* : Text; *data* : Object; *callback* : 4D.Function; *callbackID* : Text; *stopButton* : Object)",
+			"Syntax": "**.new**(*type* : Text; *data* : Object; *callback* : 4D.Function; *callbackID* : Text; *stopButton* : Boolean)",
 			"Params": [
 				[
 					"type",
@@ -26,7 +26,7 @@
 				],
 				[
 					"stopButton",
-					"Object",
+					"Boolean",
 					"->"
 				]
 			],
@@ -248,11 +248,11 @@
 			"Summary": ""
 		},
 		"enableStopButton()": {
-			"Syntax": "**.enableStopButton**(*enable* : Object)",
+			"Syntax": "**.enableStopButton**(*enable* : Boolean)",
 			"Params": [
 				[
 					"enable",
-					"Object",
+					"Boolean",
 					"->"
 				]
 			],
