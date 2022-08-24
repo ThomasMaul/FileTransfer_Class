@@ -215,6 +215,8 @@ result.list contains collection, each representing one file/directory:
 - MimeType   // such as application/pdf
 - ModTime   // ISO Format, 2014-06-18T20:31:41+02:00
 - IsDir     // true/false if directory
+- ID    // optional, depending of service (GDrive, Dropbox)
+- IsBucket  // optional, depending of service (S3)
 
 This function uses [lsjson](https://rclone.org/commands/rclone_lsjson/).
 

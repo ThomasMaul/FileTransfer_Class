@@ -3,32 +3,38 @@
 // url like ftp.4D.com or ftp.4d.com:1234
 // if you use ftps or sftp, also modify the last parameter (protocol) in .new() below
 // don't add the protocol to the hostname, don't use https://xxx or ftp://xxx
-$credentialspath:=Get 4D folder:C485(Database folder:K5:14)
-$folder:=Folder:C1567($credentialspath; fk platform path:K87:2)
-$credentialsfile:=$folder.parent.file("credentials.txt").getText()
-$credentials:=JSON Parse:C1218($credentialsfile)
-If (False:C215)
-	$credentials.url:="192.168.10.54:3421"
-	// $credentials.user:="myself"
-	// $credentials.pass:="notmypass"
-End if 
 
+$test:="S3"
 var $ftp : cs:C1710.FileTransfer_rclone
+$path:="/users/thomas/Desktop/rclone-v1.59.1-osx-arm64/rclone"
 
-//$ftp:=cs.FileTransfer_rclone.new("ftp_nas")
-If (True:C214)
-	$ftp:=cs:C1710.FileTransfer_rclone.new("Devcon")
-	$ftp.setPath("/users/thomas/Desktop/rclone-v1.59.1-osx-arm64/rclone")
-	
-Else 
-	$ftp:=cs:C1710.FileTransfer_rclone.new(":ftp")  //not a config name, but service name
-	$ftp.setPath("/users/thomas/Desktop/rclone-v1.59.1-osx-arm64/rclone")
-	
-	$pass:=$ftp.obscure($credentials.pass)
-	$url:=Replace string:C233($credentials.url; ":3421"; "")
-	$port:="3421"
-	$ftp.setPrefix("--ftp-host "+$url+" --ftp-port 3421 --ftp-user "+$credentials.user+" --ftp-pass "+$pass)
-End if 
+Case of 
+	: ($test="credentials")
+		$credentialspath:=Get 4D folder:C485(Database folder:K5:14)
+		$folder:=Folder:C1567($credentialspath; fk platform path:K87:2)
+		$credentialsfile:=$folder.parent.file("credentials.txt").getText()
+		$credentials:=JSON Parse:C1218($credentialsfile)
+		If (False:C215)
+			$credentials.url:="192.168.10.54:3421"
+			// $credentials.user:="myself"
+			// $credentials.pass:="notmypass"
+		End if 
+		
+		$ftp:=cs:C1710.FileTransfer_rclone.new(":ftp")  //not a config name, but service name
+		$ftp.setPath($path)
+		
+		$pass:=$ftp.obscure($credentials.pass)
+		$url:=Replace string:C233($credentials.url; ":3421"; "")
+		$port:="3421"
+		$ftp.setPrefix("--ftp-host "+$url+" --ftp-port 3421 --ftp-user "+$credentials.user+" --ftp-pass "+$pass)
+		
+	: ($test="ftp")
+		//$ftp:=cs.FileTransfer_rclone.new("ftp_nas")
+		$ftp:=cs:C1710.FileTransfer_rclone.new("Devcon")
+	Else 
+		$ftp:=cs:C1710.FileTransfer_rclone.new($test)
+End case 
+$ftp.setPath($path)
 
 If (False:C215)
 	$result:=$ftp.version()

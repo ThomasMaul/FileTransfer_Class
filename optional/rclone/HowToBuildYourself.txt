@@ -14,6 +14,16 @@ this should return:
 x86_64 arm64
 
 
-Now sign it:
-codesign --sign "Developer ID Application: 4D Deutschland GmbH" /Users/thomas/Desktop/rclone/rclone 
+Now sign it (replace path to 4D depending of your version):
+codesign --force --sign "Developer ID Application: 4D Deutschland GmbH" --verbose --timestamp --options runtime --entitlements /Applications/4D\ v19\ R6/4D.app/Contents/Resources/4D.entitlements /Users/thomas/Desktop/rclone/rclone 
 
+
+
+Finally notarize. To do so, you need to prepare your computer, as described here:
+https://blog.4d.com/how-to-notarize-your-merged-4d-application-macos-12-xcode-13/
+
+Zip with:
+/usr/bin/ditto -c -k --keepParent /Users/thomas/Desktop/rclone/rclone /Users/thomas/Desktop/rclone/rclone.zip
+
+Notarize with:
+xcrun notarytool submit /Users/thomas/Desktop/rclone/rclone.zip --keychain-profile notarytool --wait

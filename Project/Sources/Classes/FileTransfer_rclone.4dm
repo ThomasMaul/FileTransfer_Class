@@ -21,7 +21,7 @@ Function getDirectoryListing($targetpath : Text)->$success : Object
 	$url:="lsjson "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	If ($success.success)
-		If ($success.data="[@")
+		If ($success.data="[@]\n")
 			$json:=JSON Parse:C1218($success.data)
 			$success.list:=$json
 		Else 
@@ -29,6 +29,7 @@ Function getDirectoryListing($targetpath : Text)->$success : Object
 			$success.error:=$success.data
 		End if 
 	End if 
+	
 	
 Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	//$sourcepath just file name for local directory, else full path in POSIX syntax
