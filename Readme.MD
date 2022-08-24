@@ -9,6 +9,9 @@ Using Dropbox CLI tool (easy to deploy)
 Google Drive - GDrive
 Using Gdrive CLI tool
 
+Rclone  (NEW)
+Over 40 cloud storage products support rclone including S3 object stores, business & consumer file storage services, as well as standard transfer protocols.
+
 ## Introduction
 
 This class collection provide a similar interface for file transfer via different channels.
@@ -19,6 +22,8 @@ For FTP/FTPS/HTTPS the system build in cURL version can be used, but also overwr
 For Dropbox a CLI tool (written in Go) is used.
 
 For GDrive a CLI tool (written in Go) is used
+
+rclone is a CLI tool (written in Go)
 
 # Usage example
 
@@ -71,5 +76,8 @@ $result:=$ftp.download($source; $target)
 
 ## GDrive
 [Documentation](Documentation/Readme_GDrive.MD)
+
+## Rclone
+[Documentation](Documentation/Readme_rclone.MD)
 
 		

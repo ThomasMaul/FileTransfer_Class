@@ -43,5 +43,6 @@ If ($ProgressBarID#0)
 			End if 
 		Else 
 			Progress SET PROGRESS($ProgressBarID; $value/100)
+			Progress SET MESSAGE($ProgressBarID; $message)
 	End case 
 End if 

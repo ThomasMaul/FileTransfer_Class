@@ -7,17 +7,28 @@ $credentialspath:=Get 4D folder:C485(Database folder:K5:14)
 $folder:=Folder:C1567($credentialspath; fk platform path:K87:2)
 $credentialsfile:=$folder.parent.file("credentials.txt").getText()
 $credentials:=JSON Parse:C1218($credentialsfile)
-If (True:C214)
+If (False:C215)
 	$credentials.url:="192.168.10.54:3421"
 	// $credentials.user:="myself"
-	// $credentials.password:="notmypass"
+	// $credentials.pass:="notmypass"
 End if 
 
 var $ftp : cs:C1710.FileTransfer_rclone
-//$ftp:=cs.FileTransfer_rclone.new("ftp_nas")
-$ftp:=cs:C1710.FileTransfer_rclone.new("Devcon")
 
-$ftp.setPath("/users/thomas/Desktop/rclone-v1.59.1-osx-arm64/rclone")
+//$ftp:=cs.FileTransfer_rclone.new("ftp_nas")
+If (True:C214)
+	$ftp:=cs:C1710.FileTransfer_rclone.new("Devcon")
+	$ftp.setPath("/users/thomas/Desktop/rclone-v1.59.1-osx-arm64/rclone")
+	
+Else 
+	$ftp:=cs:C1710.FileTransfer_rclone.new(":ftp")  //not a config name, but service name
+	$ftp.setPath("/users/thomas/Desktop/rclone-v1.59.1-osx-arm64/rclone")
+	
+	$pass:=$ftp.obscure($credentials.pass)
+	$url:=Replace string:C233($credentials.url; ":3421"; "")
+	$port:="3421"
+	$ftp.setPrefix("--ftp-host "+$url+" --ftp-port 3421 --ftp-user "+$credentials.user+" --ftp-pass "+$pass)
+End if 
 
 If (False:C215)
 	$result:=$ftp.version()
@@ -55,21 +66,51 @@ If (False:C215)
 	End if 
 End if 
 
+If (False:C215)
+	$source:=System folder:C487(Desktop:K41:16)+"4d.dmg"
+	$source:=Convert path system to POSIX:C1106($source)
+	
+	$ftp.setTimeout(300)  // 5 minutes for 1 GB upload
+	$result:=$ftp.upload($source; "/Master_Class/4d.dmg"; True:C214)
+	If ($result.success)
+		$answer:=$result.data
+	End if 
+End if 
 
-If (True:C214)
-	$target:=System folder:C487(Desktop:K41:16)+"test.zip"
-	$target:=Convert path system to POSIX:C1106($target)
-	$source:="/Master_Class/4DSummit2018-MasterClass-Demos_v17.zip"
+
+If (False:C215)
+	$source:=System folder:C487(Desktop:K41:16)+"4d.dmg"
+	$source:=Convert path system to POSIX:C1106($source)
+	
+	$progressid:="Upload 4D.dmg"
+	$ftp.useCallback(Formula:C1597(ProgressCallback); $progressid)
+	$ftp.setAsyncMode(False:C215)  // default is false, no need to set
+	$ftp.setTimeout(300)  // 5 minutes for 1 GB upload
+	$checkstop:=New shared object:C1526("stop"; False:C215)
+	$ftp.enableStopButton($checkstop)
+	
+	$result:=$ftp.upload($source; "/Master_Class/4d.dmg"; True:C214)
+	If ($result.success)
+		$answer:=$result.data
+	End if 
+End if 
+
+
+
+If (False:C215)
+	$source:=System folder:C487(Desktop:K41:16)+"write blog"
+	$source:=Convert path system to POSIX:C1106($source)
+	$target:="/Master_Class/folder"
 	
 	// $ftp.setCurlPrefix("--limit-rate 25M")  // make it slow for testing - limiting bandwidth
 	
-	$progressid:="Download 4D.dmg"
+	$progressid:="upload folder"
 	$ftp.useCallback(Formula:C1597(ProgressCallback); $progressid)
 	$ftp.setAsyncMode(False:C215)  // default is false, no need to set
 	$checkstop:=New shared object:C1526("stop"; False:C215)
 	$ftp.enableStopButton($checkstop)
 	
-	$result:=$ftp.download($source; $target)
+	$result:=$ftp.upload($source; $target)
 	
 	If ($checkstop.stop=True:C214)  // user clicked stop button
 		// user canceled!!
@@ -80,52 +121,24 @@ If (True:C214)
 End if 
 
 
-If (True:C214)  // download two in parallel
-	$source:="/large/4D.dmg"
+
+If (True:C214)
+	$target:=System folder:C487(Desktop:K41:16)+"neu"
+	$target:=Convert path system to POSIX:C1106($target)
+	$source:="/Master_Class/"
 	
-	var $ftp2 : cs:C1710.FileTransfer_curl
-	$ftp2:=cs:C1710.FileTransfer_curl.new($credentials.url; $credentials.user; $credentials.pass; "ftp")
-	//$ftp.setCurlPrefix("--limit-rate 25M")
-	$progressid2:="2-Download 4D.dmg"
-	//$ftp2.setCurlPrefix("--limit-rate 25M")
-	$ftp.setAutoCreateRemoteDirectory(True:C214)
-	$ftp.setAutoCreateLocalDirectory(True:C214)
-	$ftp2.setAutoCreateRemoteDirectory(True:C214)
-	$ftp2.setAutoCreateLocalDirectory(True:C214)
-	$ftp2.useCallback(Formula:C1597(ProgressCallback); $progressid2)
-	$ftp2.setAsyncMode(True:C214)
+	$progressid:="sync folder"
+	$ftp.useCallback(Formula:C1597(ProgressCallback); $progressid)
+	$ftp.setAsyncMode(False:C215)  // default is false, no need to set
+	$ftp.setTimeout(300)  // 5 minutes for 1 GB upload
 	$checkstop:=New shared object:C1526("stop"; False:C215)
 	$ftp.enableStopButton($checkstop)
-	$checkstop2:=New shared object:C1526("stop"; False:C215)
-	$ftp2.enableStopButton($checkstop2)
-	$target:=System folder:C487(Desktop:K41:16)+"neu2"+Folder separator:K24:12
-	$target:=Convert path system to POSIX:C1106($target)
-	$result2:=$ftp2.download($source; $target)
 	
-	$ftp.setCurlPrefix("--limit-rate 25M")
-	$progressid:="Download 4D.dmg"
-	$ftp.useCallback(Formula:C1597(ProgressCallback); $progressid)
-	$ftp.setAsyncMode(True:C214)
-	
-	$target:=System folder:C487(Desktop:K41:16)+"neu"+Folder separator:K24:12
-	$target:=Convert path system to POSIX:C1106($target)
-	$result:=$ftp.download($source; $target)
-	// async, so we need to loop...
-	// normally we are supposed to do something else and either
-	// check from time to time or to use the callback method to inform us (percent=100)
-	Repeat 
-		$ftp.wait(0.1)  // needed while our process is running
-		$ftp2.wait(0.1)  // needed while our process is running
-		
-		// wait is not needed if a form would be open or if a worker would handle the job
-		$status:=$ftp.status()
-		$status2:=$ftp2.status()
-		
-	Until (Bool:C1537($status.terminated) & Bool:C1537($status2.terminated))
-	
+	$result:=$ftp.syncDown($source; $target)
+	If ($result.success)
+		$answer:=$result.data
+	End if 
 End if 
-
-
 
 
 
@@ -146,27 +159,8 @@ End if
 
 
 If (False:C215)
-	$result:=$ftp.deleteFile("/test2.txt")
+	$result:=$ftp.deleteFile("/Master_Class/test.zip")
 	If ($result.success)
 		$list:=$result.list
-	End if 
-End if 
-
-If (False:C215)
-	$result:=$ftp.renameFile("/test3.txt"; "/test2.txt")
-	If ($result.success)
-		$list:=$result.list
-	End if 
-End if 
-
-
-If (False:C215)
-	$source:=System folder:C487(Desktop:K41:16)+"neu"+Folder separator:K24:12+"test[1-3].txt"
-	$source:=Convert path system to POSIX:C1106($source)
-	$ftp.setAutoCreateRemoteDirectory(True:C214)
-	$ftp.setAutoCreateLocalDirectory(True:C214)
-	$result:=$ftp.upload($source; "/meinfolder/"; True:C214)
-	If ($result.success)
-		$answer:=$result.data
 	End if 
 End if 

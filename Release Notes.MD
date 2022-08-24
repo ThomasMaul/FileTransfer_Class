@@ -1,5 +1,7 @@
 ## Release Notes
 
+## 1.1  - 2022-08-24
+Added class for rclone. Tested on FTP/SFTP, other services still needs tests (and maybe bug fixes)
 
 ### 1.0.1 - 2022-04-27
 Reworked progress bar. Removed usage of storage and process variable, now handled with shared object.

@@ -111,7 +111,7 @@ Function setTimeout($timeout : Integer)
 Function setAsyncMode($async : Boolean)
 	This:C1470._async:=$async
 	
-Function enableStopButton($enable : Object)
+Function enableStopButton($enable : Object)  // needs to be a shared object
 	This:C1470._enableStopButton:=$enable
 	
 Function stop()

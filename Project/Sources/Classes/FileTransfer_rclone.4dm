@@ -18,7 +18,7 @@ Function getDirectoryListing($targetpath : Text)->$success : Object
 		$targetpath:="/"
 	End if 
 	// add +This.config+":/"
-	$url:="lsjson "+This:C1470.config+":"+$targetpath
+	$url:="lsjson "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	If ($success.success)
 		If ($success.data="[@")
@@ -35,48 +35,67 @@ Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	// targetpath is full remote path (starting with /, ending with file name
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
-	$url:="copyto "+$sourcepath+" "+This:C1470.config+":"+$targetpath
+	$url:="copyto "+This:C1470._wrapLocal($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
-	If ($success.data#"")
+	If (($success.data#"") & ($success.data#"Transferred@"))
 		$success.success:=False:C215
 		$success.error:=$success.data
 	End if 
 	
 Function download($sourcepath : Text; $targetpath : Text)->$success : Object
-	$success:=This:C1470.upload($sourcepath; $targetpath)
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
-	$url:="copyto "+This:C1470.config+":"+$sourcepath+" "+$targetpath
+	$url:="copyto "+This:C1470._wrapRemote($targetpath)+" "+This:C1470._wrapLocal($targetpath)
 	$success:=This:C1470._runWorker($url)
-	If ($success.data#"")
+	If (($success.data#"") & ($success.data#"Transferred@"))
+		$success.success:=False:C215
+		$success.error:=$success.data
+	End if 
+	
+Function syncUp($sourcepath : Text; $targetpath : Text)->$success : Object
+	ASSERT:C1129($sourcepath#""; "source path must not be empty")
+	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	$url:="sync "+This:C1470._wrapLocal($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
+	$success:=This:C1470._runWorker($url)
+	If (($success.data#"") & ($success.data#"Transferred@"))
+		$success.success:=False:C215
+		$success.error:=$success.data
+	End if 
+	
+Function syncDown($sourcepath : Text; $targetpath : Text)->$success : Object
+	ASSERT:C1129($sourcepath#""; "source path must not be empty")
+	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	$url:="sync "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapLocal($targetpath)
+	$success:=This:C1470._runWorker($url)
+	If (($success.data#"") & ($success.data#"Transferred@"))
 		$success.success:=False:C215
 		$success.error:=$success.data
 	End if 
 	
 Function createDirectory($targetpath : Text)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
-	$url:="mkdir "+$targetpath
+	$url:="mkdir "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	
 Function deleteDirectory($targetpath : Text; $force : Boolean)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	If ($force)
-		$url:="rm -f "+$targetpath
+		$url:="purge -f "+This:C1470._wrapRemote($targetpath)
 	Else 
-		$url:="rm "+$targetpath
+		$url:="rmdir "+This:C1470._wrapRemote($targetpath)
 	End if 
 	$success:=This:C1470._runWorker($url)
 	
 Function deleteFile($targetpath : Text)->$success : Object
 	// same as deleteDirectory
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
-	$url:="rm "+$targetpath
+	$url:="delete "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	
 Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
-	$url:="mv "+$sourcepath+" "+$targetpath
+	$url:="moveto "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	
 Function moveFile($sourcepath : Text; $targetpath : Text)->$success : Object
@@ -85,12 +104,23 @@ Function moveFile($sourcepath : Text; $targetpath : Text)->$success : Object
 Function copyFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
-	$url:="cp "+$sourcepath+" "+$targetpath
+	$url:="copyto "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
+	If (($success.data#"") & ($success.data#"Transferred@"))
+		$success.success:=False:C215
+		$success.error:=$success.data
+	End if 
 	
 Function executeCommand($command : Text)->$success : Object
 	ASSERT:C1129($command#""; "command must not be empty")
 	$success:=This:C1470._runWorker($command)
+	
+Function obscure($password : Text)->$obscured : Text
+	$command:="obscure '"+$password+"'"
+	$success:=This:C1470._runWorker($command)
+	If ($success.success)
+		$obscured:=This:C1470._trim($success.data)
+	End if 
 	
 	//MARK: Settings
 Function validate()->$success : Object
@@ -101,6 +131,14 @@ Function version()->$data : Object
 	
 Function setPath($path : Text)
 	This:C1470._Path:=$path
+	
+Function setMaxTime($seconds : Real)
+	// sets    --max-duration duration 
+	This:C1470._maxTime:=$seconds
+	
+Function setPrefix($prefix : Text)
+	// allows to set any parameters directly after curl
+	This:C1470._prefix:=$prefix
 	
 Function useCallback($callback : 4D:C1709.Function; $ID : Text)
 	ASSERT:C1129(Value type:C1509($callback)=Is object:K8:27; "Callback must be of type function")
@@ -135,10 +173,18 @@ Function status()->$status : Object
 Function wait($max : Integer)
 	This:C1470._worker.wait($max)
 	
+	
+	
 	// MARK: Internal helper calls
 Function _runWorker($para : Text)->$result : Object
+	$postfix:=""
 	If (This:C1470._Callback#Null:C1517)
 		$workerpara:=cs:C1710.SystemWorkerProperties.new("rclone"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID; This:C1470._enableStopButton)
+		If ((This:C1470._noProgress#Null:C1517) && (This:C1470._noProgress))
+			// nothing, opposite!
+		Else 
+			$postfix+="--progress --stats-one-line"
+		End if 
 	Else 
 		$workerpara:=cs:C1710.SystemWorkerProperties.new("rclone"; This:C1470.onData)
 	End if 
@@ -149,30 +195,20 @@ Function _runWorker($para : Text)->$result : Object
 		$path:="rclone"
 	End if 
 	
-/*
 	
-If ((This._noProgress#Null) && (This._noProgress))
-$path+=" --no-progress-meter"
-End if 
-If (This._connectTimeout#Null)
-$path+=" --connect-timeout "+String(This._connectTimeout)
-End if 
-If (This._maxTime#Null)
-$path+=" --max-time "+String(This._maxTime)
-End if 
-If (This._range#Null)
-$path+=" --range "+This._range
-End if 
-If ((This._ActiveMode#Null) && (This._ActiveMode))  // default passive
-$path+=" --ftp-port "+This.ActiveModeIP
-End if 
-If (This._prefix#Null)
-$path+=(" "+This._prefix)
-End if 
+	If (This:C1470._maxTime#Null:C1517)
+		$path+=(" --max-duration "+String:C10(This:C1470._maxTime))
+	End if 
 	
-*/
+	If (This:C1470._prefix#Null:C1517)
+		$path+=(" "+This:C1470._prefix)
+	End if 
+	
 	
 	$command:=$path+" "+$para
+	If ($postfix#"")
+		$command:=$command+" "+$postfix
+	End if 
 	$old:=Method called on error:C704
 	ON ERR CALL:C155(Formula:C1597(ErrorHandler).source)
 	This:C1470._worker:=4D:C1709.SystemWorker.new($command; $workerpara)
@@ -202,19 +238,31 @@ End if
 		End if 
 		
 		If (This:C1470._Callback#Null:C1517)
-			This:C1470._worker.onTerminate(New object:C1471; New object:C1471)
+			//This._worker.onTerminate(New object; New object)  // does not exists?
+			$workerpara.onTerminate(New object:C1471; New object:C1471)
 		End if 
 	Else 
 		$result:=New object:C1471("success"; False:C215; "responseError"; "rclone execution error")
+	End if 
+	If ($result.data=Null:C1517)
+		$result.data:=""
 	End if 
 	ON ERR CALL:C155($old)
 	
 Function _trim($text : Text)->$result : Text
 	$result:=$text
-	While (Substring:C12($result; 1; 1)=" ")
+	While (Character code:C91(Substring:C12($result; 1; 1))<=32)
 		$result:=Substring:C12($result; 2)
 	End while 
-	While (Substring:C12($result; Length:C16($result); 1)=" ")
+	While (Character code:C91(Substring:C12($result; Length:C16($result); 1))<=32)
 		$result:=Substring:C12($result; 1; Length:C16($result)-1)
 	End while 
+	
+Function _wrapLocal($text : Text)->$result : Text
+	$result:=Char:C90(Double quote:K15:41)+$text+Char:C90(Double quote:K15:41)
+	
+Function _wrapRemote($text : Text)->$result : Text
+	$result:=Char:C90(Double quote:K15:41)+This:C1470.config+":"+$text+Char:C90(Double quote:K15:41)
+	
+	
 	

@@ -1,0 +1,19 @@
+Download from
+https://rclone.org/downloads/
+
+for macOS both Intel/AMD and ARM-64 bit binaries, expand them on your desktop.
+
+In Terminal, enter limo -create path1 path2 -output target, such as:
+
+lipo -create /Users/thomas/Desktop/rclone-v1.59.1-osx-amd64/rclone  /Users/thomas/Desktop/rclone-v1.59.1-osx-arm64/rclone -output /Users/thomas/Desktop/rclone/rclone
+
+Check the result:
+lipo -archs /Users/thomas/Desktop/rclone/rclone 
+
+this should return:
+x86_64 arm64
+
+
+Now sign it:
+codesign --sign "Developer ID Application: 4D Deutschland GmbH" /Users/thomas/Desktop/rclone/rclone 
+
