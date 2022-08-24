@@ -38,7 +38,7 @@ Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	$url:="copyto "+This:C1470._wrapLocal($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
-	If (($success.data#"") & ($success.data#"Transferred@"))
+	If (($success.data#"") & ($success.data="@error@"))
 		$success.success:=False:C215
 		$success.error:=$success.data
 	End if 
@@ -46,9 +46,9 @@ Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 Function download($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($sourcepath#""; "source path must not be empty")
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
-	$url:="copyto "+This:C1470._wrapRemote($targetpath)+" "+This:C1470._wrapLocal($targetpath)
+	$url:="copyto "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapLocal($targetpath)
 	$success:=This:C1470._runWorker($url)
-	If (($success.data#"") & ($success.data#"Transferred@"))
+	If (($success.data#"") & ($success.data="@error@"))
 		$success.success:=False:C215
 		$success.error:=$success.data
 	End if 
@@ -58,7 +58,7 @@ Function syncUp($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	$url:="sync "+This:C1470._wrapLocal($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
-	If (($success.data#"") & ($success.data#"Transferred@"))
+	If (($success.data#"") & ($success.data="@error@"))
 		$success.success:=False:C215
 		$success.error:=$success.data
 	End if 
@@ -68,7 +68,7 @@ Function syncDown($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129($targetpath#""; "target path must not be empty")
 	$url:="sync "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapLocal($targetpath)
 	$success:=This:C1470._runWorker($url)
-	If (($success.data#"") & ($success.data#"Transferred@"))
+	If (($success.data#"") & ($success.data="@error@"))
 		$success.success:=False:C215
 		$success.error:=$success.data
 	End if 

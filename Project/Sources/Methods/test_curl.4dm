@@ -7,7 +7,7 @@ $credentialspath:=Get 4D folder:C485(Database folder:K5:14)
 $folder:=Folder:C1567($credentialspath; fk platform path:K87:2)
 $credentialsfile:=$folder.parent.file("credentials.txt").getText()
 $credentials:=JSON Parse:C1218($credentialsfile)
-If (True:C214)
+If (False:C215)
 	$credentials.url:="192.168.10.54:3421"
 	// $credentials.user:="myself"
 	// $credentials.password:="notmypass"
