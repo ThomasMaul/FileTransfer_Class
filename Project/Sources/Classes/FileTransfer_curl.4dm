@@ -277,9 +277,10 @@ Function _parseFileListing($success : Object)
 Function _buildURL()->$url : Text
 	Case of 
 		: ((This:C1470._protocol="ftps") | (This:C1470._protocol="ftp") | (This:C1470._protocol="ftp-ftps"))
-			$url:="ftp://"
 			If (This:C1470._user#"")
-				$url+=This:C1470._user+":"+This:C1470._password+"@"
+				$url:="--user \""+This:C1470._user+":"+This:C1470._password+"\" ftp://"
+			Else 
+				$url:="ftp://"
 			End if 
 			$url+=This:C1470._host
 			Case of 
