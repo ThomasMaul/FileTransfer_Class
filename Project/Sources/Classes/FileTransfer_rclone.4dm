@@ -14,6 +14,8 @@ Class constructor($configname : Text)
 	
 	//MARK: FileTransfer
 Function getDirectoryListing($targetpath : Text)->$success : Object
+	var $url; $json : Text
+	
 	If ($targetpath="")
 		$targetpath:="/"
 	End if 
@@ -30,12 +32,12 @@ Function getDirectoryListing($targetpath : Text)->$success : Object
 		End if 
 	End if 
 	
-	
-Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	//$sourcepath just file name for local directory, else full path in POSIX syntax
 	// targetpath is full remote path (starting with /, ending with file name
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
+	var $url : Text
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="copyto "+This:C1470._wrapLocal($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	If (($success.data#"") & ($success.data="@error@"))
@@ -44,8 +46,9 @@ Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	End if 
 	
 Function download($sourcepath : Text; $targetpath : Text)->$success : Object
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="copyto "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapLocal($targetpath)
 	$success:=This:C1470._runWorker($url)
 	If (($success.data#"") & ($success.data="@error@"))
@@ -54,18 +57,20 @@ Function download($sourcepath : Text; $targetpath : Text)->$success : Object
 	End if 
 	
 Function syncUp($sourcepath : Text; $targetpath : Text)->$success : Object
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="sync "+This:C1470._wrapLocal($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
-	If (($success.data#"") & ($success.data="@error@"))
+	If ((Length:C16($success.data)>0) & ($success.data="@error@"))
 		$success.success:=False:C215
 		$success.error:=$success.data
 	End if 
 	
 Function syncDown($sourcepath : Text; $targetpath : Text)->$success : Object
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="sync "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapLocal($targetpath)
 	$success:=This:C1470._runWorker($url)
 	If (($success.data#"") & ($success.data="@error@"))
@@ -74,12 +79,14 @@ Function syncDown($sourcepath : Text; $targetpath : Text)->$success : Object
 	End if 
 	
 Function createDirectory($targetpath : Text)->$success : Object
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="mkdir "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	
 Function deleteDirectory($targetpath : Text; $force : Boolean)->$success : Object
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	If ($force)
 		$url:="purge -f "+This:C1470._wrapRemote($targetpath)
 	Else 
@@ -87,15 +94,18 @@ Function deleteDirectory($targetpath : Text; $force : Boolean)->$success : Objec
 	End if 
 	$success:=This:C1470._runWorker($url)
 	
-Function deleteFile($targetpath : Text)->$success : Object
 	// same as deleteDirectory
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+Function deleteFile($targetpath : Text)->$success : Object
+	var $url : Text
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="delete "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	
 Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="moveto "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	
@@ -103,8 +113,10 @@ Function moveFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	$success:=This:C1470.renameFile($sourcepath; $targetpath)
 	
 Function copyFile($sourcepath : Text; $targetpath : Text)->$success : Object
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="copyto "+This:C1470._wrapRemote($sourcepath)+" "+This:C1470._wrapRemote($targetpath)
 	$success:=This:C1470._runWorker($url)
 	If (($success.data#"") & ($success.data#"Transferred@"))
@@ -113,10 +125,13 @@ Function copyFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	End if 
 	
 Function executeCommand($command : Text)->$success : Object
-	ASSERT:C1129($command#""; "command must not be empty")
+	ASSERT:C1129(Length:C16($command)>0; "command must not be empty")
 	$success:=This:C1470._runWorker($command)
 	
 Function obscure($password : Text)->$obscured : Text
+	var $command : Text
+	var $success : Object
+	
 	$command:="obscure '"+$password+"'"
 	$success:=This:C1470._runWorker($command)
 	If ($success.success)
@@ -174,10 +189,13 @@ Function status()->$status : Object
 Function wait($max : Integer)
 	This:C1470._worker.wait($max)
 	
-	
-	
 	// MARK: Internal helper calls
 Function _runWorker($para : Text)->$result : Object
+	var $postfix; $path; $command; $old : Text
+	var $workerpara : cs:C1710.SystemWorkerProperties
+	var $worker : Object
+	var $waittimeout; $pos : Integer
+	
 	$postfix:=""
 	If (This:C1470._Callback#Null:C1517)
 		$workerpara:=cs:C1710.SystemWorkerProperties.new("rclone"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID; This:C1470._enableStopButton)
@@ -196,7 +214,6 @@ Function _runWorker($para : Text)->$result : Object
 		$path:="rclone"
 	End if 
 	
-	
 	If (This:C1470._maxTime#Null:C1517)
 		$path+=(" --max-duration "+String:C10(This:C1470._maxTime))
 	End if 
@@ -205,9 +222,8 @@ Function _runWorker($para : Text)->$result : Object
 		$path+=(" "+This:C1470._prefix)
 	End if 
 	
-	
 	$command:=$path+" "+$para
-	If ($postfix#"")
+	If (Length:C16($postfix)>0)
 		$command:=$command+" "+$postfix
 	End if 
 	$old:=Method called on error:C704

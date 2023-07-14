@@ -1,8 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?><preferences stamp="3">
+<?xml version="1.0" encoding="UTF-8"?><preferences stamp="5">
 	<com.4d>
 		<compiler>
-			<options syntax_file="true" target="all"/>
+			<options compilation_path="3" syntax_file="true" target="all"/>
 		</compiler>
 		<general component_classStore_name="FileTransfer"/>
+		<server>
+			<network>
+				<options publication_name="FileTransfer_Curl"/>
+			</network>
+		</server>
 	</com.4d>
 </preferences>

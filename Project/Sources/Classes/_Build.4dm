@@ -1,3 +1,5 @@
+property _SettingsUsed; _Source : Text
+
 Class constructor
 	This:C1470._SettingsUsed:=""
 	This:C1470._Source:=""
@@ -9,13 +11,16 @@ Function Compile($options : Object)->$error : Object
 		$error:=Compile project:C1760
 	End if 
 	
-Function Build($PathToSettings : Text)->$error : Object
 	// this function uses LAUNCH EXTERNAL PROCESS and not 4D.SystemWorker to allow v19 LTS to use the class
+Function Build($PathToSettings : Text)->$error : Object
+	var $errortext : Text
+	
 	If (Count parameters:C259>0)
 		This:C1470._SettingsUsed:=$PathToSettings
 	Else 
 		This:C1470._SettingsUsed:=File:C1566(Build application settings file:K5:60).platformPath
 	End if 
+	
 	BUILD APPLICATION:C871(This:C1470._SettingsUsed)
 	
 	If (OK=0)
@@ -26,6 +31,10 @@ Function Build($PathToSettings : Text)->$error : Object
 	End if 
 	
 Function Notarize($zipfilepath : Text)->$error : Object
+	var $in; $out; $err; $cmd; $id; $logpath; $out2; $logtext : Text
+	var $pos : Integer
+	var $log : Object
+	
 	ASSERT:C1129($zipfilepath#""; "zip file path must not be empty")
 	$in:=""
 	$out:=""
@@ -66,8 +75,12 @@ Function Notarize($zipfilepath : Text)->$error : Object
 		
 	End if 
 	
-Function Zip($sourcepath : Text; $targetpath : Text)->$error : Object
 	// if $sourcepath is ommitted, it reads path from settings, only for components on Mac
+Function Zip($sourcepath : Text; $targetpath : Text)->$error : Object
+	var $settings; $Found; $settingsXML; $value; $source; $target; $cmd; $in; $in; $err; $out : Text
+	var $sourcefolder : 4D:C1709.Folder
+	var $sourcefolderfiles : Collection
+	
 	If (Count parameters:C259=0)
 		If (This:C1470._SettingsUsed#"")
 			$settings:=File:C1566(This:C1470._SettingsUsed; fk platform path:K87:2).getText()
@@ -131,12 +144,14 @@ Function Zip($sourcepath : Text; $targetpath : Text)->$error : Object
 	
 	
 Function Staple()->$error : Object
+	var $cmd; $in; $out; $err; $source : Text
+	
 	$cmd:="xcrun stapler staple '"+Convert path system to POSIX:C1106(This:C1470._Source)+"'"
 	$in:=""
 	$out:=""
 	$err:=""
 	LAUNCH EXTERNAL PROCESS:C811($cmd; $in; $out; $err)
-	If ($err#"")
+	If (Length:C16($err)>0)
 		$error:=New object:C1471("success"; False:C215; "log"; "Staple error "+$out)
 	Else 
 		$source:=This:C1470._Source

@@ -4,8 +4,13 @@
 // if you use ftps or sftp, also modify the last parameter (protocol) in .new() below
 // don't add the protocol to the hostname, don't use https://xxx or ftp://xxx
 
-$test:="S3"
 var $ftp : cs:C1710.FileTransfer_rclone
+var $test; $path; $credentialspath; $pass; $port; $url; $answer; $source; $error; $progressid; $target; $credentialsfile : Text
+var $folder : 4D:C1709.Folder
+var $credentials; $result; $checkstop : Object
+var $list : Collection
+
+$test:="S3"
 $path:="/users/thomas/Desktop/rclone-v1.59.1-osx-arm64/rclone"
 
 Case of 
