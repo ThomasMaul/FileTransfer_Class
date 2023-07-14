@@ -286,7 +286,7 @@ Function _parseDirListing($success : Object)
 			End if 
 			$diritem.date:=Add to date:C393(!00-00-00!; $year; $month; $day)
 			$diritem.time:=$time
-			$diritem.path:=$lineitems[8]
+			$diritem.path:=($lineitems.slice(8).join(" "))
 			$success.list.push($diritem)
 		Else   // error?
 			If ($col.length=1)
