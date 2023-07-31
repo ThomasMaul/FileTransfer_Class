@@ -1,4 +1,10 @@
+property onData : Object
+property _Path; _workerpath : Text
+property _timeout : Integer
+
 Class constructor()
+	var $path : Text
+	
 	This:C1470.onData:=New object:C1471("text"; "")
 	If (Is macOS:C1572)
 		This:C1470._return:=Char:C90(10)
@@ -16,8 +22,13 @@ Class constructor()
 	// uses https://github.com/prasmussen/gdrive
 	
 	//MARK: FileTransfer
-Function getDirectoryListing($targetpath : Text; $ID : Text; $max : Integer)->$success : Object
 	// $ID prefered option, if missing trying to find via path
+Function getDirectoryListing($targetpath : Text; $ID : Text; $max : Integer)->$success : Object
+	var $url; $folder : Text
+	var $pos : Integer
+	var $answer : Object
+	var $sublist : Collection
+	
 	If ($max=0)
 		$max:=1000
 	End if 
@@ -82,11 +93,16 @@ Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	//ASSERT($targetpath#""; "target path must not be empty")
 	$success:=This:C1470._uploadSub($sourcepath; $targetpath)
 	
-Function _uploadSub($sourcepath : Text; $targetpath : Text; $mime : Text)->$success : Object
 	// need to find target file name (for --name parameter) and target folder (to find --parent ID)
+Function _uploadSub($sourcepath : Text; $targetpath : Text; $mime : Text)->$success : Object
+	var $name; $targetID; $foldername; $foldername2; $parentfoldername; $url : Text
+	var $pos; $oldtimeout : Integer
+	var $answer : Object
+	var $sublist : Collection
+	
 	$name:=""
 	$targetID:=""
-	If ($targetpath#"")
+	If (Length:C16($targetpath)>0)
 		If ($targetpath="@/")  // folder name
 			$name:=""
 			$foldername:=Substring:C12($targetpath; 1; Length:C16($targetpath)-1)
@@ -142,7 +158,6 @@ Function _uploadSub($sourcepath : Text; $targetpath : Text; $mime : Text)->$succ
 	$success:=This:C1470._runWorker($url)
 	This:C1470._timeout:=$oldtimeout
 	
-Function download($sourcepath : Text; $targetpath : Text; $sourceID : Text; $sourceQuery : Text)->$success : Object
 	//$sourcepath just file name for local directory, else full path in POSIX syntax
 	// targetpath is full remote path (starting with /, ending with file name) or just target folder, ending with /
 	// Gdrive only (then pass "" for sourcepath:
@@ -150,19 +165,24 @@ Function download($sourcepath : Text; $targetpath : Text; $sourceID : Text; $sou
 	// SourceQuery = query command, such as name = 'test' and modifiedTime > '2012-06-04T12:00:00' and (mimeType contains 'image/' or mimeType contains 'video/')
 	// if the query returns two files with same name, the files will overwrite themself
 	// always overwrite in targetpath file with given name, both original name and (if passed) renamed name
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
-	$success:=This:C1470._downloadSub($sourcepath; $targetpath; $sourceID; $sourceQuery)
+Function download($sourcepath : Text; $targetpath : Text; $sourceID : Text; $sourceQuery : Text) : Object
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
+	return This:C1470._downloadSub($sourcepath; $targetpath; $sourceID; $sourceQuery)
 	
-Function export($sourcepath : Text; $targetpath : Text; $sourceID : Text; $mime : Text)->$success : Object
+Function export($sourcepath : Text; $targetpath : Text; $sourceID : Text; $mime : Text) : Object
 	// similar to download, just with forced MIME conversion
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	ASSERT:C1129($targetpath#"@/"; "target path must be path to folder, not file")
 	
-	ASSERT:C1129($mime#""; "mime must not be empty")
+	ASSERT:C1129(Length:C16($mime)>0; "mime must not be empty")
 	// no sourcequery for export
-	$success:=This:C1470._downloadSub($sourcepath; $targetpath; $sourceID; ""; $mime)
+	return This:C1470._downloadSub($sourcepath; $targetpath; $sourceID; ""; $mime)
 	
 Function _downloadSub($sourcepath : Text; $targetpath : Text; $sourceID : Text; $sourceQuery : Text; $mime : Text)->$success : Object
+	var $target; $url; $source; $text; $currentname; $newname : Text
+	var $pos; $oldtimeout : Integer
+	var $answer : Object
+	var $sublist : Collection
 	
 	$target:=$targetpath
 	If ($targetpath#"@/")
@@ -253,46 +273,52 @@ Function _downloadSub($sourcepath : Text; $targetpath : Text; $sourceID : Text; 
 	End if 
 	
 	// export / import similar to upload/download, but with document conversion. These commands are GDrive specific
-Function import($sourcepath : Text; $targetpath : Text; $mime : Text)->$success : Object
+Function import($sourcepath : Text; $targetpath : Text; $mime : Text) : Object
 	//$sourcepath just file name for local directory, else full path in POSIX syntax
 	// targetpath is full remote path (starting with /, ending with file name
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
 	//ASSERT($targetpath#""; "target path must not be empty")
-	ASSERT:C1129($mime#""; "mime must not be empty")
-	$success:=This:C1470._uploadSub($sourcepath; $targetpath; $mime)
+	ASSERT:C1129(Length:C16($mime)>0; "mime must not be empty")
+	return This:C1470._uploadSub($sourcepath; $targetpath; $mime)
 	
-Function createDirectory($targetpath : Text)->$success : Object
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+Function createDirectory($targetpath : Text) : Object
+	var $url : Text
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="mkdir "+$targetpath
-	$success:=This:C1470._runWorker($url)
+	return This:C1470._runWorker($url)
 	
-Function deleteDirectory($targetpath : Text; $force : Boolean)->$success : Object
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+Function deleteDirectory($targetpath : Text; $force : Boolean) : Object
+	var $url : Text
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	If ($force)
 		$url:="rm -f "+$targetpath
 	Else 
 		$url:="rm "+$targetpath
 	End if 
-	$success:=This:C1470._runWorker($url)
+	return This:C1470._runWorker($url)
 	
-Function deleteFile($targetpath : Text)->$success : Object
 	// same as deleteDirectory
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+Function deleteFile($targetpath : Text) : Object
+	var $url : Text
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="rm "+$targetpath
-	$success:=This:C1470._runWorker($url)
+	return This:C1470._runWorker($url)
 	
-Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+Function renameFile($sourcepath : Text; $targetpath : Text) : Object
+	var $url : Text
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="mv "+$sourcepath+" "+$targetpath
-	$success:=This:C1470._runWorker($url)
+	return This:C1470._runWorker($url)
 	
 Function moveFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	$success:=This:C1470.renameFile($sourcepath; $targetpath)
 	
 Function copyFile($sourcepath : Text; $targetpath : Text)->$success : Object
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:="cp "+$sourcepath+" "+$targetpath
 	$success:=This:C1470._runWorker($url)
 	
@@ -348,6 +374,11 @@ Function _findLastPos($search : Integer; $string : Text)->$pos : Integer
 	End while 
 	
 Function _parseDirListing($success : Object)
+	var $col : Collection
+	var $diritem : Object
+	var $posName; $posType; $posSize; $posCreated : Integer
+	var $line : Text
+	
 	$col:=Split string:C1554(String:C10($success.data); This:C1470._return; sk ignore empty strings:K86:1)
 	If (($col.length>0) && ($col[0]="Id@"))
 		$success.list:=New collection:C1472
@@ -375,6 +406,11 @@ Function _parseDirListing($success : Object)
 	End if 
 	
 Function _runWorker($para : Text)->$result : Object
+	var $workerpara : cs:C1710.SystemWorkerProperties
+	var $path; $command; $old : Text
+	var $worker : Object
+	var $waittimeout : Integer
+	
 	If (This:C1470._Callback#Null:C1517)
 		$workerpara:=cs:C1710.SystemWorkerProperties.new("gdrive"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID; This:C1470._enableStopButton)
 	Else 

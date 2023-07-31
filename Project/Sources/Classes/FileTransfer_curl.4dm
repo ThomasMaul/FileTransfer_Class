@@ -1,5 +1,14 @@
+property _host; _user; _password; _protocol; _return; _range; _prefix; _curlPath : Text
+property onData : Object
+property _noProgress; _AutoCreateRemoteDir; _AutoCreateLocalDir; _async : Boolean
+property _timeout; _connectTimeout; _maxTime : Integer
+property _Callback : 4D:C1709.Function
+property _enableStopButton : Object
+
 Class constructor($hostname : Text; $username : Text; $password : Text; $protocol : Text)
-	ASSERT:C1129($hostname#""; "Hostname must not be empty")
+	var $col : Collection
+	
+	ASSERT:C1129(Length:C16($hostname)>0; "Hostname must not be empty")
 	If ($protocol="")
 		$protocol:="ftp-ftps"
 	End if 
@@ -17,10 +26,11 @@ Class constructor($hostname : Text; $username : Text; $password : Text; $protoco
 		This:C1470._return:=Char:C90(10)  //Char(13)+Char(10)
 	End if 
 	This:C1470._timeout:=0
-	This:C1470._enableStopButton:=False:C215
+	This:C1470._enableStopButton:=New shared object:C1526("stop"; False:C215)
 	
 	//MARK: Settings
 Function validate()->$success : Object
+	var $url : Text
 	$url:=This:C1470._buildURL()
 	$url+="/"
 	$success:=This:C1470._runWorker($url)
@@ -80,9 +90,12 @@ Function enableStopButton($enable : Object)  // this is a shared object!
 	This:C1470._enableStopButton:=$enable
 	
 Function useCallback($callback : 4D:C1709.Function; $ID : Text)
+	var $doublequotes : Text
+	
 	ASSERT:C1129(Value type:C1509($callback)=Is object:K8:27; "Callback must be of type function")
 	ASSERT:C1129(OB Instance of:C1731($callback; 4D:C1709.Function); "Callback must be of type function")
 	ASSERT:C1129($ID#""; "Callback ID Method must not be empty")
+	
 	This:C1470._Callback:=$callback
 	This:C1470._CallbackID:=$ID
 	This:C1470._noProgress:=False:C215
@@ -94,7 +107,11 @@ Function upload($sourcepath : Text; $targetpath : Text; $append : Boolean)->$suc
 	// append:  (FTP SFTP) When used in an upload, this makes curl append to the target file instead of overwriting it. 
 	// If the remote file does not exist, it will be created. 
 	// Note that this flag is ignored by some SFTP servers (including OpenSSH).
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
+	
+	var $url; $doublequotes : Text
+	var $oldtimeout : Integer
+	
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
 	$doublequotes:=Char:C90(Double quote:K15:41)
 	If ($targetpath="")
 		$targetpath:="/"
@@ -123,8 +140,12 @@ Function download($sourcepath : Text; $targetpath : Text)->$success : Object
          "ftp://example.com/file[1-100:10].txt" (steps 10)
 target needs to be folder, ending with /
 */
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	
+	var $url : Text
+	var $oldtimeout : Integer
+	
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:=This:C1470._buildURL()
 	If ((This:C1470._AutoCreateLocalDir#Null:C1517) && (This:C1470._AutoCreateLocalDir))
 		$url:=" --create-dirs "+$url
@@ -143,6 +164,8 @@ target needs to be folder, ending with /
 	This:C1470._parseFileListing($success)
 	
 Function getDirectoryListing($targetpath : Text)->$success : Object
+	var $url : Text
+	
 	If ($targetpath="")
 		$targetpath:="/"
 	End if 
@@ -154,14 +177,17 @@ Function getDirectoryListing($targetpath : Text)->$success : Object
 	End if 
 	
 Function createDirectory($targetpath : Text)->$success : Object
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:=This:C1470._buildURL()
 	$url:=$url+$targetpath+" --ftp-create-dirs"
 	$success:=This:C1470._runWorker($url)
 	
-Function deleteDirectory($targetpath : Text)->$success : Object
 	// only empty directories can be deleted!
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+Function deleteDirectory($targetpath : Text)->$success : Object
+	var $url : Text
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:=This:C1470._buildURL()
 	If (This:C1470._protocol#"SFTP")
 		$url:=$url+" -Q "+Char:C90(34)+"RMD "+$targetpath+Char:C90(34)
@@ -174,9 +200,10 @@ Function deleteDirectory($targetpath : Text)->$success : Object
 		This:C1470._parseDirListing($success)
 	End if 
 	
-Function deleteFile($targetpath : Text)->$success : Object
 	// only empty directories can be deleted!
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+Function deleteFile($targetpath : Text)->$success : Object
+	var $url : Text
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:=This:C1470._buildURL()
 	If (This:C1470._protocol#"SFTP")
 		$url:=$url+" -Q "+Char:C90(34)+"DELE "+$targetpath+Char:C90(34)
@@ -190,8 +217,10 @@ Function deleteFile($targetpath : Text)->$success : Object
 	End if 
 	
 Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
-	ASSERT:C1129($sourcepath#""; "source path must not be empty")
-	ASSERT:C1129($targetpath#""; "target path must not be empty")
+	var $url : Text
+	
+	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
+	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	$url:=This:C1470._buildURL()
 	If (This:C1470._protocol#"SFTP")
 		$url:=$url+" -Q "+Char:C90(34)+"-RNFR "+$sourcepath+Char:C90(34)+" -Q "+Char:C90(34)+"-RNTO "+$targetpath+Char:C90(34)
@@ -205,9 +234,9 @@ Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
 		This:C1470._parseDirListing($success)
 	End if 
 	
-Function executeCommand($command : Text)->$success : Object
-	ASSERT:C1129($command#""; "command must not be empty")
-	$success:=This:C1470._runWorker($command)
+Function executeCommand($command : Text) : Object
+	ASSERT:C1129(Length:C16($command)>0; "command must not be empty")
+	return This:C1470._runWorker($command)
 	
 Function stop()
 	If (This:C1470._worker#Null:C1517)
@@ -227,6 +256,12 @@ Function wait($max : Integer)
 	
 	// MARK: Internal helper calls
 Function _parseDirListing($success : Object)
+	var $col; $lineitems; $datecol : Collection
+	var $line : Text
+	var $diritem : Object
+	var $year; $month; $day : Integer
+	var $time : Time
+	
 	$col:=Split string:C1554(String:C10($success.data); This:C1470._return; sk ignore empty strings:K86:1)
 	$success.list:=New collection:C1472
 	For each ($line; $col)
@@ -249,10 +284,9 @@ Function _parseDirListing($success : Object)
 				$year:=Num:C11($lineitems[6])
 				$time:=?00:00:00?
 			End if 
-			$date:=Add to date:C393(!00-00-00!; $year; $month; $day)
-			$diritem.date:=$date
+			$diritem.date:=Add to date:C393(!00-00-00!; $year; $month; $day)
 			$diritem.time:=$time
-			$diritem.path:=$lineitems[8]
+			$diritem.path:=($lineitems.slice(8).join(" "))
 			$success.list.push($diritem)
 		Else   // error?
 			If ($col.length=1)
@@ -265,6 +299,9 @@ Function _parseDirListing($success : Object)
 	End for each 
 	
 Function _parseFileListing($success : Object)
+	var $col : Collection
+	var $line : Text
+	
 	$col:=Split string:C1554(String:C10($success.data); This:C1470._return; sk ignore empty strings:K86:1)
 	$success.list:=New collection:C1472
 	For each ($line; $col)
@@ -308,6 +345,11 @@ Function _buildURL()->$url : Text
 	End case 
 	
 Function _runWorker($para : Text)->$result : Object
+	var $workerpara : cs:C1710.SystemWorkerProperties
+	var $path; $command; $old : Text
+	var $worker : Object
+	var $waittimeout; $pos : Integer
+	
 	If (This:C1470._Callback#Null:C1517)
 		$workerpara:=cs:C1710.SystemWorkerProperties.new("curl"; This:C1470.onData; This:C1470._Callback; This:C1470._CallbackID; This:C1470._enableStopButton)
 	Else 
@@ -375,7 +417,4 @@ Function _runWorker($para : Text)->$result : Object
 		$result:=New object:C1471("success"; False:C215; "responseError"; "Curl execution error")
 	End if 
 	ON ERR CALL:C155($old)
-	
-	
-	
 	

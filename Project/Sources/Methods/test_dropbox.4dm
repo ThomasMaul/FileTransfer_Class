@@ -1,5 +1,8 @@
 //%attributes = {}
 var $ftp : cs:C1710.FileTransfer_Dropbox
+var $source; $answer; $target; $progressid : Text
+var $result; $status; $checkstop : Object
+
 $ftp:=cs:C1710.FileTransfer_Dropbox.new()
 
 $ftp.setPath(" /Users/thomas/Desktop/dbxcli")

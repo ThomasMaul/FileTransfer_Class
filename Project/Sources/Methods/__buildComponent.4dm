@@ -29,6 +29,9 @@ you might need to start Xcode to accept Apple contract changes or update expired
 */
 
 var $builder : cs:C1710._Build
+var $error : Object
+var $target : Text
+var $progress : Integer
 
 $builder:=cs:C1710._Build.new()
 
@@ -57,7 +60,6 @@ If ($error.success=True:C214)
 End if 
 
 Progress QUIT($progress)
-
 
 If ($error.success=False:C215)
 	ALERT:C41(JSON Stringify:C1217($error; *))

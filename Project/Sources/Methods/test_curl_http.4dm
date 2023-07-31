@@ -1,4 +1,7 @@
 //%attributes = {}
+var $source; $target; $answer; $progressid : Text
+var $result; $checkstop : Object
+
 If (False:C215)
 	var $ftp : cs:C1710.FileTransfer_curl
 	$ftp:=cs:C1710.FileTransfer_curl.new("www.4d.com"; ""; ""; "https")

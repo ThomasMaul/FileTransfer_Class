@@ -1,3 +1,8 @@
+property type; encoding; dataType; callbackID; _return : Text
+property hideWindow : Boolean
+property callback : 4D:C1709.Function
+property data; stopbutton; SharedForProgressBar : Object
+
 Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $callbackID : Text; $stopButton : Object)
 	This:C1470.type:=$type
 	This:C1470.encoding:="UTF-8"
@@ -22,6 +27,8 @@ Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $
 	This:C1470.SharedForProgressBar:=New shared object:C1526("ID"; 0; "Stop"; False:C215; "EnableButton"; This:C1470.stopbutton)
 	
 Function onData($systemworker : Object; $data : Object)
+	var $pos; $progress : Integer
+	
 	If ($data.data#Null:C1517)
 		This:C1470.data.text+=String:C10($data.data)
 	End if 
@@ -56,6 +63,9 @@ Function onData($systemworker : Object; $data : Object)
 	End if 
 	
 Function onDataError($systemworker : Object; $data : Object)
+	var $pos; $progress : Integer
+	var $message : Text
+	
 	// called when data is received from curl or dropbox to handle progress bar
 	
 	// check for stop button in progress bar

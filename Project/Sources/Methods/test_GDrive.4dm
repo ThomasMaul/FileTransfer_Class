@@ -1,5 +1,8 @@
 //%attributes = {}
 var $ftp : cs:C1710.FileTransfer_GDrive
+var $result; $status; $checkstop : Object
+var $source; $answer; $target; $id; $sourcequery; $progressid; $command : Text
+
 $ftp:=cs:C1710.FileTransfer_GDrive.new()
 
 //$path:=Get 4D folder(Current resources folder)+"gdrive"+Folder separator+"gdrive.exe"

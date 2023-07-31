@@ -1,5 +1,9 @@
 //%attributes = {}
 var $ftp : cs:C1710.FileTransfer_curl
+var $progressid; $source; $target; $answer; $text; $path : Text
+var $checkstop; $result : Object
+var $list : Collection
+
 $ftp:=cs:C1710.FileTransfer_curl.new("download.4d.com"; ""; ""; "https")
 
 $progressid:="Download 4D.dmg"
