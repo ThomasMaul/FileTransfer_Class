@@ -4,12 +4,22 @@ property _timeout : Integer
 
 Class constructor()
 	This:C1470.onData:=New object:C1471("text"; "")
+	This:C1470._return:=Char:C90(10)
+	var $path : Text
 	If (Is macOS:C1572)
-		This:C1470._return:=Char:C90(10)
-		This:C1470._Path:="dbxcli"
+		$path:=Get 4D folder:C485(Current resources folder:K5:16)+"dropbox"+Folder separator:K24:12+"dbxcli"
+		If (Test path name:C476($path)=Is a document:K24:1)
+			This:C1470._Path:=Convert path system to POSIX:C1106($path)
+		Else 
+			This:C1470._Path:="dbxcli"
+		End if 
 	Else 
-		This:C1470._return:=Char:C90(10)  //Char(13)+Char(10)
-		This:C1470._Path:="dbxcli.exe"
+		$path:=Get 4D folder:C485(Current resources folder:K5:16)+"dropbox"+Folder separator:K24:12+"dbxcli.exe"
+		If (Test path name:C476($path)=Is a document:K24:1)
+			This:C1470._Path:=Convert path system to POSIX:C1106($path)
+		Else 
+			This:C1470._Path:="dbxcli.exe"
+		End if 
 	End if 
 	This:C1470._timeout:=0
 	

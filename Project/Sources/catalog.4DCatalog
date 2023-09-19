@@ -2,7 +2,7 @@
 <!DOCTYPE base SYSTEM "http://www.4d.com/dtd/2007/base.dtd" >
 <base name="FileTransfer_Curl" uuid="1275CFA301E24C3FAF5C0CCA0B40F474" collation_locale="de">
 	<schema name="DEFAULT_SCHEMA"/>
-	<base_extra __stringCompHash="icu:72.1.0" __keywordBuildingHash="icu:72.1.0">
+	<base_extra>
 		<journal_file journal_file_enabled="false"/>
 	</base_extra>
 </base>

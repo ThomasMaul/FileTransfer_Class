@@ -5,7 +5,7 @@ var $result; $status; $checkstop : Object
 
 $ftp:=cs:C1710.FileTransfer_Dropbox.new()
 
-$ftp.setPath(" /Users/thomas/Desktop/dbxcli")
+//$ftp.setPath(" /Users/thomas/Desktop/dbxcli")
 // $path:=Get 4D folder(Current resources folder)+"Dropbox"+Folder separator+"dbxcli.exe"
 
 If (False:C215)
