@@ -2,8 +2,10 @@
 var $source; $target; $answer; $progressid : Text
 var $result; $checkstop : Object
 
+var $ftp : cs:C1710.FileTransfer_curl
+
 If (False:C215)
-	var $ftp : cs:C1710.FileTransfer_curl
+	$ftp:=Null:C1517
 	$ftp:=cs:C1710.FileTransfer_curl.new("www.4d.com"; ""; ""; "https")
 	$ftp.setConnectTimeout(5)
 	
@@ -19,7 +21,7 @@ If (False:C215)
 End if 
 
 If (False:C215)  // download with progress but without stop button
-	var $ftp : cs:C1710.FileTransfer_curl
+	$ftp:=Null:C1517
 	$ftp:=cs:C1710.FileTransfer_curl.new("download.4d.com"; ""; ""; "https")
 	
 	$ftp.useCallback(Formula:C1597(ProgressCallback); "Download 4D.dmg")
@@ -34,7 +36,7 @@ If (False:C215)  // download with progress but without stop button
 End if 
 
 If (False:C215)  // download with invalid source name
-	var $ftp : cs:C1710.FileTransfer_curl
+	$ftp:=Null:C1517
 	$ftp:=cs:C1710.FileTransfer_curl.new("download.4d.com"; ""; ""; "https")
 	
 	$ftp.useCallback(Formula:C1597(ProgressCallback); "Download 4D.dmg")
@@ -49,7 +51,7 @@ If (False:C215)  // download with invalid source name
 End if 
 
 If (True:C214)  // download with progress, stop button 
-	var $ftp : cs:C1710.FileTransfer_curl
+	$ftp:=Null:C1517
 	$ftp:=cs:C1710.FileTransfer_curl.new("download.4d.com"; ""; ""; "https")
 	
 	$progressid:="Download 4D.dmg"

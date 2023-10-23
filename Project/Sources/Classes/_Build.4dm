@@ -77,7 +77,7 @@ Function Notarize($zipfilepath : Text)->$error : Object
 	
 	// if $sourcepath is ommitted, it reads path from settings, only for components on Mac
 Function Zip($sourcepath : Text; $targetpath : Text)->$error : Object
-	var $settings; $Found; $settingsXML; $value; $source; $target; $cmd; $in; $in; $err; $out : Text
+	var $settings; $Found; $settingsXML; $value; $source; $target; $cmd; $in; $err; $out : Text
 	var $sourcefolder : 4D:C1709.Folder
 	var $sourcefolderfiles : Collection
 	
