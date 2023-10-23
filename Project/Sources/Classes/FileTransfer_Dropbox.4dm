@@ -48,7 +48,7 @@ Function upload($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
 	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	
-	$url:="put "+$sourcepath+" "+$targetpath
+	$url:="put "+This:C1470._doublequotes($sourcepath)+" "+This:C1470._doublequotes($targetpath)
 	$oldtimeout:=This:C1470._timeout
 	If ($oldtimeout=0)
 		This:C1470._timeout:=600
@@ -65,7 +65,7 @@ Function download($sourcepath : Text; $targetpath : Text)->$success : Object
 	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
 	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	
-	$url:="get "+$sourcepath+" "+$targetpath
+	$url:="get "+This:C1470._doublequotes($sourcepath)+" "+This:C1470._doublequotes($targetpath)
 	$oldtimeout:=This:C1470._timeout
 	If ($oldtimeout=0)
 		This:C1470._timeout:=600
@@ -75,23 +75,23 @@ Function download($sourcepath : Text; $targetpath : Text)->$success : Object
 	
 Function createDirectory($targetpath : Text) : Object
 	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
-	return This:C1470._runWorker("mkdir "+$targetpath)
+	return This:C1470._runWorker("mkdir "+This:C1470._doublequotes($targetpath))
 	
 Function deleteDirectory($targetpath : Text; $force : Boolean) : Object
 	var $url : Text
 	
 	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
 	If ($force)
-		$url:="rm -f "+$targetpath
+		$url:="rm -f "+This:C1470._doublequotes($targetpath)
 	Else 
-		$url:="rm "+$targetpath
+		$url:="rm "+This:C1470._doublequotes($targetpath)
 	End if 
 	return This:C1470._runWorker($url)
 	
 Function deleteFile($targetpath : Text) : Object
 	// same as deleteDirectory
 	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
-	return This:C1470._runWorker("rm "+$targetpath)
+	return This:C1470._runWorker("rm "+This:C1470._doublequotes($targetpath))
 	
 Function renameFile($sourcepath : Text; $targetpath : Text) : Object
 	var $url : Text
@@ -109,7 +109,7 @@ Function copyFile($sourcepath : Text; $targetpath : Text) : Object
 	
 	ASSERT:C1129(Length:C16($sourcepath)>0; "source path must not be empty")
 	ASSERT:C1129(Length:C16($targetpath)>0; "target path must not be empty")
-	$url:="cp "+$sourcepath+" "+$targetpath
+	$url:="cp "+This:C1470._doublequotes($sourcepath)+" "+This:C1470._doublequotes($targetpath)
 	return This:C1470._runWorker($url)
 	
 Function executeCommand($command : Text)->$success : Object
@@ -251,3 +251,9 @@ Function _trim($text : Text)->$result : Text
 		$result:=Substring:C12($result; 1; Length:C16($result)-1)
 	End while 
 	
+Function _doublequotes($text : Text)->$result : Text
+	If (Position:C15(Char:C90(Double quote:K15:41); $text; *)<0)
+		$result:=Char:C90(Double quote:K15:41)+$text+Char:C90(Double quote:K15:41)
+	Else 
+		$result:=$text
+	End if 
