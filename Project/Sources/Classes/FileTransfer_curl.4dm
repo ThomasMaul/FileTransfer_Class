@@ -225,7 +225,7 @@ Function renameFile($sourcepath : Text; $targetpath : Text)->$success : Object
 	If (This:C1470._protocol#"SFTP")
 		$url:=$url+" -Q "+Char:C90(34)+"-RNFR "+$sourcepath+Char:C90(34)+" -Q "+Char:C90(34)+"-RNTO "+$targetpath+Char:C90(34)
 	Else 
-		$url:=$url+" -Q "+Char:C90(34)+"-RENAME "+$sourcepath+Char:C90(34)+" "+$targetpath+Char:C90(34)
+		$url:=$url+" -Q "+Char:C90(34)+"-RENAME "+$sourcepath+" "+$targetpath+Char:C90(34)
 	End if 
 	$success:=This:C1470._runWorker($url)
 	If ($success.success)

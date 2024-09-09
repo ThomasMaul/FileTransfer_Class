@@ -1,5 +1,4 @@
 //%attributes = {}
-//%attributes = {}
 /* internal method, only to build/update
 handles component build, notarize (needs to run on Mac) and upload to git
 
@@ -28,16 +27,39 @@ you might need to start Xcode once manually after every macOS update to accept X
 you might need to start Xcode to accept Apple contract changes or update expired certificates (visit developer.apple.com)
 */
 
+
+/* JOB:
+Build (and sign)
+
+// useable on both Mac and Windows
+zip
+// only if running on Mac: upload zip for notarize
+
+// for Mac user (also useable on Windows if expanded on Mac)
+create dmg
+upload dmg for notarize
+staple dmg
+convert dmg to be read only
+
+// finally we have a zip, useable on both Mac and Windows. The zip was uploaded to Apple (if createdon Mac) for notarisation
+// but the zip is not (cannot be) stapled, so if downloaded for first run, the downloaded version needs to be checked with Apple servers
+// the dmg is stapled, so can be run even without internet connections, as it has a flag accepted by the macOS
+*/
+
+If (Is Windows:C1573)
+	ALERT:C41("It is only possible on Mac to create a signed/notarized .img file, so we stop here")
+	return 
+End if 
+
 var $builder : cs:C1710._Build
-var $error : Object
-var $target : Text
-var $progress : Integer
 
 $builder:=cs:C1710._Build.new()
 
+var $progress : Integer
 $progress:=Progress New
 Progress SET MESSAGE($progress; "Compile...")
 
+var $error : Object
 $error:=$builder.Compile()
 If ($error.success=True:C214)
 	Progress SET MESSAGE($progress; "Build...")
@@ -45,21 +67,53 @@ If ($error.success=True:C214)
 End if 
 
 If ($error.success=True:C214)
+	var $sourcepath:=$builder.getSourcePath()
+	If ($sourcepath="@:")
+		$sourcepath:=Substring:C12($sourcepath; 1; Length:C16($sourcepath)-1)
+	End if 
+	var $sourcefile:=File:C1566($sourcepath; fk platform path:K87:2)
+End if 
+
+// for Windows
+If ($error.success=True:C214)
 	Progress SET MESSAGE($progress; "Zip...")
-	$error:=$builder.Zip()
+	var $targetpath : Text:=$sourcefile.parent.parent.platformPath+$sourcefile.name+".zip"
+	$error:=$builder.Zip($sourcepath; $targetpath)
+End if 
+
+// run only on Mac
+If ($error.success=True:C214)
+	Progress SET MESSAGE($progress; "Notarize zip and wait for Apple's approval...")
+	$error:=$builder.Notarize($targetpath)
+End if 
+
+if(false)// we do zip only, skip img
+If ($error.success=True:C214)
+	Progress SET MESSAGE($progress; "Build IMG...")
+	var $tempimgpath : Text:=$sourcefile.parent.parent.platformPath+"tmp.dmg"
+	$error:=$builder.CreateImage($sourcepath; $tempimgpath; $sourcefile.name)
 End if 
 
 If ($error.success=True:C214)
-	$target:=$error.target
-	Progress SET MESSAGE($progress; "Notarize and wait for Apple's approval...")
-	$error:=$builder.Notarize($target)  // returned by zip
+	Progress SET MESSAGE($progress; "Notarize dmg and wait for Apple's approval...")
+	$error:=$builder.Notarize($tempimgpath)
 End if 
 
 If ($error.success=True:C214)
-	$error:=$builder.Staple($target)
+	$error:=$builder.Staple($tempimgpath)
 End if 
+
+If ($error.success=True:C214)
+	var $finalimgpath : Text:=$sourcefile.parent.parent.platformPath+$sourcefile.name+".dmg"
+	$error:=$builder.ConvertImage($tempimgpath; $finalimgpath)
+	If ($error.success=True:C214)
+		DELETE DOCUMENT:C159($tempimgpath)
+	End if 
+End if 
+end if
 
 Progress QUIT($progress)
+
 
 If ($error.success=False:C215)
 	ALERT:C41(JSON Stringify:C1217($error; *))

@@ -82,7 +82,7 @@ If (False:C215)
 	$source:=Convert path system to POSIX:C1106($source)
 	
 	$ftp.setTimeout(300)  // 5 minutes for 1 GB upload
-	$result:=$ftp.upload($source; "/Master_Class/4d.dmg"; True:C214)
+	$result:=$ftp.upload($source; "/Master_Class/4d.dmg")
 	If ($result.success)
 		$answer:=$result.data
 	End if 
@@ -100,7 +100,7 @@ If (False:C215)
 	$checkstop:=New shared object:C1526("stop"; False:C215)
 	$ftp.enableStopButton($checkstop)
 	
-	$result:=$ftp.upload($source; "/Master_Class/4d.dmg"; True:C214)
+	$result:=$ftp.upload($source; "/Master_Class/4d.dmg")
 	If ($result.success)
 		$answer:=$result.data
 	End if 

@@ -10,7 +10,7 @@ $ftp:=cs:C1710.FileTransfer_Dropbox.new()
 
 If (False:C215)
 	$source:="/"
-	$result:=$ftp.version($source)
+	$result:=$ftp.version
 	If ($result.success)
 		$answer:=$result.data
 	End if 
