@@ -1,5 +1,12 @@
 ## Release Notes
 
+## 1.1.2 - 2024-09-09
+Fix curl SFTP Rename issue (#7). Starting with this version 20 R5 is minimum.
+Use 1.1.1 for older versions such as 20 LTS.
+
+## 1.1.1 - 2022-08-24
+Small fix for rclone
+
 ## 1.1  - 2022-08-24
 Added class for rclone. Tested on FTP/SFTP, other services still needs tests (and maybe bug fixes)
 

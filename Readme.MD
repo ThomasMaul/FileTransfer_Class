@@ -12,6 +12,13 @@ Using Gdrive CLI tool
 Rclone  (NEW)
 Over 40 cloud storage products support rclone including S3 object stores, business & consumer file storage services, as well as standard transfer protocols.
 
+## Requirements
+Starting with 1.1.2 it requires 4D 20 R5 or newer.
+It supports installation through package manager in 20 R6 or newer.
+To use with older versions, such as 4D 20 LTS, use version 1.1.1.
+
+
+
 ## Introduction
 
 This class collection provide a similar interface for file transfer via different channels.
