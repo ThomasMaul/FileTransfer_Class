@@ -1,3 +1,6 @@
+property _SettingsUsed : Text
+property _Source : Text
+
 Class constructor
 	This:C1470._SettingsUsed:=""
 	This:C1470._Source:=""

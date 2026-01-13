@@ -1,6 +1,12 @@
 property onData : Object
 property _return; _Path : Text
 property _timeout : Integer
+property _Callback : 4D:C1709.Function
+property _CallbackID : Text
+property _worker : 4D:C1709.SystemWorker
+property _enableStopButton : Object  // shared
+property _async : Boolean
+property _noProgress : Boolean
 
 Class constructor()
 	This:C1470.onData:=New object:C1471("text"; "")
@@ -235,7 +241,7 @@ Function _runWorker($para : Text)->$result : Object
 		End if 
 		// dbxcli seems not to terminate directly,progress bar could be open too long
 		If (This:C1470._Callback#Null:C1517)
-			This:C1470._worker.onTerminate(New object:C1471; New object:C1471)
+			This:C1470._worker.terminate()
 		End if 
 	Else 
 		$result:=New object:C1471("success"; False:C215; "responseError"; "dbxcli execution error")

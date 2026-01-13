@@ -146,6 +146,9 @@
 			],
 			"Summary": ""
 		},
+		"currentDirectory": {
+			"Syntax": "currentDirectory : 4D.Folder"
+		},
 		"data": {
 			"Syntax": "data : Object"
 		},
@@ -1571,6 +1574,12 @@
 				]
 			],
 			"Summary": ""
+		},
+		"onData": {
+			"Syntax": "onData : Object"
+		},
+		"config": {
+			"Syntax": "config : Text"
 		}
 	},
 	"_Build": {

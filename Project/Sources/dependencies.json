@@ -1,0 +1,9 @@
+{
+	"version": 2100,
+	"dependencies": {
+		"4D Progress": {
+			"github": "4d/4D-Progress",
+			"version": "4d"
+		}
+	}
+}

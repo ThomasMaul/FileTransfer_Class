@@ -2,6 +2,7 @@ property type; encoding; dataType; callbackID; _return : Text
 property hideWindow : Boolean
 property callback : 4D:C1709.Function
 property data; stopbutton; SharedForProgressBar : Object
+property currentDirectory : 4D:C1709.Folder
 
 Class constructor($type : Text; $data : Object; $callback : 4D:C1709.Function; $callbackID : Text; $stopButton : Object)
 	This:C1470.type:=$type

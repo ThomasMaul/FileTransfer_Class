@@ -1,3 +1,18 @@
+property onData : Object
+property config : Text
+
+property _return : Text
+property _Path : Text
+property _timeout : Integer
+property _Callback : 4D:C1709.Function
+property _maxTime : Real
+property _async : Boolean
+property _prefix : Text
+property _enableStopButton : Object
+property _noProgress : Boolean
+property _worker : 4D:C1709.SystemWorker
+property _CallbackID : Text
+
 Class constructor($configname : Text)
 	This:C1470.onData:=New object:C1471("text"; "")
 	If (Is macOS:C1572)

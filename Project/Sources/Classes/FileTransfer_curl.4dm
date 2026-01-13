@@ -1,9 +1,13 @@
 property _host; _user; _password; _protocol; _return; _range; _prefix; _curlPath : Text
 property onData : Object
+property _ActiveModeIP : Text
 property _noProgress; _AutoCreateRemoteDir; _AutoCreateLocalDir; _async : Boolean
 property _timeout; _connectTimeout; _maxTime : Integer
 property _Callback : 4D:C1709.Function
 property _enableStopButton : Object
+property _CallbackID : Text
+property _ActiveMode : Boolean
+property _worker : 4D:C1709.SystemWorker
 
 Class constructor($hostname : Text; $username : Text; $password : Text; $protocol : Text)
 	var $col : Collection
@@ -377,7 +381,7 @@ Function _runWorker($para : Text)->$result : Object
 		$path+=" --range "+This:C1470._range
 	End if 
 	If ((This:C1470._ActiveMode#Null:C1517) && (This:C1470._ActiveMode))  // default passive
-		$path+=" --ftp-port "+This:C1470.ActiveModeIP
+		$path+=" --ftp-port "+This:C1470._ActiveModeIP
 	End if 
 	If (This:C1470._prefix#Null:C1517)
 		$path+=(" "+This:C1470._prefix)

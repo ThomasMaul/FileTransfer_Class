@@ -1,6 +1,12 @@
 property onData : Object
-property _Path; _workerpath : Text
+property _Path; _return; _workerpath : Text
 property _timeout : Integer
+property _Callback : 4D:C1709.Function
+property _worker : 4D:C1709.SystemWorker
+property _CallbackID : Text
+property _enableStopButton : Object
+property _async : Boolean
+property _noProgress : Boolean
 
 Class constructor()
 	var $path : Text
@@ -457,7 +463,7 @@ Function _runWorker($para : Text)->$result : Object
 		$result:=New object:C1471("success"; False:C215; "responseError"; "gdrive execution error")
 	End if 
 	If (This:C1470._Callback#Null:C1517)
-		This:C1470._worker.onTerminate(New object:C1471; New object:C1471)
+		This:C1470._worker.terminate()
 	End if 
 	This:C1470._worker:=Null:C1517
 	ON ERR CALL:C155($old)
